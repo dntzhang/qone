@@ -22,7 +22,7 @@
     * [关联instance](#关联instance)
     * [传递数据](#传递数据)
 * [调试技巧](#调试技巧)  
-* [Omi相关](#omi相关)  
+* [Omix相关](#omix相关)  
 
 ## 简介
     
@@ -963,7 +963,7 @@ console.log(Omi.instances)
 * [Omi[x] 官网](http://www.omijs.org)
 * [Omix Github](https://github.com/AlloyTeam/omix)
 * [Omi Github](https://github.com/AlloyTeam/omi)
-* [Omix REPL](http://alloyteam.github.io/omix/example/repl/)
+* [Omix REPL](https://alloyteam.github.io/omix/repl/)
 * [Omix 文档](https://github.com/AlloyTeam/omix/blob/master/docs/)
 * [Omi[x] Cli](https://github.com/AlloyTeam/omi-cli)
 * [New issue](https://github.com/AlloyTeam/omix/issues/new)
