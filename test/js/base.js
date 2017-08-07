@@ -1,4 +1,4 @@
-import Hello from './Hello'
+import Hello from './hello.js'
 
 
 class App extends Omi.Component {
