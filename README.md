@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="##Omix"><img src="http://images2017.cnblogs.com/blog/105416/201708/105416-20170807101916221-348284001.png" alt="Omi"></a>
+  <a href="##Omix"><img src="http://images2017.cnblogs.com/blog/105416/201708/105416-20170807145434955-1872305404.png" alt="Omi"></a>
 </p>
 <p align="center">
 Build UI with JSX or hyperscript - 使用 JSX 或 hyperscript 创建用户界面
