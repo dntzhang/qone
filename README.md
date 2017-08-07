@@ -27,7 +27,7 @@ Build UI with JSX or hyperscript - 使用 JSX 或 hyperscript 创建用户界面
 
 ### with JSX
 
-```
+``` js
 class Hello extends Omi.Component {
     render() {
         return <div> Hello {this.data.name}!</div>
@@ -66,8 +66,9 @@ Omi.render(new App(), '#container')
 
 ### with hyperscript
 
-```
+``` js
 const $ = Omi.tags
+
 class Hello extends Omi.Component {
     render() {
         return $.div( 'Hello' + this.data.name+'!')
