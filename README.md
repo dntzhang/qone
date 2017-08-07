@@ -76,7 +76,7 @@ class Hello extends Omi.Component {
     }
 }
 
-Omi.tag('hello', Hello)
+Omi.tag('hello-tag', Hello)
 
 class App extends Omi.Component {
     handleClick(e) {
@@ -85,7 +85,7 @@ class App extends Omi.Component {
 
     render() {
         return $.div([
-	            $.Hello({name: 'Omi'}),
+	            $.HelloTag({name: 'Omi'}),
 	            $.h3({onclick: this.handleClick}, 'scoped css and event test! click me!')
 	        ])
     }
