@@ -3,7 +3,7 @@
 《精通[Omix框架](https://github.com/AlloyTeam/omix)》书籍的免费电子版，有这一篇足够从入门到精通。
 
 * [简介](#简介)
-* [安装Omix](#安装omix)
+* [安装Omix](#安装-omix)
 * [Hello Omix](#hello-omix)
 * [介绍 JSX](#介绍-jsx)
 * [介绍 hyperscript](#介绍-hyperscript)
