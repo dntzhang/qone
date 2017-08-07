@@ -14,6 +14,7 @@ Build UI with JSX or hyperscript - 使用 JSX 或 hyperscript 创建用户界面
 
 * [中文文档](./docs/README.md)
 * [Omi REPL](https://alloyteam.github.io/omix/repl/)
+* [Use Omi if you like template](https://alloyteam.github.io/omi)
 
 ## Features
 
