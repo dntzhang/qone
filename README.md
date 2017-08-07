@@ -108,7 +108,7 @@ $.tagName(selector, attrs, children)
 
 ```bash
 $ npm install omi-cli -g         # install cli
-$ omi init-x your_project_name   # init project, you can also exec 'omi init' in an empty folder
+$ omi init-x your_project_name   # init project, you can also exec 'omi init-x' in an empty folder
 $ cd your_project_name           # please ignore this command if you executed 'omi init' in an empty folder
 $ npm start                      # develop
 $ npm run dist                   # release
