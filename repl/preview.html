@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../dist/omix.js"></script>
+    <script>
+       window.createElement = function(tag, props) {
+           var children = [],
+                   i = 2,
+                   len = arguments.length
+           for (; i < len; i++) {
+               if (arguments[i] !== undefined) {
+                   children.push(arguments[i])
+               }
+           }
+           if (children.length > 0) {
+               return Omi.x(tag, props, children)
+           } else {
+               return Omi.x(tag, props)
+           }
+       }
+    </script>
+</head>
+<body>
+    <div id="container"></div>
+
+    <script>
+        parent.postMessage(JSON.stringify({
+            type: 'ready',
+        }), '*');
+    </script>
+</body>
+</html>
