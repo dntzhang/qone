@@ -31,7 +31,7 @@
 
 [Omix框架](https://github.com/AlloyTeam/omix) 并不是用来替代 [Omi框架](https://github.com/AlloyTeam/omi) ，而是另外一种选择。概括起来包含下面优点和特性:
 
-* 超迅捷的性能，经过测试, 居然是所有框架第一名, 不信可以看看[dbmon with omix](https://alloyteam.github.io/example/perfs)。虽然排第一，但是发现还有许多优化空间！！
+* 超迅捷的性能，经过测试, 居然是所有框架第一名, 不信可以看看[dbmon with omix](https://alloyteam.github.io/omix/example/perfs)。虽然排第一，但是发现还有许多优化空间！！
 * 良好的兼容性 - 兼容 IE8,兼容各种手机平版移动 Web 程序
 * 超小的尺寸 - 7 kb (gzip) 
 * 内置支持 JXS 和 hyperscript , 喜欢哪种方式随意切换
