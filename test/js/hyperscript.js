@@ -1,4 +1,4 @@
-import  './Hello'
+import  './hello.js'
 
 const $ = Omi.tags
 
