@@ -1,7 +1,7 @@
 {
   "name": "omix",
   "version": "0.1.0",
-  "description": "Open and modern framework for building user interfaces with JSX or hyperscript.",
+  "description": "Build UI with JSX or hyperscript.",
   "main": "dist/omix.js",
   "scripts": {
     "lint": "eslint src",
