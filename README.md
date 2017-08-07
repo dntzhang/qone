@@ -55,9 +55,9 @@ class App extends Omi.Component {
 
     render() {
         return <div>
-            <hello name={this.name}></hello>
-            <h3 onclick={this.handleClick.bind(this)}>Scoped css and event test! click me!</h3>
-        </div>
+	            <hello name={this.name}></hello>
+	            <h3 onclick={this.handleClick.bind(this)}>Scoped css and event test! click me!</h3>
+	        </div>
     }
 }
 
@@ -82,9 +82,9 @@ class App extends Omi.Component {
 
     render() {
         return $.div([
-            $.HelloTest({name: 'Omi'}),
-            $.h3({onclick: this.handleClick}, 'scoped css and event test! click me!')
-        ])
+	            $.HelloTest({name: 'Omi'}),
+	            $.h3({onclick: this.handleClick}, 'scoped css and event test! click me!')
+	        ])
     }
 }
 ```
