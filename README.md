@@ -2,7 +2,7 @@
   <a href="##Omix"><img src="http://images2017.cnblogs.com/blog/105416/201708/105416-20170807101916221-348284001.png" alt="Omi"></a>
 </p>
 <p align="center">
-Build UI with JSX or hyperscript - Ê¹ÓÃ JSX »ò hyperscript ´´½¨ÓÃ»§½çÃæ
+Build UI with JSX or hyperscript - ä½¿ç”¨ JSX æˆ– hyperscript åˆ›å»ºç”¨æˆ·ç•Œé¢
 </p>
 <p align="center">
   <a href="https://travis-ci.org/AlloyTeam/omix"><img src="https://travis-ci.org/AlloyTeam/omix.svg"></a>
@@ -12,13 +12,13 @@ Build UI with JSX or hyperscript - Ê¹ÓÃ JSX »ò hyperscript ´´½¨ÓÃ»§½çÃæ
 </p>
 
 
-* [ÖĞÎÄÎÄµµ](./docs/README.md)
+* [ä¸­æ–‡æ–‡æ¡£](./docs/README.md)
 * [Omi REPL](https://alloyteam.github.io/omix/repl/)
 
 ## Features
 
 * Super tiny size, 7 KB (gzip)
-* Super fast£¬[click here!!!!](https://alloyteam.github.io/omix/example/perfs)
+* Super fastï¼Œ[click here!!!!](https://alloyteam.github.io/omix/example/perfs)
 * Good compatibility, support IE8
 * Support Scoped CSS, reusable components are composed of HTML, Scoped CSS and JS
 * More free updates, each component has a update method, free to choose the right time to update
