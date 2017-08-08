@@ -284,7 +284,7 @@ const $ = Omi.tags
 // JSX
 <ul id="bestest-menu">
   {items.map( item =>
-    <li className=".item" {...attrs(item.id)}>{item.title}</li>
+    <li class="item" {...attrs(item.id)}>{item.title}</li>
   )}
 </ul>
 ```
