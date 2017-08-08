@@ -18,8 +18,8 @@ Build UI with JSX or hyperscript - 使用 JSX 或 hyperscript 创建用户界面
 
 ## Features
 
+* Super fast, [click here!!!!](https://alloyteam.github.io/omix/example/perfs)
 * Super tiny size, 7 KB (gzip)
-* Super fast，[click here!!!!](https://alloyteam.github.io/omix/example/perfs)
 * Good compatibility, support IE8
 * Support Scoped CSS, reusable components are composed of HTML, Scoped CSS and JS
 * More free updates, each component has a update method, free to choose the right time to update
