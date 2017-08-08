@@ -182,7 +182,7 @@ class App extends Omi.Component {
 Omi.render(new App(),"#container");
 ```
 
-是不是超级简便。还等什么，赶紧开始阅读[中文文档](https://github.com/AlloyTeam/omix/tree/master/docs)或者在[Omi REPL](https://alloyteam.github.io/omix/repl/)把玩一下！
+是不是超级简便。还在等什么，用到就是赚到，赶紧开始阅读 [中文文档](https://github.com/AlloyTeam/omix/tree/master/docs) 或者在 [Omi REPL](https://alloyteam.github.io/omix/repl/) 把玩一下！
 
 
 # License
