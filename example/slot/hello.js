@@ -1,15 +1,11 @@
 import Omi from '../../src/index.js'
 
-class NotesList extends Omi.Component {
+class Hello extends Omi.Component {
     render() {
-        return <ol>
-            { this.data.children.map(function(child) {
-                return <li>{child}</li>
-            })}
-        </ol>
+        return <div>I am Hello Component!  from parent:{this.data.name}</div>
     }
 }
 
-Omi.tag('notes-list', NotesList)
+Omi.tag('hello', Hello)
 
-export default NotesList
+export default Hello
