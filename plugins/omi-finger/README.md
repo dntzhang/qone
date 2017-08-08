@@ -19,10 +19,7 @@ npm install omi-finger
 ## 使用
 
 ```js
-import Omi from 'omi';
-import OmiFinger from 'omi-finger';
-
-OmiFinger.init();
+import 'omi-finger';
 
 class App extends Omi.Component {
     constructor(data) {
@@ -38,19 +35,16 @@ class App extends Omi.Component {
     }
 
     render() {
-        return  `
-        <div>
-            <div omi-finger ref="touchArea" tap="handleTap"  swipe="handleSwipe" >
-                Tap or Swipe Me!
-            </div>
-        </div>
-        `;
+        return  <div>
+	            <div omi-finger ref="touchArea" tap="handleTap"  swipe="handleSwipe" >
+	                Tap or Swipe Me!
+	            </div>
+	        </div>
     }
 }
 
 Omi.render(new App(),"#container");
 ```
-
 
 # License
 This content is released under the [MIT](http://opensource.org/licenses/MIT) License.

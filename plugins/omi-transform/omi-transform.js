@@ -11,11 +11,6 @@
     var Transform = typeof require === 'function'
         ? require('css3transform')
         : window.Transform;
-    var Omi = typeof require === 'function'
-        ? require('omi')
-        : window.Omi;
-
-
 
     OmiTransform.init = function(){
         Omi.extendPlugin('omi-transform',function(dom, instance){

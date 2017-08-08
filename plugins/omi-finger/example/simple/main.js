@@ -1,7 +1,5 @@
-﻿import Omi from 'omi';
-import OmiFinger from '../../index.js';
-
-OmiFinger.init();
+﻿import Omi from 'omix';
+import '../../index.js';
 
 class App extends Omi.Component {
     constructor(data) {
@@ -30,13 +28,11 @@ class App extends Omi.Component {
     }
 
     render() {
-        return  `
-        <div>
-            <div omi-finger class="touchArea" ref="touchArea" tap="handleTap"  swipe="handleSwipe" >
-                Tap or Swipe Me!
-            </div>
-        </div>
-        `;
+        return  <div>
+                    <div omi-finger class="touchArea" ref="touchArea" tap="handleTap"  swipe="handleSwipe" >
+                        Tap or Swipe Me!
+                    </div>
+                </div>
     }
 }
 

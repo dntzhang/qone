@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "alloyfinger": "^0.1.6",
-    "omi": "latest"
+    "omix": "latest"
   },
   "devDependencies": {
     "babel-core": "^6.0.20",
@@ -25,7 +25,8 @@
   "keywords": [
     "omi",
     "omi-finger",
-    "alloyfinger"
+    "alloyfinger",
+    "omix"
   ],
   "author": "dntzhang",
   "license": "MIT",

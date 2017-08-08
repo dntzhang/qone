@@ -10,7 +10,7 @@
     var OmiTouch = {};
     var AlloyTouch = typeof require === 'function' ? require('alloytouch') : window.AlloyTouch;
     var Transform = typeof require === 'function' ? require('css3transform') : window.Transform;
-    var Omi = typeof require === 'function' ? require('omi') : window.Omi;
+
 
     var noop = function(){
 

@@ -8,9 +8,7 @@
 ;(function () {
 
     var OmiRouter = {}
-    var Omi = typeof require === 'function'
-        ? require('omi')
-        : window.Omi
+
 
     var parser = require('path-to-regexp'),
         renderTo = null,
