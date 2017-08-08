@@ -6,9 +6,9 @@ Omi的[AlloyFinger](https://github.com/AlloyTeam/AlloyFinger)插件，让你轻�
 
 ## Demo
 
-![omi-finger](./omi-finger.png)
+![omi-finger demo](./demo.png)
 
-[http://alloyteam.github.io/omi/plugins/omi-finger/example/finger/](http://alloyteam.github.io/omi/plugins/omi-finger/example/finger/)
+[https://alloyteam.github.io/omix/plugins/omi-finger/example/simple/](https://alloyteam.github.io/omix/plugins/omi-finger/example/simple/)
 
 ## 通过npm安装 
 
