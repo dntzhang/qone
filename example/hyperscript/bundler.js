@@ -655,7 +655,7 @@ var App = function (_Omi$Component) {
     }, {
         key: 'render',
         value: function render() {
-            return $.div([$.HelloTest({ name: 'Omi' }), $.h3({ onclick: this.handleClick }, 'scoped css and event test! click me!')]);
+            return $.div([$.HelloTest({ name: 'Omi' }), $.h3({ onclick: this.handleClick.bind(this) }, 'scoped css and event test! click me!')]);
         }
     }]);
 

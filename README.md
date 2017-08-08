@@ -86,7 +86,7 @@ class App extends Omi.Component {
     render() {
         return $.div([
 	            $.HelloTag({name: 'Omi'}),
-	            $.h3({onclick: this.handleClick}, 'scoped css and event test! click me!')
+	            $.h3({onclick: this.handleClick.bind(this)}, 'scoped css and event test! click me!')
 	        ])
     }
 }

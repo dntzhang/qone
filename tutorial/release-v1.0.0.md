@@ -11,7 +11,7 @@
 * 超级快的速度, [点击这里体验一下](https://alloyteam.github.io/omix/example/perfs)
 * 超小的尺寸, 7 KB (gzip)
 * 良好的兼容性 IE8
-* 内置支持JSX 和 hyperscript
+* 同时支持JSX 和 hyperscript
 * 支持局部 CSS, 不用费尽心思去想选择器了，让CSS更加简单
 * 更自由的更新，每个组件都有 update 方法，可以自由选择最佳更新的时机，也可和第三方库集成实现双向绑定，退可以自己手动更新。进可攻退可守
 * 灵活的插件体系和丰富的插件生态
@@ -102,7 +102,7 @@ $.tagName(selector, attrs, children)
 
 ### JSX vs hyperscript
 
-海外有大量的工程师觉得的 hyperscript 比 JSX 要更加简洁和方便，但是我们团队内部喜欢 JSX 和 hyperscript 一半一半。但是没有关系 Omix 同时支持两种方式。下面稍微对比一下两者的使用差异:
+海外有大量的工程师觉得的 hyperscript 比 JSX 要更加简洁和方便，但是我们团队内部喜欢 JSX 和 hyperscript 一半一半。但是没有关系, Omix 同时支持两种方式。下面稍微对比一下两者的使用差异:
 
 ```
 // JSX
