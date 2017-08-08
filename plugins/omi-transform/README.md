@@ -6,7 +6,7 @@ Omi的[transformjs](http://alloyteam.github.io/AlloyTouch/transformjs/)插件，
 
 ## Demo
 
-[http://alloyteam.github.io/omi/plugins/omi-transform/example/simple/](http://alloyteam.github.io/omi/plugins/omi-transform/example/simple/)
+[http://alloyteam.github.io/omix/plugins/omi-transform/example/simple/](http://alloyteam.github.io/omix/plugins/omi-transform/example/simple/)
 
 ## 通过npm安装 
 
@@ -17,10 +17,8 @@ npm install omi-transform
 ## 使用
 
 ```js
-import Omi from 'omi';
-import OmiTransform from '../../omi-transform.js';
-
-OmiTransform.init();
+import Omi from 'omix'
+import 'omi-transform'
 
 class App extends Omi.Component {
     constructor(data) {
@@ -34,12 +32,9 @@ class App extends Omi.Component {
     }
 
     render() {
-        return  `
-            <div omi-transform class="test" ref="test" rotateZ="45" translateX="100" >
-                omi-transform
-            </div>
-
-        `;
+        return  <div omi-transform class="test" ref="test" rotateZ="45" translateX="100" >
+	                omi-transform
+	            </div>
     }
 
     style(){
@@ -52,8 +47,7 @@ class App extends Omi.Component {
                 min-height: 150px;
                 text-align: center;
                 line-height:150px;
-            }
-         `;
+            }`
     }
 }
 
