@@ -102,7 +102,7 @@
 	    }, {
 	        key: 'style',
 	        value: function style() {
-	            return '\n        ul{\n            border-bottom: 1px solid #ccc;\n            padding-bottom:5px;\n        }\n        li{\n            display:inline-block;\n        }\n        #view li{\n            display:block;\n        }\n        #view ul{\n            border-width: 0px;\n        }\n        ';
+	            return '\n        ul{\n            border-bottom: 1px solid #ccc;\n            padding-bottom:5px;\n        }\n        li{\n            display:inline-block;\n            margin-left:4px;\n        }\n        #view li{\n            display:block;\n        }\n        #view ul{\n            border-width: 0px;\n        }\n        ';
 	        }
 	    }, {
 	        key: 'render',

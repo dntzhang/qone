@@ -30,6 +30,7 @@ class App extends Omi.Component {
         }
         li{
             display:inline-block;
+            margin-left:4px;
         }
         #view li{
             display:block;
