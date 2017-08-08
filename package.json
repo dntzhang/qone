@@ -1,6 +1,6 @@
 {
   "name": "omix",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Build UI with JSX or hyperscript.",
   "main": "dist/omix.js",
   "scripts": {
