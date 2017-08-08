@@ -14,13 +14,12 @@
 * 内置支持JSX 和 hyperscript
 * 支持局部 CSS, 不用费尽心思去想选择器了，让CSS更加简单
 * 更自由的更新，每个组件都有 update 方法，可以自由选择最佳更新的时机，也可和第三方库集成实现双向绑定，退可以自己手动更新。进可攻退可守
-* 喜欢模板引擎、ES6模板字符串的可以使用 Omix 的API大体相同的兄弟框架 [Omi](https://github.com/AlloyTeam/omi)
 * 灵活的插件体系和丰富的插件生态
     * [omi-router](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-router) : Omi专属的官方Router插件.
     * [omi-finger](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-finger) Omi的[AlloyFinger](https://github.com/AlloyTeam/AlloyFinger)插件，支持各种触摸事件和手势
     * [omi-transform](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-transform) Omi的[transformjs](https://alloyteam.github.io/AlloyTouch/transformjs/)插件，快速方便地设置DOM的CSS3 Transform属性
     * [omi-touch](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-touch) Omi的[AlloyTouch](https://github.com/AlloyTeam/AlloyTouch)插件，Omi项目的触摸运动解决方案（支持触摸滚动、旋转、翻页、选择等等）
-    
+* 喜欢模板引擎、ES6模板字符串的可以使用 Omix 的API大体相同的兄弟框架 [Omi](https://github.com/AlloyTeam/omi)，而且上面的插件 Omi 和 Omix 都可以共享使用
 ## Omix 
 
 ### 使用 JSX 
