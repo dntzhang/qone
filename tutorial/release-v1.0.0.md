@@ -1,4 +1,4 @@
-## 腾讯发布 Omix 1.0 
+## 腾讯发布 Omix 1.0 - 用 JSX 或 hyperscript 创建用户界面
 
 ![http://images2017.cnblogs.com/blog/105416/201708/105416-20170807145434955-1872305404.png](http://images2017.cnblogs.com/blog/105416/201708/105416-20170807145434955-1872305404.png)
 
