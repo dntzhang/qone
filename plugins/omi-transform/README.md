@@ -21,20 +21,16 @@ import Omi from 'omix'
 import 'omi-transform'
 
 class App extends Omi.Component {
-    constructor(data) {
-        super(data);
-    }
-
     installed(){
-        setInterval(function(){
-            this.refs.test.rotateZ += 0.1;
-        }.bind(this));
+        setInterval(()=>{
+            this.refs.test.rotateY += 1
+        })
     }
 
     render() {
-        return  <div omi-transform class="test" ref="test" rotateZ="45" translateX="100" >
-	                omi-transform
-	            </div>
+        return  <div omi-transform class="test" ref="test" rotateZ="0" translateX="100" perspective="400" >
+                    omi-transform
+                </div>
     }
 
     style(){
@@ -47,11 +43,12 @@ class App extends Omi.Component {
                 min-height: 150px;
                 text-align: center;
                 line-height:150px;
-            }`
+            }
+         `
     }
 }
 
-Omi.render(new App(),"#container");
+Omi.render(new App(),"#container")
 ```
 
 # License

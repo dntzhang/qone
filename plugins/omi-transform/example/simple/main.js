@@ -2,10 +2,6 @@
 import '../../index.js'
 
 class App extends Omi.Component {
-    constructor(data) {
-        super(data)
-    }
-
     installed(){
         setInterval(()=>{
             this.refs.test.rotateY += 1

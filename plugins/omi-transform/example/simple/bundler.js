@@ -65,10 +65,10 @@
 	var App = function (_Omi$Component) {
 	    _inherits(App, _Omi$Component);
 
-	    function App(data) {
+	    function App() {
 	        _classCallCheck(this, App);
 
-	        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, data));
+	        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
 	    }
 
 	    _createClass(App, [{
