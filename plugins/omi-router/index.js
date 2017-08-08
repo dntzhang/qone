@@ -20,7 +20,8 @@
         preInstance = null,
         currentRoute = null,
         preRoute = null,
-        instanceList = []
+        instanceList = [],
+        $route = {}
 
     OmiRouter.init = function (option) {
         routerOption = option
@@ -78,6 +79,7 @@
     }, false)
 
     function render() {
+        $route.params = params
         if (store) {
             store.$route = {}
             store.$route.params = params
@@ -124,6 +126,7 @@
             if(routerOption.increment){
                 instanceList.push(instance)
             }
+            instance.$route = $route
             Omi.render(instance, renderTo, {
                 store: store,
                 increment: routerOption.increment
@@ -136,6 +139,8 @@
                     route:currentRoute
                 })
             }
+        }else{
+            instance.$route = $route
         }
 
 

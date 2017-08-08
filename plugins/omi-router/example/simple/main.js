@@ -1,4 +1,4 @@
-﻿import Omi from 'omi'
+﻿import Omi from 'omix'
 import OmiRouter from '../../index.js'
 
 import Home from './home.js'
@@ -41,20 +41,17 @@ class App extends Omi.Component {
     }
 
     render() {
-        return  `
-        <div>
-            <ul>
-                <li><a omi-router to="/" >Home</a></li>
-                <li><a omi-router to="/about" >About</a></li>
-                <li><a omi-router to="/user-list" >UserList</a></li>
-            </ul>
-            <div id="view">
-
-            </div>
-        </div>
-        `
+        return <div>
+                    <ul>
+                        <li><a omi-router to="/" >Home</a></li>
+                        <li><a omi-router to="/about" >About</a></li>
+                        <li><a omi-router to="/user-list" >UserList</a></li>
+                    </ul>
+                    <div id="view">
+                    </div>
+                </div>
     }
 }
 
 
-Omi.render(new App(),"#__omi")
+Omi.render(new App(),"#container")
