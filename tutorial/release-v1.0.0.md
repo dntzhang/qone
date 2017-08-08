@@ -149,13 +149,13 @@ $.MyComponent({x: 1, y: 2})
 Omix 对插件体系进行了升级，使用方便比从前更加简便，这里拿 omi-finger 作为例子, omi-finger 是 Omi的[AlloyFinger](https://github.com/AlloyTeam/AlloyFinger)插件，让你轻松在Omi项目里支持各种触摸事件和手势:
 
 
-## 通过npm安装 
+### 通过npm安装 
 
 ``` js
 npm install omi-finger
 ```
 
-## 使用
+### 使用
 
 ```js
 import Omi from 'omix';
