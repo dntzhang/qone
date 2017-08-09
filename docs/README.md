@@ -34,7 +34,7 @@
 * 超迅捷的性能，经过测试, 居然是所有框架第一名, 不信可以看看[dbmon with omix](https://alloyteam.github.io/omix/example/perfs)。虽然排第一，但是发现还有许多优化空间！！
 * 良好的兼容性 - 兼容 IE8,兼容各种手机平版移动 Web 程序
 * 超小的尺寸 - 7 kb (gzip) 
-* 内置支持 JXS 和 hyperscript , 喜欢哪种方式随意切换
+* 内置支持 JSX 和 hyperscript , 喜欢哪种方式随意切换
 * 局部CSS - HTML+ Scoped CSS + JS组成可复用的组件。不用担心组件的CSS会污染组件外的
 * 更自由的更新 - 每个组件都有 update 方法，自由选择你认为最佳的更新时机和最佳的更新方式
 * 灵活的插件体系和丰富的插件生态
