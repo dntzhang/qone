@@ -12,7 +12,6 @@ let Omi = {
     },
     plugins: {},
     scopedStyle: true,
-    customTags: [],
     mapping: {},
     style: {},
     componentConstructor: {}
@@ -43,20 +42,19 @@ Omi._capitalize = function(str) {
 }
 
 Omi.tag = function(name, ctor) {
-    let upName = name.toUpperCase()
-    Omi.componentConstructor[upName] = ctor
-    Omi.customTags.push(upName, upName.replace(/-/g, ''))
-    ctor.is = upName
+    let cname = name.replace(/-/g, '').toLowerCase()
+    Omi.componentConstructor[cname] = ctor
+    ctor.is = name
     if (document.documentMode < 9) {
         document.createElement(name.toLowerCase())
     }
-    let un = Omi._capitalize(name)
-    Omi.tags[un] = Omi.tags.createTag(un)
+    let uname = Omi._capitalize(name)
+    Omi.tags[uname] = Omi.tags.createTag(uname)
 }
 
 Omi.getConstructor = function(name) {
     for (var key in Omi.componentConstructor) {
-        if (key === name || key.replace(/-/g, '') === name) {
+        if (key === name.toLowerCase() || key === name.replace(/-/g, '').toLowerCase()) {
             return Omi.componentConstructor[key]
         }
     }
@@ -88,6 +86,38 @@ Omi.extendPlugin = function(name, handler) {
 
 Omi.deletePlugin = function(name) {
     delete Omi.plugins[name]
+}
+
+function spread(vd) {
+    let str = ''
+    const type = vd.type
+    switch (type) {
+    case 'VirtualNode':
+        str += `<${vd.tagName} ${props2str(vd.properties)}>${vd.children.map(child => {
+            return spread(child)
+        }).join('')}</${vd.tagName}>`
+        break
+    case 'VirtualText':
+        return vd.text
+    }
+
+    return str
+}
+
+function props2str(props) {
+    let result = ''
+    for (let key in props) {
+        let val = props[key]
+        let type = typeof val
+        if (type !== 'function' && type !== 'object') {
+            result += key + '="' + val + '" '
+        }
+    }
+    return result
+}
+
+Omi.renderToString = function(component) {
+    return spread(component._virtualDom)
 }
 
 export default Omi

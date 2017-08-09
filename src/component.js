@@ -177,51 +177,52 @@ class Component {
             ps[this._omi_scopedAttr] = ''
         }
 
-
-        if (root.tagName && Omi.customTags.indexOf(root.tagName) !== -1) {
-            let cmi = this._getNextChild(root.tagName, parentInstance)
-            // not using pre instance the first time
-            if (cmi && !first) {
-                if (cmi.data.selfDataFirst) {
-                    cmi.data = Object.assign({}, root.properties, cmi.data)
-                } else {
-                    cmi.data = Object.assign({}, cmi.data, root.properties)
-                }
-                cmi.beforeUpdate()
-                cmi.beforeRender()
-                cmi._render()
-                parent[index] = cmi._virtualDom
-            } else {
-                let Ctor = Omi.getConstructor(root.tagName)
-                if (Ctor) {
-                    let instance = new Ctor(root.properties)
-                    if (instance.data.children !== undefined) {
-                        instance.data._children = instance.data.children
-                        console.warn('The children property will be covered.access it by _children')
-                    }
-                    instance.data.children = root.children
-                    instance.install()
-                    instance.beforeRender()
-                    instance._render(first)
-                    instance.parent = parentInstance
-                    instance._omi_needInstalled = true
-                    if (parentInstance) {
-                        instance.parent = parentInstance
-                        instance._omi_instanceIndex = parentInstance.children.length
-                        parentInstance.children.push(instance)
-                        parent[index] = instance._virtualDom
-                        if (root.properties['omi-name']) {
-                            parentInstance[root.properties['omi-name']] = instance
-                        }
+        if (root.tagName) {
+            let Ctor = Omi.getConstructor(root.tagName)
+            if (Ctor) {
+                let cmi = this._getNextChild(root.tagName, parentInstance)
+                // not using pre instance the first time
+                if (cmi && !first) {
+                    if (cmi.data.selfDataFirst) {
+                        cmi.data = Object.assign({}, root.properties, cmi.data)
                     } else {
-                        this._virtualDom = instance._virtualDom
-                        if (root.properties['omi-name']) {
-                            this[root.properties['omi-name']] = instance
-                        }
+                        cmi.data = Object.assign({}, cmi.data, root.properties)
                     }
+                    cmi.beforeUpdate()
+                    cmi.beforeRender()
+                    cmi._render()
+                    parent[index] = cmi._virtualDom
+                } else {
+                    if (Ctor) {
+                        let instance = new Ctor(root.properties)
+                        if (instance.data.children !== undefined) {
+                            instance.data._children = instance.data.children
+                            console.warn('The children property will be covered.access it by _children')
+                        }
+                        instance.data.children = root.children
+                        instance.install()
+                        instance.beforeRender()
+                        instance._render(first)
+                        instance.parent = parentInstance
+                        instance._omi_needInstalled = true
+                        if (parentInstance) {
+                            instance.parent = parentInstance
+                            instance._omi_instanceIndex = parentInstance.children.length
+                            parentInstance.children.push(instance)
+                            parent[index] = instance._virtualDom
+                            if (root.properties['omi-name']) {
+                                parentInstance[root.properties['omi-name']] = instance
+                            }
+                        } else {
+                            this._virtualDom = instance._virtualDom
+                            if (root.properties['omi-name']) {
+                                this[root.properties['omi-name']] = instance
+                            }
+                        }
 
-                    if (root.properties['omi-id']) {
-                        Omi.mapping[root.properties['omi-id']] = instance
+                        if (root.properties['omi-id']) {
+                            Omi.mapping[root.properties['omi-id']] = instance
+                        }
                     }
                 }
             }
@@ -243,7 +244,7 @@ class Component {
         if (parentInstance) {
             for (let i = 0, len = parentInstance.children.length; i < len; i++) {
                 let child = parentInstance.children[i]
-                if (cn === child.constructor.is && !child._using) {
+                if (cn.replace(/-/g, '').toLowerCase() === child.constructor.is.replace(/-/g, '').toLowerCase() && !child._using) {
                     child._using = true
                     return child
                 }
