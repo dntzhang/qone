@@ -65,6 +65,8 @@ class App extends Omi.Component {
 Omi.render(new App(), '#container')
 ```
 
+Please attention, custom component tags must be lowercase!
+
 ### with hyperscript
 
 ``` js
