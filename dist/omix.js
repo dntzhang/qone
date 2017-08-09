@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.1 By dntzhang 
+ *  omix v1.1.2 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -526,10 +526,9 @@ function applyProperties(node, props, previous) {
                 //}else {
                 //    node[propName] = propValue
                 //}
-                var type = typeof propValue
-                if(type === 'function' ){
+                if(typeof propValue === 'function' ){
                     node[propName.toLowerCase()] = propValue
-                }else if(type === 'string'){
+                }else {
                     node.setAttribute(propName, propValue)
                 }
                 node[propName] = propValue
@@ -898,7 +897,7 @@ module.exports = parseTag;
 
 function parseTag(tag, props) {
     if (!tag) {
-        return 'DIV';
+        return 'div';
     }
 
     var noId = !(props.hasOwnProperty('id'));
@@ -907,7 +906,7 @@ function parseTag(tag, props) {
     var tagName = null;
 
     if (notClassId.test(tagParts[1])) {
-        tagName = 'DIV';
+        tagName = 'div';
     }
 
     var classes, part, type, i;
@@ -939,7 +938,8 @@ function parseTag(tag, props) {
         props.className = classes.join(' ');
     }
 
-    return props.namespace ? tagName : tagName.toUpperCase();
+    //return props.namespace ? tagName : tagName.toUpperCase();
+    return tagName
 }
 
 

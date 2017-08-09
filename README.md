@@ -2,7 +2,7 @@
   <a href="##Omix"><img src="http://images2017.cnblogs.com/blog/105416/201708/105416-20170807145434955-1872305404.png" alt="Omi"></a>
 </p>
 <p align="center">
-Build UI with JSX or hyperscript - 使用 JSX �? hyperscript 创建用户界面
+Build UI with JSX or hyperscript - 使用 JSX 或 hyperscript 创建用户界面
 </p>
 <p align="center">
   <a href="https://travis-ci.org/AlloyTeam/omix"><img src="https://travis-ci.org/AlloyTeam/omix.svg"></a>
@@ -123,7 +123,7 @@ npm install omix
 or get it from CDN:
 
 ``` html
-<script src="https://unpkg.com/omix@1.1.1/dist/omix.min.js"></script>
+<script src="https://unpkg.com/omix@1.1.2/dist/omix.min.js"></script>
 ```
 
 
