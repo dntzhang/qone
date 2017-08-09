@@ -432,12 +432,6 @@ import './content.js'
 <child-element selfDataFirst><child-element>
 ```
 
-也可以使用缺省模式:
-
-```js
-<child-element sdf><child-element>
-```
-
 也可以在构造函数内修改如:
 
 ```js
