@@ -178,6 +178,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _h = __webpack_require__(17);
 
 var _h2 = _interopRequireDefault(_h);
@@ -199,7 +201,6 @@ var Omi = {
     },
     plugins: {},
     scopedStyle: true,
-    customTags: [],
     mapping: {},
     style: {},
     componentConstructor: {}
@@ -230,20 +231,19 @@ Omi._capitalize = function (str) {
 };
 
 Omi.tag = function (name, ctor) {
-    var upName = name.toUpperCase();
-    Omi.componentConstructor[upName] = ctor;
-    Omi.customTags.push(upName, upName.replace(/-/g, ''));
-    ctor.is = upName;
+    var cname = name.replace(/-/g, '').toLowerCase();
+    Omi.componentConstructor[cname] = ctor;
+    ctor.is = name;
     if (document.documentMode < 9) {
         document.createElement(name.toLowerCase());
     }
-    var un = Omi._capitalize(name);
-    Omi.tags[un] = Omi.tags.createTag(un);
+    var uname = Omi._capitalize(name);
+    Omi.tags[uname] = Omi.tags.createTag(uname);
 };
 
 Omi.getConstructor = function (name) {
     for (var key in Omi.componentConstructor) {
-        if (key === name || key.replace(/-/g, '') === name) {
+        if (key === name.toLowerCase() || key === name.replace(/-/g, '').toLowerCase()) {
             return Omi.componentConstructor[key];
         }
     }
@@ -275,6 +275,38 @@ Omi.extendPlugin = function (name, handler) {
 
 Omi.deletePlugin = function (name) {
     delete Omi.plugins[name];
+};
+
+function spread(vd) {
+    var str = '';
+    var type = vd.type;
+    switch (type) {
+        case 'VirtualNode':
+            str += '<' + vd.tagName + ' ' + props2str(vd.properties) + '>' + vd.children.map(function (child) {
+                return spread(child);
+            }).join('') + '</' + vd.tagName + '>';
+            break;
+        case 'VirtualText':
+            return vd.text;
+    }
+
+    return str;
+}
+
+function props2str(props) {
+    var result = '';
+    for (var key in props) {
+        var val = props[key];
+        var type = typeof val === 'undefined' ? 'undefined' : _typeof(val);
+        if (type !== 'function' && type !== 'object') {
+            result += key + '="' + val + '" ';
+        }
+    }
+    return result;
+}
+
+Omi.renderToString = function (component) {
+    return spread(component._virtualDom);
 };
 
 exports['default'] = Omi;
@@ -525,7 +557,9 @@ function applyProperties(node, props, previous) {
                 //}else {
                 //    node[propName] = propValue
                 //}
-                if (typeof propValue !== 'function') {
+                if (typeof propValue === 'function') {
+                    node[propName.toLowerCase()] = propValue;
+                } else {
                     node.setAttribute(propName, propValue);
                 }
                 node[propName] = propValue;
@@ -920,7 +954,7 @@ module.exports = parseTag;
 
 function parseTag(tag, props) {
     if (!tag) {
-        return 'DIV';
+        return 'div';
     }
 
     var noId = !props.hasOwnProperty('id');
@@ -929,7 +963,7 @@ function parseTag(tag, props) {
     var tagName = null;
 
     if (notClassId.test(tagParts[1])) {
-        tagName = 'DIV';
+        tagName = 'div';
     }
 
     var classes, part, type, i;
@@ -961,7 +995,8 @@ function parseTag(tag, props) {
         props.className = classes.join(' ');
     }
 
-    return props.namespace ? tagName : tagName.toUpperCase();
+    //return props.namespace ? tagName : tagName.toUpperCase();
+    return tagName;
 }
 
 /***/ }),
@@ -1481,65 +1516,59 @@ var Component = function () {
 
             var ps = root.properties;
             // for scoped css
-            if (_omi2['default'].scopedStyle && ps) {
-                if (this.constructor.is) {
+            if (ps) {
+                if (_omi2['default'].scopedStyle && this.constructor.is) {
                     ps[_omi2['default'].PREFIX + this.constructor.is.toLowerCase()] = '';
                 }
                 ps[this._omi_scopedAttr] = '';
             }
-            // 优化: 编译时候处理?或者约定使用小写？
-            for (var key in ps) {
-                if (/on(Abort|Blur|Cancel|CanPlay|CanPlayThrough|Change|Click|Close|ContextMenu|CueChange|DblClick|Drag|DragEnd|DragEnter|DragLeave|DragOver|DragStart|Drop|DurationChange|Emptied|Ended|Error|Focus|Input|Invalid|KeyDown|KeyPress|KeyUp|Load|LoadedData|LoadedMetadata|LoadStart|MouseDown|MouseEnter|MouseLeave|MouseMove|MouseOut|MouseOver|MouseUp|MouseWheel|Pause|Play|Playing|Progress|RateChange|Reset|Resize|Scroll|Seeked|Seeking|Select|Show|Stalled|Submit|Suspend|TimeUpdate|Toggle|VolumeChange|Waiting|AutoComplete|AutoCompleteError|BeforeCopy|BeforeCut|BeforePaste|Copy|Cut|Paste|Search|SelectStart|Wheel|WebkitFullScreenChange|WebkitFullScreenError|TouchStart|TouchMove|TouchEnd|TouchCancel|PointerDown|PointerUp|PointerCancel|PointerMove|PointerOver|PointerOut|PointerEnter|PointerLeave)/g.test(key)) {
-                    if (ps.hasOwnProperty(key)) {
-                        ps[key.toLowerCase()] = ps[key];
-                    }
-                }
-            }
 
-            if (root.tagName && _omi2['default'].customTags.indexOf(root.tagName) !== -1) {
-                var cmi = this._getNextChild(root.tagName, parentInstance);
-                // not using pre instance the first time
-                if (cmi && !first) {
-                    if (cmi.data.selfDataFirst) {
-                        cmi.data = Object.assign({}, root.properties, cmi.data);
-                    } else {
-                        cmi.data = Object.assign({}, cmi.data, root.properties);
-                    }
-                    cmi.beforeUpdate();
-                    cmi.beforeRender();
-                    cmi._render();
-                    parent[index] = cmi._virtualDom;
-                } else {
-                    var Ctor = _omi2['default'].getConstructor(root.tagName);
-                    if (Ctor) {
-                        var instance = new Ctor(root.properties);
-                        if (instance.data.children !== undefined) {
-                            instance.data._children = instance.data.children;
-                            console.warn('The children property will be covered.access it by _children');
-                        }
-                        instance.data.children = root.children;
-                        instance.install();
-                        instance.beforeRender();
-                        instance._render(first);
-                        instance.parent = parentInstance;
-                        instance._omi_needInstalled = true;
-                        if (parentInstance) {
-                            instance.parent = parentInstance;
-                            instance._omi_instanceIndex = parentInstance.children.length;
-                            parentInstance.children.push(instance);
-                            parent[index] = instance._virtualDom;
-                            if (root.properties['omi-name']) {
-                                parentInstance[root.properties['omi-name']] = instance;
-                            }
+            if (root.tagName) {
+                var Ctor = _omi2['default'].getConstructor(root.tagName);
+                if (Ctor) {
+                    var cmi = this._getNextChild(root.tagName, parentInstance);
+                    // not using pre instance the first time
+                    if (cmi && !first) {
+                        if (cmi.data.selfDataFirst) {
+                            cmi.data = Object.assign({}, root.properties, cmi.data);
                         } else {
-                            this._virtualDom = instance._virtualDom;
-                            if (root.properties['omi-name']) {
-                                this[root.properties['omi-name']] = instance;
-                            }
+                            cmi.data = Object.assign({}, cmi.data, root.properties);
                         }
+                        cmi.beforeUpdate();
+                        cmi.beforeRender();
+                        cmi._render();
+                        parent[index] = cmi._virtualDom;
+                    } else {
+                        if (Ctor) {
+                            var instance = new Ctor(root.properties);
+                            if (instance.data.children !== undefined) {
+                                instance.data._children = instance.data.children;
+                                console.warn('The children property will be covered.access it by _children');
+                            }
+                            instance.data.children = root.children;
+                            instance.install();
+                            instance.beforeRender();
+                            instance._render(first);
+                            instance.parent = parentInstance;
+                            instance._omi_needInstalled = true;
+                            if (parentInstance) {
+                                instance.parent = parentInstance;
+                                instance._omi_instanceIndex = parentInstance.children.length;
+                                parentInstance.children.push(instance);
+                                parent[index] = instance._virtualDom;
+                                if (root.properties['omi-name']) {
+                                    parentInstance[root.properties['omi-name']] = instance;
+                                }
+                            } else {
+                                this._virtualDom = instance._virtualDom;
+                                if (root.properties['omi-name']) {
+                                    this[root.properties['omi-name']] = instance;
+                                }
+                            }
 
-                        if (root.properties['omi-id']) {
-                            _omi2['default'].mapping[root.properties['omi-id']] = instance;
+                            if (root.properties['omi-id']) {
+                                _omi2['default'].mapping[root.properties['omi-id']] = instance;
+                            }
                         }
                     }
                 }
@@ -1565,7 +1594,7 @@ var Component = function () {
             if (parentInstance) {
                 for (var i = 0, len = parentInstance.children.length; i < len; i++) {
                     var child = parentInstance.children[i];
-                    if (cn === child.constructor.is && !child._using) {
+                    if (cn.replace(/-/g, '').toLowerCase() === child.constructor.is.replace(/-/g, '').toLowerCase() && !child._using) {
                         child._using = true;
                         return child;
                     }
