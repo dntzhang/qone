@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.2 By dntzhang 
+ *  omix v1.1.3 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -667,6 +667,15 @@ var evHook = __webpack_require__(23);
 module.exports = h;
 
 function h(tagName, properties, children) {
+    var _len = arguments.length
+    if(_len > 3) {
+        var index = 2,
+            arr = []
+        for (; index < _len; index++) {
+            arr.push(arguments[index])
+        }
+        return h.call(undefined, tagName, properties, arr)
+    }
     var childNodes = [];
     var tag, props, key, namespace;
 

@@ -98,12 +98,13 @@ class App extends Omi.Component {
 
 ```js
 const $ = Omi.tags
-$.tagName(selector)
-$.tagName(attrs)
-$.tagName(children)
-$.tagName(attrs, children)
-$.tagName(selector, children)
-$.tagName(selector, attrs, children)
+$.TagName(selector)
+$.TagName(attrs)
+$.TagName(children)
+$.TagName(attrs, children)
+$.TagName(selector, children)
+$.TagName(selector, attrs, children)
+$.TagName(selector, attrs, child, child, child ...)
 ```
 
 ## omi-cli
@@ -125,7 +126,7 @@ npm install omix
 or get it from CDN:
 
 ``` html
-<script src="https://unpkg.com/omix@1.1.2/dist/omix.min.js"></script>
+<script src="https://unpkg.com/omix@1.1.3/dist/omix.min.js"></script>
 ```
 
 

@@ -246,12 +246,14 @@ Because **hyperscript-helpers** are hyperscript-agnostic there is no "exact" API
 But, just to give you a direction of what should be possible:
 
 ```js
-tagName(selector)
-tagName(attrs)
-tagName(children)
-tagName(attrs, children)
-tagName(selector, children)
-tagName(selector, attrs, children)
+const $ = Omi.tags
+$.TagName(selector)
+$.TagName(attrs)
+$.TagName(children)
+$.TagName(attrs, children)
+$.TagName(selector, children)
+$.TagName(selector, attrs, children)
+$.TagName(selector, attrs, child, child, child ...)
 ```
 
 Where
@@ -265,18 +267,12 @@ Where
 For example, for multiple classes:
 
 ```js
-// ... with Matt-Esch/virtual-dom/.../virtual-hyperscript
-button({className: "btn btn-default"}); // ← separated by space!
-button(".btn.btn-default");             // ← separated by dot!
+$.Button({class: "btn btn-default"}); // ← separated by space!
+$.Button(".btn.btn-default");             // ← separated by dot!
 ```
 
 Other hyperscript libraries may have other syntax conventions.
 
-注意在 Omix 中 tagName 都挂载在  Omi.tags 下。所以一般有提前声明为$:
-
-```js
-const $ = Omi.tags
-```
 
 ## JSX vs hyperscript
 

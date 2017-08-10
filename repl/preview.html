@@ -5,21 +5,7 @@
     <title></title>
     <script src="../dist/omix.js"></script>
     <script>
-       window.createElement = function(tag, props) {
-           var children = [],
-                   i = 2,
-                   len = arguments.length
-           for (; i < len; i++) {
-               if (arguments[i] !== undefined) {
-                   children.push(arguments[i])
-               }
-           }
-           if (children.length > 0) {
-               return Omi.x(tag, props, children)
-           } else {
-               return Omi.x(tag, props)
-           }
-       }
+       window.createElement = Omi.x
     </script>
 </head>
 <body>
