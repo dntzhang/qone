@@ -133,10 +133,7 @@ class Component {
         })
     }
 
-    _render(first, ssr) {
-        if(ssr) {
-            this.data = JSON.parse(document.getElementById('_omix-ssr-data').value)
-        }
+    _render(first) {
         this._generateCss()
         this._virtualDom = this.render()
         this._normalize(this._virtualDom, first)

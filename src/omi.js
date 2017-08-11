@@ -64,6 +64,9 @@ Omi.render = function(component, renderTo, option) {
         component._omi_increment = option
     } else if (option) {
         component._omi_increment = option.increment
+        if (option.ssr) {
+            component.data = Object.assign({}, JSON.parse(document.getElementById('__omix-ssr-data').value), component.data)
+        }
     }
     component.install()
     component.beforeRender()
@@ -123,7 +126,7 @@ function spreadStyle() {
 }
 
 function stringifyData(component){
-    return '<input type="hidden" id="_omix-ssr-data" value=\'' + JSON.stringify(component.data) + '\' />'
+    return '<input type="hidden" id="__omix-ssr-data" value=\'' + JSON.stringify(component.data) + '\' />'
 }
 
 Omi.renderToString = function(component) {
