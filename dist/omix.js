@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.5 By dntzhang 
+ *  omix v1.1.6 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -213,9 +213,7 @@ Omi.tag = function (name, ctor) {
     var cname = name.replace(/-/g, '').toLowerCase();
     Omi.componentConstructor[cname] = ctor;
     ctor.is = name;
-    if (document.documentMode < 9) {
-        document.createElement(name.toLowerCase());
-    }
+
     var uname = Omi._capitalize(name);
     Omi.tags[uname] = Omi.tags.createTag(uname);
 };
@@ -284,11 +282,11 @@ function props2str(props) {
     return result;
 }
 
-function spreadStyle(component) {
-    var css = component.css;
-    component.children.forEach(function (child) {
-        css += '\n' + spreadStyle(child) + '\n';
-    });
+function spreadStyle() {
+    var css = '';
+    for (var key in Omi.style) {
+        css += Omi.style[key];
+    }
     return css;
 }
 
@@ -297,8 +295,11 @@ Omi.renderToString = function (component) {
     component.install();
     component.beforeRender();
     component._render(true);
-    Omi.ssr = true;
-    return '<style>\n' + spreadStyle(component) + '\n</style>\n' + spread(component._virtualDom);
+    Omi.ssr = false;
+    var result = '<style>\n' + spreadStyle() + '\n</style>\n' + spread(component._virtualDom);
+    Omi.style = {};
+    Omi._instanceId = 0;
+    return result;
 };
 
 exports['default'] = Omi;
@@ -1463,15 +1464,15 @@ var Component = function () {
         value: function _generateCss() {
             var name = this.constructor.is;
             this.css = (this.style() || '').replace(/<\/?style>/g, '');
-            var shareAttr = name ? _omi2['default'].PREFIX + name.toLowerCase() : this._omi_scopedAttr;
+            var shareAttr = name ? this.data.scopedSelfCss ? this._omi_scopedAttr : _omi2['default'].PREFIX + name.toLowerCase() : this._omi_scopedAttr;
 
             if (this.css) {
                 if (this.data.scopedSelfCss || !_omi2['default'].style[shareAttr]) {
                     if (_omi2['default'].scopedStyle) {
                         this.css = _style2['default'].scoper(this.css, this.data.scopedSelfCss ? '[' + this._omi_scopedAttr + ']' : '[' + shareAttr + ']');
                     }
+                    _omi2['default'].style[shareAttr] = this.css;
                     if (!_omi2['default'].ssr) {
-                        _omi2['default'].style[shareAttr] = this.css;
                         if (this.css !== this._preCss) {
                             _style2['default'].addStyle(this.css, this.id);
                             this._preCss = this.css;

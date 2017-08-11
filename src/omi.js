@@ -45,9 +45,7 @@ Omi.tag = function(name, ctor) {
     let cname = name.replace(/-/g, '').toLowerCase()
     Omi.componentConstructor[cname] = ctor
     ctor.is = name
-    if (document.documentMode < 9) {
-        document.createElement(name.toLowerCase())
-    }
+
     let uname = Omi._capitalize(name)
     Omi.tags[uname] = Omi.tags.createTag(uname)
 }
@@ -116,11 +114,11 @@ function props2str(props) {
     return result
 }
 
-function spreadStyle(component) {
-    let css = component.css
-    component.children.forEach(child => {
-        css += `\n${spreadStyle(child)}\n`
-    })
+function spreadStyle() {
+    let css = ''
+    for (var key in Omi.style) {
+        css += Omi.style[key]
+    }
     return css
 }
 
@@ -129,8 +127,11 @@ Omi.renderToString = function(component) {
     component.install()
     component.beforeRender()
     component._render(true)
-    Omi.ssr = true
-    return `<style>\n${spreadStyle(component)}\n</style>\n${spread(component._virtualDom)}`
+    Omi.ssr = false
+    let result = `<style>\n${spreadStyle()}\n</style>\n${spread(component._virtualDom)}`
+    Omi.style = {}
+    Omi._instanceId = 0
+    return result
 }
 
 export default Omi

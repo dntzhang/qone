@@ -151,15 +151,15 @@ class Component {
     _generateCss() {
         const name = this.constructor.is
         this.css = (this.style() || '').replace(/<\/?style>/g, '')
-        let shareAttr = name ? (Omi.PREFIX + name.toLowerCase()) : (this._omi_scopedAttr)
+        let shareAttr = name ? (this.data.scopedSelfCss ? this._omi_scopedAttr : Omi.PREFIX + name.toLowerCase()) : (this._omi_scopedAttr)
 
         if (this.css) {
             if (this.data.scopedSelfCss || !Omi.style[shareAttr]) {
                 if (Omi.scopedStyle) {
                     this.css = style.scoper(this.css, this.data.scopedSelfCss ? '[' + this._omi_scopedAttr + ']' : '[' + shareAttr + ']')
                 }
+                Omi.style[shareAttr] = this.css
                 if (!Omi.ssr) {
-                    Omi.style[shareAttr] = this.css
                     if (this.css !== this._preCss) {
                         style.addStyle(this.css, this.id)
                         this._preCss = this.css
