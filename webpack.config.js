@@ -20,31 +20,15 @@ var config  = {
                 loader: 'babel-loader',
                 test: /\.js$/,
                 query: {
-                    presets: 'env',
+                    presets: ['env', 'omi'],
                     plugins : [
                        "babel-plugin-transform-es3-property-literals" ,
                         "babel-plugin-transform-es3-member-expression-literals"
 
                     ]
                 }
-            },{
-                loader: 'virtual-dom-loader?jsx=Omi.x'
             }
-        ],
-        //rules: [
-        //    {
-        //        test: /\.js$/,
-        //        exclude: /(node_modules|bower_components)/,
-        //        use: [{
-        //            loader: 'babel-loader',
-        //            options: {
-        //                presets: ['env']
-        //            }
-        //        },{
-        //            loader: 'virtual-dom-loader?jsx=Omix.h'
-        //        }]
-        //    }
-        //]
+        ]
     },
     plugins: [
         // Avoid publishing files when compilation fails

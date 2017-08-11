@@ -148,32 +148,6 @@ function isVirtualText(x) {
 "use strict";
 
 
-var _omi = __webpack_require__(7);
-
-var _omi2 = _interopRequireDefault(_omi);
-
-var _component = __webpack_require__(29);
-
-var _component2 = _interopRequireDefault(_component);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-_omi2['default'].Component = _component2['default'];
-
-if (window && window.Omi) {
-    module.exports = window.Omi;
-} else {
-    window && (window.Omi = _omi2['default']);
-    module.exports = _omi2['default'];
-}
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -325,7 +299,7 @@ Omi.renderToString = function (component) {
 exports['default'] = Omi;
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -338,6 +312,32 @@ module.exports = nativeIsArray || isArray;
 
 function isArray(obj) {
     return toString.call(obj) === "[object Array]";
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _omi = __webpack_require__(6);
+
+var _omi2 = _interopRequireDefault(_omi);
+
+var _component = __webpack_require__(29);
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+_omi2['default'].Component = _component2['default'];
+
+if (window && window.Omi) {
+    module.exports = window.Omi;
+} else {
+    window && (window.Omi = _omi2['default']);
+    module.exports = _omi2['default'];
 }
 
 /***/ }),
@@ -659,13 +659,11 @@ function getPrototype(value) {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _index = __webpack_require__(6);
+var _index = __webpack_require__(8);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _tree = __webpack_require__(41);
-
-var _tree2 = _interopRequireDefault(_tree);
+__webpack_require__(41);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -674,8 +672,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-_index2['default'].tag('tree', _tree2['default']);
 
 var App = function (_Omi$Component) {
     _inherits(App, _Omi$Component);
@@ -687,40 +683,32 @@ var App = function (_Omi$Component) {
     }
 
     _createClass(App, [{
+        key: 'install',
+        value: function install() {
+            this.name = 'Omi';
+        }
+    }, {
+        key: 'handleClick',
+        value: function handleClick(e) {
+            this.name = 'Omix';
+            this.update();
+        }
+    }, {
+        key: 'style',
+        value: function style() {
+            return 'h3{\n                    color:red;\n                    cursor: pointer;\n                }';
+        }
+    }, {
         key: 'render',
         value: function render() {
-            return _index2['default'].x(
-                'div',
-                null,
-                _index2['default'].x(
-                    'div',
-                    null,
-                    ' ',
-                    this.data.demoName
-                ),
-                _index2['default'].x('tree', { root: this.data.rootNode })
-            );
+            return _index2['default'].x('div', null, [_index2['default'].x('hello', { name: this.name }), _index2['default'].x('h3', { onclick: this.handleClick.bind(this) }, ["Scoped css and event test! you can't click me from renderToString!"])]);
         }
     }]);
 
     return App;
 }(_index2['default'].Component);
 
-_index2['default'].render(new App({
-    demoName: 'Omi Tree Demo (support drag and drop to move the node)',
-    rootNode: {
-        name: 'Root',
-        nodes: [{
-            name: 'A',
-            id: 1,
-            nodes: [{ id: 4, name: 'A1', nodes: [] }, { id: 7, name: 'A2', nodes: [] }]
-        }, {
-            name: 'B',
-            id: 2,
-            nodes: []
-        }]
-    }
-}), '#container');
+document.body.innerHTML = _index2['default'].renderToString(new App());
 
 /***/ }),
 /* 17 */
@@ -740,7 +728,7 @@ module.exports = h;
 "use strict";
 
 
-var isArray = __webpack_require__(8);
+var isArray = __webpack_require__(7);
 
 var VNode = __webpack_require__(19);
 var VText = __webpack_require__(20);
@@ -1347,7 +1335,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _omi = __webpack_require__(7);
+var _omi = __webpack_require__(6);
 
 var _omi2 = _interopRequireDefault(_omi);
 
@@ -1753,7 +1741,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _omi = __webpack_require__(7);
+var _omi = __webpack_require__(6);
 
 var _omi2 = _interopRequireDefault(_omi);
 
@@ -1833,7 +1821,7 @@ module.exports = diff;
 "use strict";
 
 
-var isArray = __webpack_require__(8);
+var isArray = __webpack_require__(7);
 
 var VPatch = __webpack_require__(10);
 var isVNode = __webpack_require__(2);
@@ -2322,7 +2310,7 @@ module.exports = patch;
 
 
 var document = __webpack_require__(13);
-var isArray = __webpack_require__(8);
+var isArray = __webpack_require__(7);
 
 var render = __webpack_require__(14);
 var domIndex = __webpack_require__(37);
@@ -2700,135 +2688,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _index = __webpack_require__(6);
-
-var _index2 = _interopRequireDefault(_index);
-
-var _treeNode = __webpack_require__(42);
-
-var _treeNode2 = _interopRequireDefault(_treeNode);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-_index2['default'].tag('tree-node', _treeNode2['default']);
-
-var Tree = function (_Omi$Component) {
-    _inherits(Tree, _Omi$Component);
-
-    function Tree() {
-        _classCallCheck(this, Tree);
-
-        return _possibleConstructorReturn(this, (Tree.__proto__ || Object.getPrototypeOf(Tree)).apply(this, arguments));
-    }
-
-    _createClass(Tree, [{
-        key: 'beforeRender',
-        value: function beforeRender() {
-            this.data.nodes = this.data.root.nodes;
-        }
-    }, {
-        key: 'moveNode',
-        value: function moveNode(id, parentId) {
-            if (id === parentId) {
-                return;
-            }
-
-            if (this.check(parentId, id)) {
-                var parent = this.getChildById(parentId, this.data.nodes);
-                var child = this.removeChildById(id, this.data.nodes);
-                parent.nodes.push(child);
-
-                this.update();
-            }
-        }
-    }, {
-        key: 'check',
-        value: function check(parentId, childId) {
-            var current = this.getChildById(childId, this.data.nodes),
-                nodes = current.nodes;
-            for (var i = 0, len = nodes.length; i < len; i++) {
-                var child = nodes[i];
-                if (child.id === parentId) {
-                    return false;
-                }
-
-                var errorIds = this.check(parentId, child.id);
-                if (!errorIds) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    }, {
-        key: 'removeChildById',
-        value: function removeChildById(id, nodes) {
-            for (var i = 0, len = nodes.length; i < len; i++) {
-                var child = nodes[i];
-                if (child.id === id) {
-                    nodes.splice(i, 1);
-                    return child;
-                }
-
-                var target = this.removeChildById(id, child.nodes);
-                if (target) {
-                    return target;
-                }
-            }
-        }
-    }, {
-        key: 'getChildById',
-        value: function getChildById(id, nodes) {
-            for (var i = 0, len = nodes.length; i < len; i++) {
-                var child = nodes[i];
-                if (child.id === id) {
-                    return child;
-                }
-
-                var target = this.getChildById(id, child.nodes);
-                if (target) {
-                    return target;
-                }
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return _index2['default'].x(
-                'ul',
-                null,
-                this.data.root.nodes.map(function (child) {
-                    return _index2['default'].x('tree-node', { root: child });
-                })
-            );
-        }
-    }]);
-
-    return Tree;
-}(_index2['default'].Component);
-
-exports['default'] = Tree;
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _index = __webpack_require__(6);
+var _index = __webpack_require__(8);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -2840,83 +2700,33 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TreeNode = function (_Omi$Component) {
-    _inherits(TreeNode, _Omi$Component);
+var Hello = function (_Omi$Component) {
+    _inherits(Hello, _Omi$Component);
 
-    function TreeNode() {
-        _classCallCheck(this, TreeNode);
+    function Hello() {
+        _classCallCheck(this, Hello);
 
-        return _possibleConstructorReturn(this, (TreeNode.__proto__ || Object.getPrototypeOf(TreeNode)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Hello.__proto__ || Object.getPrototypeOf(Hello)).apply(this, arguments));
     }
 
-    _createClass(TreeNode, [{
-        key: 'dropHandler',
-        value: function dropHandler(evt) {
-            this.getRootInstance(this.parent).moveNode(parseInt(evt.dataTransfer.getData('node-id')), parseInt(evt.target.dataset['nodeId']));
-            this.node && this.node.classList.remove('drag-over');
-            evt.stopPropagation();
-            evt.preventDefault();
-        }
-    }, {
-        key: 'getRootInstance',
-        value: function getRootInstance(parent) {
-            if (parent.moveNode) {
-                return parent;
-            } else {
-                return this.getRootInstance(parent.parent);
-            }
-        }
-    }, {
-        key: 'dragOverHandler',
-        value: function dragOverHandler(evt) {
-            this.node.classList.add('drag-over');
-            evt.stopPropagation();
-            evt.preventDefault();
-        }
-    }, {
-        key: 'dragLeaveHandler',
-        value: function dragLeaveHandler() {
-            this.node.classList.remove('drag-over');
-        }
-    }, {
-        key: 'dragStartHandler',
-        value: function dragStartHandler(evt) {
-            evt.dataTransfer.setData('node-id', this.data.root.id);
-            evt.stopPropagation();
-        }
-    }, {
+    _createClass(Hello, [{
         key: 'style',
         value: function style() {
-            return '\n            .drag-over{\n                border:1px dashed black;\n            }\n        ';
+            return 'h1{\n            color: green;\n        }';
         }
     }, {
         key: 'render',
         value: function render() {
-            var list = this.data.root.nodes.map(function (child) {
-                return _index2['default'].x('tree-node', { root: child });
-            });
-
-            return _index2['default'].x(
-                'li',
-                { 'data-node-id': this.data.root.id, draggable: 'true', ondragstart: this.dragStartHandler.bind(this), ondragleave: this.dragLeaveHandler.bind(this), ondrop: this.dropHandler.bind(this), ondragover: this.dragOverHandler.bind(this) },
-                _index2['default'].x(
-                    'div',
-                    { 'data-node-id': this.data.root.id },
-                    this.data.root.name
-                ),
-                list.length > 0 && _index2['default'].x(
-                    'ul',
-                    { 'data-node-id': this.data.root.id },
-                    list
-                )
-            );
+            return _index2['default'].x('div', null, [" Hello ", _index2['default'].x('h1', { style: "display:inline-block;" }, [this.data.name]), "!"]);
         }
     }]);
 
-    return TreeNode;
+    return Hello;
 }(_index2['default'].Component);
 
-exports['default'] = TreeNode;
+_index2['default'].tag('hello', Hello);
+
+exports['default'] = Hello;
 
 /***/ })
 /******/ ]);

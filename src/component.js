@@ -8,7 +8,7 @@ import createElement from 'virtual-dom-omi/create-element'
 class Component {
     constructor(data) {
         this.data = Object.assign({
-            scopedSelfCSS: false,
+            scopedSelfCss: false,
             selfDataFirst: false
         }, data)
         this.id = Omi.getInstanceId()
@@ -134,7 +134,7 @@ class Component {
     }
 
     _render(first) {
-        this._generateCSS()
+        this._generateCss()
         this._virtualDom = this.render()
         this._normalize(this._virtualDom, first)
         if (this.renderTo) {
@@ -148,20 +148,22 @@ class Component {
         }
     }
 
-    _generateCSS() {
+    _generateCss() {
         const name = this.constructor.is
-        this.CSS = (this.style() || '').replace(/<\/?style>/g, '')
+        this.css = (this.style() || '').replace(/<\/?style>/g, '')
         let shareAttr = name ? (Omi.PREFIX + name.toLowerCase()) : (this._omi_scopedAttr)
 
-        if (this.CSS) {
-            if (this.data.scopedSelfCSS || !Omi.style[shareAttr]) {
+        if (this.css) {
+            if (this.data.scopedSelfCss || !Omi.style[shareAttr]) {
                 if (Omi.scopedStyle) {
-                    this.CSS = style.scoper(this.CSS, this.data.scopedSelfCSS ? '[' + this._omi_scopedAttr + ']' : '[' + shareAttr + ']')
+                    this.css = style.scoper(this.css, this.data.scopedSelfCss ? '[' + this._omi_scopedAttr + ']' : '[' + shareAttr + ']')
                 }
-                Omi.style[shareAttr] = this.CSS
-                if (this.CSS !== this._preCSS) {
-                    style.addStyle(this.CSS, this.id)
-                    this._preCSS = this.CSS
+                if (!Omi.ssr) {
+                    Omi.style[shareAttr] = this.css
+                    if (this.css !== this._preCss) {
+                        style.addStyle(this.css, this.id)
+                        this._preCss = this.css
+                    }
                 }
             }
         }

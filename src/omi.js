@@ -116,8 +116,21 @@ function props2str(props) {
     return result
 }
 
+function spreadStyle(component) {
+    let css = component.css
+    component.children.forEach(child => {
+        css += `\n${spreadStyle(child)}\n`
+    })
+    return css
+}
+
 Omi.renderToString = function(component) {
-    return spread(component._virtualDom)
+    Omi.ssr = true
+    component.install()
+    component.beforeRender()
+    component._render(true)
+    Omi.ssr = true
+    return `<style>\n${spreadStyle(component)}\n</style>\n${spread(component._virtualDom)}`
 }
 
 export default Omi

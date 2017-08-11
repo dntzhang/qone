@@ -152,6 +152,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _h = __webpack_require__(17);
 
 var _h2 = _interopRequireDefault(_h);
@@ -173,7 +175,6 @@ var Omi = {
     },
     plugins: {},
     scopedStyle: true,
-    customTags: [],
     mapping: {},
     style: {},
     componentConstructor: {}
@@ -204,20 +205,19 @@ Omi._capitalize = function (str) {
 };
 
 Omi.tag = function (name, ctor) {
-    var upName = name.toUpperCase();
-    Omi.componentConstructor[upName] = ctor;
-    Omi.customTags.push(upName, upName.replace(/-/g, ''));
-    ctor.is = upName;
+    var cname = name.replace(/-/g, '').toLowerCase();
+    Omi.componentConstructor[cname] = ctor;
+    ctor.is = name;
     if (document.documentMode < 9) {
         document.createElement(name.toLowerCase());
     }
-    var un = Omi._capitalize(name);
-    Omi.tags[un] = Omi.tags.createTag(un);
+    var uname = Omi._capitalize(name);
+    Omi.tags[uname] = Omi.tags.createTag(uname);
 };
 
 Omi.getConstructor = function (name) {
     for (var key in Omi.componentConstructor) {
-        if (key === name || key.replace(/-/g, '') === name) {
+        if (key === name.toLowerCase() || key === name.replace(/-/g, '').toLowerCase()) {
             return Omi.componentConstructor[key];
         }
     }
@@ -249,6 +249,51 @@ Omi.extendPlugin = function (name, handler) {
 
 Omi.deletePlugin = function (name) {
     delete Omi.plugins[name];
+};
+
+function spread(vd) {
+    var str = '';
+    var type = vd.type;
+    switch (type) {
+        case 'VirtualNode':
+            str += '<' + vd.tagName + ' ' + props2str(vd.properties) + '>' + vd.children.map(function (child) {
+                return spread(child);
+            }).join('') + '</' + vd.tagName + '>';
+            break;
+        case 'VirtualText':
+            return vd.text;
+    }
+
+    return str;
+}
+
+function props2str(props) {
+    var result = '';
+    for (var key in props) {
+        var val = props[key];
+        var type = typeof val === 'undefined' ? 'undefined' : _typeof(val);
+        if (type !== 'function' && type !== 'object') {
+            result += key + '="' + val + '" ';
+        }
+    }
+    return result;
+}
+
+function spreadStyle(component) {
+    var css = component.css;
+    component.children.forEach(function (child) {
+        css += '\n' + spreadStyle(child) + '\n';
+    });
+    return css;
+}
+
+Omi.renderToString = function (component) {
+    Omi.ssr = true;
+    component.install();
+    component.beforeRender();
+    component._render(true);
+    Omi.ssr = true;
+    return '<style>\n' + spreadStyle(component) + '\n</style>\n' + spread(component._virtualDom);
 };
 
 exports['default'] = Omi;
@@ -525,7 +570,9 @@ function applyProperties(node, props, previous) {
                 //}else {
                 //    node[propName] = propValue
                 //}
-                if (typeof propValue !== 'function') {
+                if (typeof propValue === 'function') {
+                    node[propName.toLowerCase()] = propValue;
+                } else {
                     node.setAttribute(propName, propValue);
                 }
                 node[propName] = propValue;
@@ -654,7 +701,16 @@ var App = function (_Omi$Component) {
     }, {
         key: 'render',
         value: function render() {
-            return _index2['default'].x('div', null, [_index2['default'].x('hello', { name: this.name }), _index2['default'].x('h3', { onclick: this.handleClick.bind(this) }, ["Scoped css and event test! click me!"])]);
+            return _index2['default'].x(
+                'div',
+                null,
+                _index2['default'].x('hello', { name: this.name }),
+                _index2['default'].x(
+                    'h3',
+                    { onclick: this.handleClick.bind(this) },
+                    'Scoped css and event test! click me!'
+                )
+            );
         }
     }]);
 
@@ -698,6 +754,15 @@ var evHook = __webpack_require__(24);
 module.exports = h;
 
 function h(tagName, properties, children) {
+    var _len = arguments.length;
+    if (_len > 3) {
+        var index = 2,
+            arr = [];
+        for (; index < _len; index++) {
+            arr.push(arguments[index]);
+        }
+        return h.call(undefined, tagName, properties, arr);
+    }
     var childNodes = [];
     var tag, props, key, namespace;
 
@@ -918,7 +983,7 @@ module.exports = parseTag;
 
 function parseTag(tag, props) {
     if (!tag) {
-        return 'DIV';
+        return 'div';
     }
 
     var noId = !props.hasOwnProperty('id');
@@ -927,7 +992,7 @@ function parseTag(tag, props) {
     var tagName = null;
 
     if (notClassId.test(tagParts[1])) {
-        tagName = 'DIV';
+        tagName = 'div';
     }
 
     var classes, part, type, i;
@@ -959,7 +1024,8 @@ function parseTag(tag, props) {
         props.className = classes.join(' ');
     }
 
-    return props.namespace ? tagName : tagName.toUpperCase();
+    //return props.namespace ? tagName : tagName.toUpperCase();
+    return tagName;
 }
 
 /***/ }),
@@ -1307,7 +1373,7 @@ var Component = function () {
         _classCallCheck(this, Component);
 
         this.data = Object.assign({
-            scopedSelfCSS: false,
+            scopedSelfCss: false,
             selfDataFirst: false
         }, data);
         this.id = _omi2['default'].getInstanceId();
@@ -1336,6 +1402,10 @@ var Component = function () {
             this._preVirtualDom = this._virtualDom;
             this._virtualDom = this.render();
             this._normalize(this._virtualDom);
+
+            this._fixVirtualDomCount(this._virtualDomCount(this._preVirtualDom, [[this._preVirtualDom]]));
+            this._fixVirtualDomCount(this._virtualDomCount(this._virtualDom, [[this._virtualDom]]));
+
             (0, _patch2['default'])(this.node, (0, _diff2['default'])(this._preVirtualDom, this._virtualDom));
 
             this._mixAttr(this);
@@ -1347,6 +1417,44 @@ var Component = function () {
             if (!this.renderTo) {
                 // 子节点自己更新之后同步至父节点的虚拟
                 this.parent._virtualDom.children[this._omi_instanceIndex] = this._virtualDom;
+            }
+
+            this._fixForm();
+        }
+    }, {
+        key: '_virtualDomCount',
+        value: function _virtualDomCount(root, arr) {
+            var _this = this;
+
+            root.count = root.children.length;
+            var list = [];
+            root.children.forEach(function (child) {
+                list.push(child);
+                if (child.children) {
+                    child.count = child.children.length;
+                    child._pp = root;
+                }
+            });
+
+            arr.push(list);
+
+            root.children.forEach(function (child) {
+                if (child.children) {
+                    _this._virtualDomCount(child, arr);
+                }
+            });
+            return arr;
+        }
+    }, {
+        key: '_fixVirtualDomCount',
+        value: function _fixVirtualDomCount(list) {
+            for (var i = list.length - 1; i >= 0; i--) {
+                var children = list[i];
+                children.forEach(function (child) {
+                    if (child._pp) {
+                        child._pp.count += child.count || 0;
+                    }
+                });
             }
         }
 
@@ -1360,10 +1468,10 @@ var Component = function () {
     }, {
         key: '_childrenAfterUpdate',
         value: function _childrenAfterUpdate(root) {
-            var _this = this;
+            var _this2 = this;
 
             root.children.forEach(function (child) {
-                _this._childrenAfterUpdate(child);
+                _this2._childrenAfterUpdate(child);
                 child.afterUpdate();
             });
         }
@@ -1396,10 +1504,10 @@ var Component = function () {
         }
     }, {
         key: '_render',
-        value: function _render() {
-            this._generateCSS();
+        value: function _render(first) {
+            this._generateCss();
             this._virtualDom = this.render();
-            this._normalize(this._virtualDom);
+            this._normalize(this._virtualDom, first);
             if (this.renderTo) {
                 this.node = (0, _createElement2['default'])(this._virtualDom);
                 while (this.renderTo.firstChild) {
@@ -1407,110 +1515,107 @@ var Component = function () {
                 }
                 this.renderTo.appendChild(this.node);
                 this._mixAttr(this);
+                this._fixForm();
             }
         }
     }, {
-        key: '_generateCSS',
-        value: function _generateCSS() {
+        key: '_generateCss',
+        value: function _generateCss() {
             var name = this.constructor.is;
-            this.CSS = (this.style() || '').replace(/<\/?style>/g, '');
+            this.css = (this.style() || '').replace(/<\/?style>/g, '');
             var shareAttr = name ? _omi2['default'].PREFIX + name.toLowerCase() : this._omi_scopedAttr;
 
-            if (this.CSS) {
-                if (this.data.scopedSelfCSS || !_omi2['default'].style[shareAttr]) {
+            if (this.css) {
+                if (this.data.scopedSelfCss || !_omi2['default'].style[shareAttr]) {
                     if (_omi2['default'].scopedStyle) {
-                        this.CSS = _style2['default'].scoper(this.CSS, this.data.scopedSelfCSS ? '[' + this._omi_scopedAttr + ']' : '[' + shareAttr + ']');
+                        this.css = _style2['default'].scoper(this.css, this.data.scopedSelfCss ? '[' + this._omi_scopedAttr + ']' : '[' + shareAttr + ']');
                     }
-                    _omi2['default'].style[shareAttr] = this.CSS;
-                    if (this.CSS !== this._preCSS) {
-                        _style2['default'].addStyle(this.CSS, this.id);
-                        this._preCSS = this.CSS;
+                    if (!_omi2['default'].ssr) {
+                        _omi2['default'].style[shareAttr] = this.css;
+                        if (this.css !== this._preCss) {
+                            _style2['default'].addStyle(this.css, this.id);
+                            this._preCss = this.css;
+                        }
                     }
                 }
             }
         }
     }, {
         key: '_normalize',
-        value: function _normalize(root, parent, index, parentInstance) {
-            var _this2 = this;
+        value: function _normalize(root, first, parent, index, parentInstance) {
+            var _this3 = this;
 
             var ps = root.properties;
             // for scoped css
-            if (_omi2['default'].scopedStyle && ps) {
-                if (this.constructor.is) {
+            if (ps) {
+                if (_omi2['default'].scopedStyle && this.constructor.is) {
                     ps[_omi2['default'].PREFIX + this.constructor.is.toLowerCase()] = '';
                 }
                 ps[this._omi_scopedAttr] = '';
             }
-            // 优化: 编译时候处理?或者约定使用小写？
-            for (var key in ps) {
-                if (/on(Abort|Blur|Cancel|CanPlay|CanPlayThrough|Change|Click|Close|ContextMenu|CueChange|DblClick|Drag|DragEnd|DragEnter|DragLeave|DragOver|DragStart|Drop|DurationChange|Emptied|Ended|Error|Focus|Input|Invalid|KeyDown|KeyPress|KeyUp|Load|LoadedData|LoadedMetadata|LoadStart|MouseDown|MouseEnter|MouseLeave|MouseMove|MouseOut|MouseOver|MouseUp|MouseWheel|Pause|Play|Playing|Progress|RateChange|Reset|Resize|Scroll|Seeked|Seeking|Select|Show|Stalled|Submit|Suspend|TimeUpdate|Toggle|VolumeChange|Waiting|AutoComplete|AutoCompleteError|BeforeCopy|BeforeCut|BeforePaste|Copy|Cut|Paste|Search|SelectStart|Wheel|WebkitFullScreenChange|WebkitFullScreenError|TouchStart|TouchMove|TouchEnd|TouchCancel|PointerDown|PointerUp|PointerCancel|PointerMove|PointerOver|PointerOut|PointerEnter|PointerLeave)/g.test(key)) {
-                    if (ps.hasOwnProperty(key)) {
-                        ps[key.toLowerCase()] = ps[key];
-                    }
-                }
-            }
 
-            if (root.tagName && _omi2['default'].customTags.indexOf(root.tagName) !== -1) {
-                var cmi = this._getNextChild(root.tagName, parentInstance);
-
-                if (cmi) {
-                    if (cmi.data.selfDataFirst) {
-                        cmi.data = Object.assign({}, root.properties, cmi.data);
-                    } else {
-                        cmi.data = Object.assign({}, cmi.data, root.properties);
-                    }
-                    cmi.beforeUpdate();
-                    cmi.beforeRender();
-                    cmi._render();
-                    parent[index] = cmi._virtualDom;
-                } else {
-                    var Ctor = _omi2['default'].getConstructor(root.tagName);
-                    if (Ctor) {
-                        var instance = new Ctor(root.properties);
-                        if (instance.data.children !== undefined) {
-                            instance.data._children = instance.data.children;
-                            console.warn('The children property will be covered.access it by _children');
-                        }
-                        instance.data.children = root.children;
-                        instance.install();
-                        instance.beforeRender();
-                        instance._render();
-                        instance.parent = parentInstance;
-                        instance._omi_needInstalled = true;
-                        if (parentInstance) {
-                            instance.parent = parentInstance;
-                            instance._omi_instanceIndex = parentInstance.children.length;
-                            parentInstance.children.push(instance);
-                            parent[index] = instance._virtualDom;
-                            if (root.properties['omi-name']) {
-                                parentInstance[root.properties['omi-name']] = instance;
-                            }
+            if (root.tagName) {
+                var Ctor = _omi2['default'].getConstructor(root.tagName);
+                if (Ctor) {
+                    var cmi = this._getNextChild(root.tagName, parentInstance);
+                    // not using pre instance the first time
+                    if (cmi && !first) {
+                        if (cmi.data.selfDataFirst) {
+                            cmi.data = Object.assign({}, root.properties, cmi.data);
                         } else {
-                            this._virtualDom = instance._virtualDom;
-                            if (root.properties['omi-name']) {
-                                this[root.properties['omi-name']] = instance;
-                            }
+                            cmi.data = Object.assign({}, cmi.data, root.properties);
                         }
+                        cmi.beforeUpdate();
+                        cmi.beforeRender();
+                        cmi._render();
+                        parent[index] = cmi._virtualDom;
+                    } else {
+                        if (Ctor) {
+                            var instance = new Ctor(root.properties);
+                            if (instance.data.children !== undefined) {
+                                instance.data._children = instance.data.children;
+                                console.warn('The children property will be covered.access it by _children');
+                            }
+                            instance.data.children = root.children;
+                            instance.install();
+                            instance.beforeRender();
+                            instance._render(first);
+                            instance.parent = parentInstance;
+                            instance._omi_needInstalled = true;
+                            if (parentInstance) {
+                                instance.parent = parentInstance;
+                                instance._omi_instanceIndex = parentInstance.children.length;
+                                parentInstance.children.push(instance);
+                                parent[index] = instance._virtualDom;
+                                if (root.properties['omi-name']) {
+                                    parentInstance[root.properties['omi-name']] = instance;
+                                }
+                            } else {
+                                this._virtualDom = instance._virtualDom;
+                                if (root.properties['omi-name']) {
+                                    this[root.properties['omi-name']] = instance;
+                                }
+                            }
 
-                        if (root.properties['omi-id']) {
-                            _omi2['default'].mapping[root.properties['omi-id']] = instance;
+                            if (root.properties['omi-id']) {
+                                _omi2['default'].mapping[root.properties['omi-id']] = instance;
+                            }
                         }
                     }
                 }
             }
 
             root.children && root.children.forEach(function (child, index) {
-                _this2._normalize(child, root.children, index, _this2);
+                _this3._normalize(child, first, root.children, index, _this3);
             });
         }
     }, {
         key: '_resetUsing',
         value: function _resetUsing(root) {
-            var _this3 = this;
+            var _this4 = this;
 
             root.children.forEach(function (child) {
-                _this3._resetUsing(child);
+                _this4._resetUsing(child);
                 child._using = false;
             });
         }
@@ -1520,7 +1625,7 @@ var Component = function () {
             if (parentInstance) {
                 for (var i = 0, len = parentInstance.children.length; i < len; i++) {
                     var child = parentInstance.children[i];
-                    if (cn === child.constructor.is && !child._using) {
+                    if (cn.replace(/-/g, '').toLowerCase() === child.constructor.is.replace(/-/g, '').toLowerCase() && !child._using) {
                         child._using = true;
                         return child;
                     }
@@ -1528,12 +1633,47 @@ var Component = function () {
             }
         }
     }, {
+        key: '_fixForm',
+        value: function _fixForm() {
+            _omi2['default'].$$('input', this.node).forEach(function (element) {
+                var type = element.type.toLowerCase();
+                if (element.getAttribute('value') === '') {
+                    element.value = '';
+                }
+                if (type === 'checked' || type === 'radio') {
+                    if (element.hasAttribute('checked')) {
+                        element.checked = 'checked';
+                    } else {
+                        element.checked = false;
+                    }
+                }
+            });
+
+            _omi2['default'].$$('textarea', this.node).forEach(function (textarea) {
+                textarea.value = textarea.getAttribute('value');
+            });
+
+            _omi2['default'].$$('select', this.node).forEach(function (select) {
+                var value = select.getAttribute('value');
+                if (value) {
+                    _omi2['default'].$$('option', select).forEach(function (option) {
+                        if (value === option.getAttribute('value')) {
+                            option.selected = true;
+                        }
+                    });
+                } else {
+                    var firstOption = _omi2['default'].$$('option', select)[0];
+                    firstOption && (firstOption.selected = true);
+                }
+            });
+        }
+    }, {
         key: '_childrenInstalled',
         value: function _childrenInstalled(root) {
-            var _this4 = this;
+            var _this5 = this;
 
             root.children.forEach(function (child) {
-                _this4._childrenInstalled(child);
+                _this5._childrenInstalled(child);
                 child._omi_needInstalled && child.installed();
                 child._omi_needInstalled = false;
                 child._execInstalledHandlers();
@@ -1542,30 +1682,30 @@ var Component = function () {
     }, {
         key: '_mixPlugins',
         value: function _mixPlugins() {
-            var _this5 = this;
+            var _this6 = this;
 
             Object.keys(_omi2['default'].plugins).forEach(function (item) {
-                var nodes = _omi2['default'].$$('*[' + item + ']', _this5.node);
+                var nodes = _omi2['default'].$$('*[' + item + ']', _this6.node);
                 nodes.forEach(function (node) {
-                    if (node.hasAttribute(_this5._omi_scopedAttr)) {
-                        _omi2['default'].plugins[item](node, _this5);
+                    if (node.hasAttribute(_this6._omi_scopedAttr)) {
+                        _omi2['default'].plugins[item](node, _this6);
                     }
                 });
-                if (_this5.node.hasAttribute(item)) {
-                    _omi2['default'].plugins[item](_this5.node, _this5);
+                if (_this6.node.hasAttribute(item)) {
+                    _omi2['default'].plugins[item](_this6.node, _this6);
                 }
             });
         }
     }, {
         key: '_mixRefs',
         value: function _mixRefs() {
-            var _this6 = this;
+            var _this7 = this;
 
             this.refs = {};
             var nodes = _omi2['default'].$$('*[ref]', this.node);
             nodes.forEach(function (node) {
-                if (node.hasAttribute(_this6._omi_scopedAttr)) {
-                    _this6.refs[node.getAttribute('ref')] = node;
+                if (node.hasAttribute(_this7._omi_scopedAttr)) {
+                    _this7.refs[node.getAttribute('ref')] = node;
                 }
             });
             var attr = this.node.getAttribute('ref');
@@ -1578,11 +1718,19 @@ var Component = function () {
         value: function _mixAttr(current) {
             current._mixRefs();
             current._mixPlugins();
-            current.children.forEach(function (child, index) {
-                child._omi_instanceIndex = index;
+            for (var i = 0, len = current.children.length; i < len; i++) {
+                var child = current.children[i];
                 child.node = _omi2['default'].$('[' + child._omi_scopedAttr + ']', current.node);
-                current._mixAttr(child);
-            });
+                if (!child.node) {
+                    child._virtualDom = null;
+                    current.children.splice(i, 1);
+                    i--;
+                    len--;
+                } else {
+                    child._omi_instanceIndex = i;
+                    current._mixAttr(child);
+                }
+            }
         }
     }]);
 
@@ -2573,7 +2721,17 @@ var Hello = function (_Omi$Component) {
     _createClass(Hello, [{
         key: 'render',
         value: function render() {
-            return _index2['default'].x('div', null, [" Hello ", _index2['default'].x('h1', { style: "display:inline-block;" }, [this.data.name]), "!"]);
+            return _index2['default'].x(
+                'div',
+                null,
+                ' Hello ',
+                _index2['default'].x(
+                    'h1',
+                    { style: 'display:inline-block;' },
+                    this.data.name
+                ),
+                '!'
+            );
         }
     }]);
 
