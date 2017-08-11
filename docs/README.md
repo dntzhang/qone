@@ -420,9 +420,24 @@ import './content.js'
 
 ### selfDataFirst
 
-使用Omi的时候，你会发现，在子组件内部修改父组件传递过来的data，就是修改 this.data 然后进行 this.update 会没有效果。
+使用Omi的时候，你会发现，在子组件内部修改父组件传递过来的data，就是修改 this.data 然后进行 this.update 会没有效果。如果你把 data 的属性赋给 this 下，render 方法里只用 this 下的属性，再进行 update 就能成功 update。比如:
 
-这里会有个权重问题。Omi的组件 selfDataFirst 默认是 false，也就是代码 父组件传递的属性的权重更高，如果你想要子组件 this.data 的权重更高，可以通过修改 selfDataFirst。如:
+```js
+    install (){
+        this.name = this.data.name 
+    }
+
+    changeName (newName){
+        this.name = newName
+        this.update()
+    }
+        
+    render (){
+        return <div>{this.name}<div>
+    }
+```
+
+如果坚持要用 data 渲染，这里会有个权重问题。Omi的组件 selfDataFirst 默认是 false，也就是代码 父组件传递的属性的权重更高，如果你想要子组件 this.data 的权重更高，可以通过修改 selfDataFirst。如:
 
 ```js
 <child-element selfDataFirst><child-element>
