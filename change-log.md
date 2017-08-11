@@ -1,3 +1,12 @@
+# omix v1.1.8
+
+* 支持直出的数据前后端共享
+* Omi.render 支持配置 ssr 代表二次渲染
+
+```js
+Omi.render(component, renderTo, { ssr : true })
+```
+
 # omix v1.1.7
 
 * 美化 ssr css 输出格式
