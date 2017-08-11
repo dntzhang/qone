@@ -126,7 +126,7 @@ npm install omix
 or get it from CDN:
 
 ``` html
-<script src="https://unpkg.com/omix@1.1.5/dist/omix.min.js"></script>
+<script src="https://unpkg.com/omix@1.1.6/dist/omix.min.js"></script>
 ```
 
 
