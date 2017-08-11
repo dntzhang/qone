@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.6 By dntzhang 
+ *  omix v1.1.7 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -285,7 +285,7 @@ function props2str(props) {
 function spreadStyle() {
     var css = '';
     for (var key in Omi.style) {
-        css += Omi.style[key];
+        css += '\n' + Omi.style[key] + '\n';
     }
     return css;
 }
@@ -296,7 +296,7 @@ Omi.renderToString = function (component) {
     component.beforeRender();
     component._render(true);
     Omi.ssr = false;
-    var result = '<style>\n' + spreadStyle() + '\n</style>\n' + spread(component._virtualDom);
+    var result = '<style>' + spreadStyle() + '</style>\n' + spread(component._virtualDom);
     Omi.style = {};
     Omi._instanceId = 0;
     return result;
