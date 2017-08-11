@@ -122,13 +122,17 @@ function spreadStyle() {
     return css
 }
 
+function stringifyData(component){
+    return `<input type="hidden" id="_omix-ssr-data" value="${JSON.stringify(component.data)}" />`
+}
+
 Omi.renderToString = function(component) {
     Omi.ssr = true
     component.install()
     component.beforeRender()
     component._render(true)
     Omi.ssr = false
-    let result = `<style>${spreadStyle()}</style>\n${spread(component._virtualDom)}`
+    let result = `<style>${spreadStyle()}</style>\n${spread(component._virtualDom)}${stringifyData(component)}`
     Omi.style = {}
     Omi._instanceId = 0
     return result

@@ -290,13 +290,17 @@ function spreadStyle() {
     return css;
 }
 
+function stringifyData(component) {
+    return '<input type="hidden" id="_omix-ssr-data" value="' + JSON.stringify(component.data) + '" />';
+}
+
 Omi.renderToString = function (component) {
     Omi.ssr = true;
     component.install();
     component.beforeRender();
     component._render(true);
     Omi.ssr = false;
-    var result = '<style>' + spreadStyle() + '</style>\n' + spread(component._virtualDom);
+    var result = '<style>' + spreadStyle() + '</style>\n' + spread(component._virtualDom) + stringifyData(component);
     Omi.style = {};
     Omi._instanceId = 0;
     return result;
@@ -1445,7 +1449,10 @@ var Component = function () {
         }
     }, {
         key: '_render',
-        value: function _render(first) {
+        value: function _render(first, ssr) {
+            if (ssr) {
+                this.data = JSON.parse(document.getElementById('_omix-ssr-data').value);
+            }
             this._generateCss();
             this._virtualDom = this.render();
             this._normalize(this._virtualDom, first);
