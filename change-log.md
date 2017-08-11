@@ -1,3 +1,8 @@
+# omix v1.1.6
+
+* fix node 环境 document 报错
+* fix ssr 下，同类组件的 css 重复合成的问题
+
 # omix v1.1.5
 
 * fix node 环境 window 报错
