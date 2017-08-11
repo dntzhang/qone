@@ -1,3 +1,7 @@
+# omix v1.1.7
+
+* 美化 ssr css 输出格式
+
 # omix v1.1.6
 
 * fix node 环境 document 报错
