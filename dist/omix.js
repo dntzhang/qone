@@ -291,7 +291,7 @@ function spreadStyle() {
 }
 
 function stringifyData(component) {
-    return '<input type="hidden" id="_omix-ssr-data" value="' + JSON.stringify(component.data) + '" />';
+    return '<input type="hidden" id="_omix-ssr-data" value=\'' + JSON.stringify(component.data) + '\' />';
 }
 
 Omi.renderToString = function (component) {
