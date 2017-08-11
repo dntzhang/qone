@@ -1,3 +1,7 @@
+# omix v1.1.5
+
+* fix node 环境 window 报错
+
 # omix v1.1.4
 
 * 新增 babel-preset-omi ,不再使用 virtual-dom-loader。  omi-cli 已经同步更新~~
