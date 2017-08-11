@@ -3,9 +3,9 @@ import Component from './component.js'
 
 Omi.Component = Component
 
-if (window && window.Omi) {
+if (typeof window !== 'undefined' && window.Omi) {
     module.exports = window.Omi
 } else {
-    window && (window.Omi = Omi)
+    (typeof window !== 'undefined') && (window.Omi = Omi)
     module.exports = Omi
 }

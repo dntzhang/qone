@@ -66,10 +66,8 @@ module.exports = function(config) {
                         use: [{
                             loader: 'babel-loader',
                             options: {
-                                presets: ['env']
+                                presets: ['env','omi']
                             }
-                        },{
-                            loader: 'virtual-dom-loader?jsx=Omi.x'
                         }
                         ]
                     }

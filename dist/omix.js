@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.4 By dntzhang 
+ *  omix v1.1.5 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -640,10 +640,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 _omi2['default'].Component = _component2['default'];
 
-if (window && window.Omi) {
+if (typeof window !== 'undefined' && window.Omi) {
     module.exports = window.Omi;
 } else {
-    window && (window.Omi = _omi2['default']);
+    typeof window !== 'undefined' && (window.Omi = _omi2['default']);
     module.exports = _omi2['default'];
 }
 
