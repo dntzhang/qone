@@ -118,7 +118,7 @@ export default  UserList
 | /user/:name | /user/dntzhang | `{ name: 'dntzhang' }` |
 | /user/:name/category/:category | /user/dntzhang/category/js | `{ name: 'dntzhang', category: js }` |
 
-注意: $route 会被挂载在$store下，$store会在根组件中注入，在组件树中的任何组件都可以通过 `this.$store.$route.params` 访问hash传递的数据。 
+注意: $route 会被挂载在组件实例下，也就是 this ，在组件树中的任何组件都可以通过 `this.$route.params` 访问hash传递的数据。 
 
 ### 接着上面例子
 
