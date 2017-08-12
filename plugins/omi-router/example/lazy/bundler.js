@@ -1,6 +1,36 @@
 /******/ (function(modules) { // webpackBootstrap
+/******/ 	// install a JSONP callback for chunk loading
+/******/ 	var parentJsonpFunction = window["webpackJsonp"];
+/******/ 	window["webpackJsonp"] = function webpackJsonpCallback(chunkIds, moreModules, executeModules) {
+/******/ 		// add "moreModules" to the modules object,
+/******/ 		// then flag all "chunkIds" as loaded and fire callback
+/******/ 		var moduleId, chunkId, i = 0, resolves = [], result;
+/******/ 		for(;i < chunkIds.length; i++) {
+/******/ 			chunkId = chunkIds[i];
+/******/ 			if(installedChunks[chunkId]) {
+/******/ 				resolves.push(installedChunks[chunkId][0]);
+/******/ 			}
+/******/ 			installedChunks[chunkId] = 0;
+/******/ 		}
+/******/ 		for(moduleId in moreModules) {
+/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/ 				modules[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 		}
+/******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules, executeModules);
+/******/ 		while(resolves.length) {
+/******/ 			resolves.shift()();
+/******/ 		}
+/******/
+/******/ 	};
+/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
+/******/
+/******/ 	// objects to store loaded and loading chunks
+/******/ 	var installedChunks = {
+/******/ 		1: 0
+/******/ 	};
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -26,6 +56,55 @@
 /******/ 		return module.exports;
 /******/ 	}
 /******/
+/******/ 	// This file contains only the entry chunk.
+/******/ 	// The chunk loading function for additional chunks
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
+/******/ 		var installedChunkData = installedChunks[chunkId];
+/******/ 		if(installedChunkData === 0) {
+/******/ 			return new Promise(function(resolve) { resolve(); });
+/******/ 		}
+/******/
+/******/ 		// a Promise means "currently loading".
+/******/ 		if(installedChunkData) {
+/******/ 			return installedChunkData[2];
+/******/ 		}
+/******/
+/******/ 		// setup Promise in chunk cache
+/******/ 		var promise = new Promise(function(resolve, reject) {
+/******/ 			installedChunkData = installedChunks[chunkId] = [resolve, reject];
+/******/ 		});
+/******/ 		installedChunkData[2] = promise;
+/******/
+/******/ 		// start chunk loading
+/******/ 		var head = document.getElementsByTagName('head')[0];
+/******/ 		var script = document.createElement('script');
+/******/ 		script.type = 'text/javascript';
+/******/ 		script.charset = 'utf-8';
+/******/ 		script.async = true;
+/******/ 		script.timeout = 120000;
+/******/
+/******/ 		if (__webpack_require__.nc) {
+/******/ 			script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 		}
+/******/ 		script.src = __webpack_require__.p + "" + chunkId + ".bundler.js";
+/******/ 		var timeout = setTimeout(onScriptComplete, 120000);
+/******/ 		script.onerror = script.onload = onScriptComplete;
+/******/ 		function onScriptComplete() {
+/******/ 			// avoid mem leaks in IE.
+/******/ 			script.onerror = script.onload = null;
+/******/ 			clearTimeout(timeout);
+/******/ 			var chunk = installedChunks[chunkId];
+/******/ 			if(chunk !== 0) {
+/******/ 				if(chunk) {
+/******/ 					chunk[1](new Error('Loading chunk ' + chunkId + ' failed.'));
+/******/ 				}
+/******/ 				installedChunks[chunkId] = undefined;
+/******/ 			}
+/******/ 		};
+/******/ 		head.appendChild(script);
+/******/
+/******/ 		return promise;
+/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -58,6 +137,9 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// on error function for async loading
+/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 2);
@@ -3286,11 +3368,7 @@ var _about = __webpack_require__(8);
 
 var _about2 = _interopRequireDefault(_about);
 
-var _user = __webpack_require__(9);
-
-var _user2 = _interopRequireDefault(_user);
-
-var _userList = __webpack_require__(10);
+var _userList = __webpack_require__(9);
 
 var _userList2 = _interopRequireDefault(_userList);
 
@@ -3315,7 +3393,9 @@ var App = function (_Omi$Component) {
         key: 'install',
         value: function install() {
             _index2['default'].init({
-                routes: [{ path: '/', component: _home2['default'] }, { path: '/about', component: _about2['default'] }, { path: '/user-list', component: _userList2['default'] }, { path: '/user/:name/category/:category', component: _user2['default'] }],
+                routes: [{ path: '/', component: _home2['default'] }, { path: '/about', component: _about2['default'] }, { path: '/user-list', component: _userList2['default'] }, { path: '/user/:name/category/:category', component: function component() {
+                        return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, 10));
+                    } }],
                 renderTo: "#view",
                 defaultRoute: '/',
                 root: this
@@ -6760,115 +6840,6 @@ exports['default'] = About;
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _omi = __webpack_require__(0);
-
-var _omi2 = _interopRequireDefault(_omi);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var User = function (_Omi$Component) {
-    _inherits(User, _Omi$Component);
-
-    function User() {
-        _classCallCheck(this, User);
-
-        return _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).apply(this, arguments));
-    }
-
-    _createClass(User, [{
-        key: 'beforeRender',
-        value: function beforeRender() {
-            var params = this.$route.params;
-            this.name = params.name;
-            this.category = params.category;
-            this.info = this.queryInfo(this.name);
-            this.age = this.info.age;
-            this.sex = this.info.sex;
-        }
-    }, {
-        key: 'queryInfo',
-        value: function queryInfo(name) {
-            this.mockData = {
-                'yanagao': { age: 18, sex: 'female' },
-                'vorshen': { age: 20, sex: 'male' },
-                'dntzhang': { age: 22, sex: 'male' }
-            };
-            return this.mockData[name];
-        }
-    }, {
-        key: 'back',
-        value: function back() {
-            history.back();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return _omi2['default'].x(
-                'div',
-                null,
-                _omi2['default'].x(
-                    'button',
-                    { onclick: this.back.bind(this) },
-                    'back'
-                ),
-                _omi2['default'].x(
-                    'ul',
-                    null,
-                    _omi2['default'].x(
-                        'li',
-                        null,
-                        'name:',
-                        this.name
-                    ),
-                    _omi2['default'].x(
-                        'li',
-                        null,
-                        'age:',
-                        this.age
-                    ),
-                    _omi2['default'].x(
-                        'li',
-                        null,
-                        'sex:',
-                        this.sex
-                    ),
-                    _omi2['default'].x(
-                        'li',
-                        null,
-                        'category:',
-                        this.category
-                    )
-                )
-            );
-        }
-    }]);
-
-    return User;
-}(_omi2['default'].Component);
-
-_omi2['default'].tag('user', User);
-
-exports['default'] = User;
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
