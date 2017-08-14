@@ -1,3 +1,7 @@
+# omix v1.1.9
+
+* node 环境不会执行 Omi.render
+
 # omix v1.1.8
 
 * 支持直出的数据前后端共享
