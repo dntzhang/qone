@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.8 By dntzhang 
+ *  omix v1.1.9 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -226,7 +226,12 @@ Omi.getConstructor = function (name) {
     }
 };
 
+function isServer() {
+    return !(typeof window !== 'undefined' && window.document);
+}
+
 Omi.render = function (component, renderTo, option) {
+    if (isServer()) return;
     component.renderTo = typeof renderTo === 'string' ? document.querySelector(renderTo) : renderTo;
     if (typeof option === 'boolean') {
         component._omi_increment = option;

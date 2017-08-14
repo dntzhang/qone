@@ -58,7 +58,12 @@ Omi.getConstructor = function(name) {
     }
 }
 
+function isServer() {
+    return !(typeof window !== 'undefined' && window.document)
+}
+
 Omi.render = function(component, renderTo, option) {
+    if (isServer()) return
     component.renderTo = typeof renderTo === 'string' ? document.querySelector(renderTo) : renderTo
     if (typeof option === 'boolean') {
         component._omi_increment = option
@@ -125,7 +130,7 @@ function spreadStyle() {
     return css
 }
 
-function stringifyData(component){
+function stringifyData(component) {
     return '<input type="hidden" id="__omix-ssr-data" value=\'' + JSON.stringify(component.data) + '\' />'
 }
 
