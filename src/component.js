@@ -7,10 +7,7 @@ import createElement from 'virtual-dom-omi/create-element'
 
 class Component {
     constructor(data) {
-        this.data = Object.assign({
-            scopedSelfCss: false,
-            selfDataFirst: false
-        }, data)
+        this.data = data || {}
         this.id = Omi.getInstanceId()
         this.children = []
         this._omi_scopedAttr = Omi.PREFIX + this.id

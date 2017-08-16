@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.9 By dntzhang 
+ *  omix v1.1.10 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -238,7 +238,7 @@ Omi.render = function (component, renderTo, option) {
     } else if (option) {
         component._omi_increment = option.increment;
         if (option.ssr) {
-            component.data = Object.assign({}, JSON.parse(document.getElementById('__omix-ssr-data').value), component.data);
+            component.data = Object.assign({}, window.__omiSsrData, component.data);
         }
     }
     component.install();
@@ -299,7 +299,7 @@ function spreadStyle() {
 }
 
 function stringifyData(component) {
-    return '<input type="hidden" id="__omix-ssr-data" value=\'' + JSON.stringify(component.data) + '\' />';
+    return '<script>window.__omiSsrData=' + JSON.stringify(component.data) + '</script>';
 }
 
 Omi.renderToString = function (component) {
@@ -1325,10 +1325,7 @@ var Component = function () {
     function Component(data) {
         _classCallCheck(this, Component);
 
-        this.data = Object.assign({
-            scopedSelfCss: false,
-            selfDataFirst: false
-        }, data);
+        this.data = data || {};
         this.id = _omi2['default'].getInstanceId();
         this.children = [];
         this._omi_scopedAttr = _omi2['default'].PREFIX + this.id;

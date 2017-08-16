@@ -1,3 +1,7 @@
+# omix v1.1.10
+
+* 支持直出的数据前后端共享变更 - 以前使用input存数据改成直接暴露在`window.__omiSsrData`下
+
 # omix v1.1.9
 
 * node 环境不会执行 Omi.render
