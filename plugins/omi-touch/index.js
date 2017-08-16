@@ -1,11 +1,12 @@
 /*!
- *  omi-touch v0.1.0 by dntzhang
+ *  omi-touch v0.2.1 by dntzhang
  *  AlloyTouch / Omi integration. Smooth scrolling, rotation, pull to refresh, page transition and any motion for your Omi project.
  *  Github: https://github.com/AlloyTeam/omi
  *  MIT Licensed.
  */
 
 ;(function () {
+    if(typeof Omi === 'undefined') return
 
     var OmiTouch = {};
     var AlloyTouch = typeof require === 'function' ? require('alloytouch') : window.AlloyTouch;

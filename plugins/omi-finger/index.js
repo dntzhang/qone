@@ -1,11 +1,13 @@
 /*!
- *  omi-finger v0.1.8 by dntzhang
+ *  omi-finger v0.2.1 by dntzhang
  *  Omi / AlloyFinger integration. Support touch and gesture events in your Omi project.
  *  Github: https://github.com/AlloyTeam/omi
  *  MIT Licensed.
  */
 
 ;(function () {
+
+    if(typeof Omi === 'undefined') return
 
     var OmiFinger = {};
     var AlloyFinger = typeof require === 'function'
