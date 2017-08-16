@@ -1,3 +1,17 @@
+# omix v1.1.11
+
+* 通过`closeScopedStyle`可以关闭局部CSS: 如:
+
+```
+Omi.render(new App({ closeScopedStyle : true }, '#ctn'))
+```
+
+或者
+
+```
+<your-tag closeScopedStyle></your-tag>
+```
+
 # omix v1.1.10
 
 * 支持直出的数据前后端共享变更 - 以前使用input存数据改成直接暴露在`window.__omiSsrData`下

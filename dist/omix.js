@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.10 By dntzhang 
+ *  omix v1.1.11 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
