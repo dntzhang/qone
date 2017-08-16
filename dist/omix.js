@@ -1476,7 +1476,15 @@ var Component = function () {
             var shareAttr = name ? this.data.scopedSelfCss ? this._omi_scopedAttr : _omi2['default'].PREFIX + name.toLowerCase() : this._omi_scopedAttr;
 
             if (this.css) {
-                if (this.data.scopedSelfCss || !_omi2['default'].style[shareAttr]) {
+                if (this.data.closeScopedStyle) {
+                    _omi2['default'].style[shareAttr + '_g'] = this.css;
+                    if (!_omi2['default'].ssr) {
+                        if (this.css !== this._preCss) {
+                            _style2['default'].addStyle(this.css, this.id);
+                            this._preCss = this.css;
+                        }
+                    }
+                } else if (this.data.scopedSelfCss || !_omi2['default'].style[shareAttr]) {
                     if (_omi2['default'].scopedStyle) {
                         this.css = _style2['default'].scoper(this.css, this.data.scopedSelfCss ? '[' + this._omi_scopedAttr + ']' : '[' + shareAttr + ']');
                     }
