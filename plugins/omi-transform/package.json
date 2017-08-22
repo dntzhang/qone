@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "simple": "webpack -w",
+    "sync-for-update": "webpack -w",
     "nest": "webpack -w"
   },
   "repository": {

@@ -13,9 +13,15 @@ class App extends Omi.Component {
     }
 
     render() {
-        return  <div onclick={this.handleClick.bind(this)} omi-transform class="test" ref="test" rotateY={this.rotateY} translateX="100" perspective="400" >
-                    omi-transform
-                </div>
+        return  (
+            <div onclick={this.handleClick.bind(this)}
+                 omi-transform class="test" ref="test"
+                 rotateY={this.rotateY}
+                 translateX="100"
+                 perspective="400" >
+                omi-transform
+            </div>
+        )
     }
 
     style(){

@@ -72,13 +72,6 @@
 	    }
 
 	    _createClass(App, [{
-	        key: 'installed',
-	        value: function installed() {
-	            //setInterval(()=>{
-	            //    this.refs.test.rotateY += 1
-	            //})
-	        }
-	    }, {
 	        key: 'install',
 	        value: function install() {
 	            this.rotateY = 45;
@@ -92,7 +85,11 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _omix2.default.x('div', { onclick: this.handleClick.bind(this), 'omi-transform': true, class: "test", ref: "test", rotateY: this.rotateY, translateX: "100", perspective: "400" }, ["omi-transform"]);
+	            return _omix2.default.x('div', { onclick: this.handleClick.bind(this),
+	                'omi-transform': true, class: "test", ref: "test",
+	                rotateY: this.rotateY,
+	                translateX: "100",
+	                perspective: "400" }, ["omi-transform"]);
 	        }
 	    }, {
 	        key: 'style',
