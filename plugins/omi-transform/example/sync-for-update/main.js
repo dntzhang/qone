@@ -2,11 +2,6 @@
 import '../../index.js'
 
 class App extends Omi.Component {
-    installed(){
-        //setInterval(()=>{
-        //    this.refs.test.rotateY += 1
-        //})
-    }
 
     install(){
         this.rotateY = 45
