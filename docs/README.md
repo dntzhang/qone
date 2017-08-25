@@ -22,6 +22,7 @@
     * [关联instance](#关联instance)
     * [传递数据](#传递数据)
 * [调试技巧](#调试技巧)  
+* [Server Side Rendering](#server-side-rendering)  
 * [Omix相关](#omix相关)  
 
 ## 简介
@@ -962,6 +963,16 @@ console.log(Omi.instances)
 ```
 
 所有的组件的实例都在`Omi.instances`数组里，简单吧！
+
+## Server Side Rendering
+
+```
+let content = Omi.renderToString(new Root(data))
+```
+
+* content 为直出的 HTML + CSS + JS
+* Root 为前后端共享的根节点
+* data 为前后端共享的数据
 
 ## Omix相关
 
