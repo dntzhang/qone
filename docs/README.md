@@ -966,7 +966,7 @@ console.log(Omi.instances)
 
 ## Server Side Rendering
 
-```
+``` js
 let content = Omi.renderToString(new Root(data))
 ```
 
