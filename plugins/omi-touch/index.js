@@ -60,7 +60,8 @@
             touchEnd: getHandler('touchEnd', dom, instance),
             tap: getHandler('tap', dom, instance),
             pressMove: getHandler('pressMove', dom, instance),
-            animationEnd: getHandler('animationEnd', dom, instance)
+            animationEnd: getHandler('animationEnd', dom, instance),
+            preventDefault: dom.getAttribute('preventDefault') === 'false' ? false : true
         })
 
         dom.alloyTouch = alloyTouch
