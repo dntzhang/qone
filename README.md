@@ -126,8 +126,8 @@ npm install omix
 
 or get it from CDN:
 
-* [https://unpkg.com/omix@1.1.11/dist/omix.min.js](https://unpkg.com/omix@1.1.11/dist/omix.min.js)
-* [https://unpkg.com/omix@1.1.11/dist/omix.js](https://unpkg.com/omix@1.1.11/dist/omix.js)
+* [https://unpkg.com/omix@1.1.12/dist/omix.min.js](https://unpkg.com/omix@1.1.12/dist/omix.min.js)
+* [https://unpkg.com/omix@1.1.12/dist/omix.js](https://unpkg.com/omix@1.1.12/dist/omix.js)
 
 # License
 This content is released under the [MIT](http://opensource.org/licenses/MIT) License.

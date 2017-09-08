@@ -207,6 +207,7 @@ class Component {
                             console.warn('The children property will be covered.access it by _children')
                         }
                         instance.data.children = root.children
+                        instance._using = true
                         instance.install()
                         instance.beforeRender()
                         instance._render(first)

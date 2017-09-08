@@ -1,3 +1,7 @@
+# omix v1.1.12
+
+* 解决新加的组件 scoped attr 相互污染的问题
+
 # omix v1.1.11
 
 * 通过`closeScopedStyle`可以关闭局部CSS: 如:
