@@ -21,6 +21,7 @@
     * [Omi.extendPlugin](#omiextendplugin)
     * [关联instance](#关联instance)
     * [传递数据](#传递数据)
+* [closeScopedStyle](#closescopedstyle)     
 * [调试技巧](#调试技巧)  
 * [Server Side Rendering](#server-side-rendering)  
 * [Omix相关](#omix相关)  
@@ -954,6 +955,19 @@ window.addEventListener('mousemove',function(evt){
 * 通过 var handlerName = dom.getAttribute('dragMove') 拿到dom上声明的dragMove
 * 通过 instance[handlerName](evt) 去执行对应的方法
 
+## closeScopedStyle
+
+* 通过`closeScopedStyle`可以关闭局部CSS: 如:
+
+```
+Omi.render(new App({ closeScopedStyle : true }, '#ctn'))
+```
+
+或者
+
+```
+<your-tag closeScopedStyle></your-tag>
+```
 
 
 ## 调试技巧
