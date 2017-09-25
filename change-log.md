@@ -1,3 +1,19 @@
+# omix v1.1.13
+
+* 支持增量模式渲染
+
+```
+Omi.render(new App({  }, 'body', true))`
+```
+
+或者
+
+```
+Omi.render(new App({  }, 'body', {
+    increment : true
+}))`
+```
+
 # omix v1.1.12
 
 * 解决新加的组件 scoped attr 相互污染的问题

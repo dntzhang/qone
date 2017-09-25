@@ -136,8 +136,10 @@ class Component {
         this._normalize(this._virtualDom, first)
         if (this.renderTo) {
             this.node = createElement(this._virtualDom)
-            while (this.renderTo.firstChild) {
-                this.renderTo.removeChild(this.renderTo.firstChild)
+            if(!this._omi_increment) {
+                while (this.renderTo.firstChild) {
+                    this.renderTo.removeChild(this.renderTo.firstChild)
+                }
             }
             this.renderTo.appendChild(this.node)
             this._mixAttr(this)

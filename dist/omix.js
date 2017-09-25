@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.12 By dntzhang 
+ *  omix v1.1.13 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -651,13 +651,36 @@ var _component2 = _interopRequireDefault(_component);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+if (typeof Object.assign != 'function') {
+  Object.assign = function (target) {
+    'use strict';
+
+    if (target == null) {
+      throw new TypeError('Cannot convert undefined or null to object');
+    }
+
+    target = Object(target);
+    for (var index = 1; index < arguments.length; index++) {
+      var source = arguments[index];
+      if (source != null) {
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+    }
+    return target;
+  };
+}
+
 _omi2['default'].Component = _component2['default'];
 
 if (typeof window !== 'undefined' && window.Omi) {
-    module.exports = window.Omi;
+  module.exports = window.Omi;
 } else {
-    typeof window !== 'undefined' && (window.Omi = _omi2['default']);
-    module.exports = _omi2['default'];
+  typeof window !== 'undefined' && (window.Omi = _omi2['default']);
+  module.exports = _omi2['default'];
 }
 
 /***/ }),
@@ -1460,8 +1483,10 @@ var Component = function () {
             this._normalize(this._virtualDom, first);
             if (this.renderTo) {
                 this.node = (0, _createElement2['default'])(this._virtualDom);
-                while (this.renderTo.firstChild) {
-                    this.renderTo.removeChild(this.renderTo.firstChild);
+                if (!this._omi_increment) {
+                    while (this.renderTo.firstChild) {
+                        this.renderTo.removeChild(this.renderTo.firstChild);
+                    }
                 }
                 this.renderTo.appendChild(this.node);
                 this._mixAttr(this);
