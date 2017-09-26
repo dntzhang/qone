@@ -1,5 +1,5 @@
 /*!
- *  omi-finger v0.2.1 by dntzhang
+ *  omi-finger v0.2.3 by dntzhang
  *  Omi / AlloyFinger integration. Support touch and gesture events in your Omi project.
  *  Github: https://github.com/AlloyTeam/omi
  *  MIT Licensed.
@@ -23,7 +23,9 @@
         if (value === null) {
             return noop;
         }else{
-            return instance[value].bind(instance);
+            return function(evt){
+                instance[value].bind(instance)(evt, dom);
+            }
         }
     };
 
