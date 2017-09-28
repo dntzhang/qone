@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.13 By dntzhang 
+ *  omix v1.1.14 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -578,6 +578,7 @@ function removeProperty(node, propName, propValue, previous) {
                 }
             } else if (typeof previousValue === "string") {
                 node[propName] = ""
+                node.removeAttribute(propName)
             } else {
                 node[propName] = null
             }
