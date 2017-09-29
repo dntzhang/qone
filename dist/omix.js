@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.14 By dntzhang 
+ *  omix v1.1.15 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -529,6 +529,12 @@ var isHook = __webpack_require__(4)
 module.exports = applyProperties
 
 function applyProperties(node, props, previous) {
+    if(!node.omixEventList){
+        node.omixEventList=  {}
+    }
+    for(var event in  node.omixEventList){
+        node[event] = null
+    }
     for (var propName in props) {
         var propValue = props[propName]
 
@@ -554,6 +560,8 @@ function applyProperties(node, props, previous) {
                 //}
                 if(typeof propValue === 'function' ){
                     node[propName.toLowerCase()] = propValue
+                    node.omixEventList[propName.toLowerCase()] = true
+                    node.omixEventList[propName] = true
                 }else {
                     node.setAttribute(propName, propValue)
                 }
