@@ -21,9 +21,14 @@
     var getHandler = function(name, dom, instance) {
         var value = dom.getAttribute(name);
         if (value === null) {
+            if (dom[name]) {
+                return function (evt) {
+                    dom[name].bind(instance)(evt, dom);
+                }
+            }
             return noop;
-        }else{
-            return function(evt){
+        } else {
+            return function (evt) {
                 instance[value].bind(instance)(evt, dom);
             }
         }

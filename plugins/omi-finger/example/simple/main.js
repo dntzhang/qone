@@ -27,7 +27,7 @@ class App extends Omi.Component {
 
     render() {
         return  <div>
-                    <div omi-finger class="touchArea" ref="touchArea" tap="handleTap"  swipe="handleSwipe" >
+                    <div omi-finger class="touchArea" ref="touchArea" tap={this.handleTap}  swipe={this.handleSwipe} >
                         Tap or Swipe Me!
                     </div>
                 </div>

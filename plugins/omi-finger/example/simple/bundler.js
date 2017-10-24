@@ -84,12 +84,12 @@
 	    }, {
 	        key: 'style',
 	        value: function style() {
-	            return '\n            .touchArea{\n                background-color: green;\n                width: 200px;\n                min-height: 200px;\n                text-align: center;\n                color:white;\n                height:auto;\n            }\n         ';
+	            return '.touchArea{\n                    background-color: green;\n                    width: 200px;\n                    min-height: 200px;\n                    text-align: center;\n                    color:white;\n                    height:auto;\n                }';
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _omix2.default.x('div', null, [_omix2.default.x('div', { 'omi-finger': true, class: "touchArea", ref: "touchArea", tap: "handleTap", swipe: "handleSwipe" }, ["Tap or Swipe Me!"])]);
+	            return _omix2.default.x('div', null, [_omix2.default.x('div', { 'omi-finger': true, class: "touchArea", ref: "touchArea", tap: this.handleTap, swipe: this.handleSwipe }, ["Tap or Swipe Me!"])]);
 	        }
 	    }]);
 
@@ -2693,13 +2693,15 @@
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	/*!
-	 *  omi-finger v0.1.8 by dntzhang
+	 *  omi-finger v0.2.3 by dntzhang
 	 *  Omi / AlloyFinger integration. Support touch and gesture events in your Omi project.
 	 *  Github: https://github.com/AlloyTeam/omi
 	 *  MIT Licensed.
 	 */
 
 	;(function () {
+
+	    if (typeof Omi === 'undefined') return;
 
 	    var OmiFinger = {};
 	    var AlloyFinger =  true ? __webpack_require__(4) : window.AlloyFinger;
@@ -2709,9 +2711,16 @@
 	    var getHandler = function getHandler(name, dom, instance) {
 	        var value = dom.getAttribute(name);
 	        if (value === null) {
+	            if (dom[name]) {
+	                return function (evt) {
+	                    dom[name].bind(instance)(evt, dom);
+	                };
+	            }
 	            return noop;
 	        } else {
-	            return instance[value].bind(instance);
+	            return function (evt) {
+	                instance[value].bind(instance)(evt, dom);
+	            };
 	        }
 	    };
 

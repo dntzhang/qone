@@ -23,7 +23,9 @@ var config  = {
                     presets: ['env', 'omi'],
                     plugins : [
                        "babel-plugin-transform-es3-property-literals" ,
-                        "babel-plugin-transform-es3-member-expression-literals"
+                        "babel-plugin-transform-es3-member-expression-literals",
+                        "babel-plugin-transform-decorators-legacy",
+                        "babel-plugin-transform-class-properties"
 
                     ]
                 }
@@ -64,7 +66,9 @@ if(ENV === 'build'||ENV === 'build-min'){
                         presets: 'env',
                         plugins : [
                             "transform-es3-property-literals",
-                            "transform-es3-member-expression-literals"
+                            "transform-es3-member-expression-literals",
+                            "babel-plugin-transform-decorators-legacy",
+                            "babel-plugin-transform-class-properties"
                         ]
                     },
                 }
