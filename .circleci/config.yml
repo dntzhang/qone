@@ -6,12 +6,14 @@ version: 2
 jobs:
   build:
     docker:
-          - image: circleci/node:7.10
-          - image: python:3.4.4
-          - image: circleci/python:3.4-browsers
-            environment:
-              CHROME_BIN: "/usr/bin/google-chrome"
-          - image: mysql:5.7
+      # specify the version you desire here
+      - image: circleci/node:7.10
+      environment:
+          CHROME_BIN: "/usr/bin/google-chrome"
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
 
     working_directory: ~/repo
 
