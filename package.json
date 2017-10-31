@@ -50,7 +50,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-webpack": "^2.0.4",
     "node-libs-browser": "^0.5.3",
-    "virtual-dom-omi": "^2.1.10",
+    "virtual-dom-omi": "^2.1.11",
     "webpack": "^3.4.1"
   },
   "repository": {
