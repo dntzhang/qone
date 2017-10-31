@@ -1,6 +1,11 @@
+# omix v1.2.0
+
+* 使用 JSX 可以不用在写 Omi.tag(xx, xxx)
+* 支持 在 JSX 中使用 JSON 格式的样式，或者数组。[例子](https://github.com/AlloyTeam/omix/blob/master/example/on/hello.js)
+
 # omix v1.1.15
 
-* 修复了事件patch之后没有移除的问题。
+* 修复了事件 patch 之后没有移除的问题。
 
 # omix v1.1.14
 
