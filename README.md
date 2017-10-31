@@ -5,7 +5,7 @@
 Build UI with JSX or hyperscript - 使用 JSX 或 hyperscript 创建用户界面
 </p>
 <p align="center">
-  <a href="https://travis-ci.org/AlloyTeam/omix"><img src="https://travis-ci.org/AlloyTeam/omix.svg"></a>
+  <a href="https://circleci.com/gh/AlloyTeam/omix/tree/master"><img src="https://img.shields.io/circleci/project/AlloyTeam/omix/master.svg" alt="Build Status"></a>
   <a href="https://www.npmjs.com/package/omix"><img src="https://img.shields.io/npm/v/omix.svg" alt="Version"></a>
   <a href="https://www.npmjs.com/package/omix"><img src="https://img.shields.io/npm/dm/omix.svg" alt="Download"></a>
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs"></a>
