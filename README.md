@@ -36,8 +36,6 @@ class Hello extends Omi.Component {
     }
 }
 
-Omi.tag('hello', Hello)
-
 class App extends Omi.Component {
     install() {
         this.name = 'Omi'
@@ -57,7 +55,7 @@ class App extends Omi.Component {
 
     render() {
         return <div>
-	            <hello name={this.name}></hello>
+	            <Hello name={this.name}></Hello>
 	            <h3 onclick={this.handleClick.bind(this)}>Scoped css and event test! click me!</h3>
 	        </div>
     }
@@ -79,7 +77,7 @@ class Hello extends Omi.Component {
     }
 }
 
-Omi.tag('hello-tag', Hello)
+Omi.tag('Hello', Hello)
 
 class App extends Omi.Component {
     handleClick(e) {
@@ -88,7 +86,7 @@ class App extends Omi.Component {
 
     render() {
         return $.div([
-	            $.HelloTag({name: 'Omi'}),
+	            $.Hello({name: 'Omi'}),
 	            $.h3({onclick: this.handleClick.bind(this)}, 'scoped css and event test! click me!')
 	        ])
     }
@@ -126,8 +124,8 @@ npm install omix
 
 or get it from CDN:
 
-* [https://unpkg.com/omix@1.1.15/dist/omix.min.js](https://unpkg.com/omix@1.1.15/dist/omix.min.js)
-* [https://unpkg.com/omix@1.1.15/dist/omix.js](https://unpkg.com/omix@1.1.15/dist/omix.js)
+* [https://unpkg.com/omix@1.2.0/dist/omix.min.js](https://unpkg.com/omix@1.2.0/dist/omix.min.js)
+* [https://unpkg.com/omix@1.2.0/dist/omix.js](https://unpkg.com/omix@1.2.0/dist/omix.js)
 
 # License
 This content is released under the [MIT](http://opensource.org/licenses/MIT) License.

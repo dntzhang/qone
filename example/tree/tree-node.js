@@ -41,7 +41,7 @@ class TreeNode extends Omi.Component {
 
     render() {
         let list = this.data.root.nodes.map((child) =>
-            <tree-node root={child}></tree-node>
+            <TreeNode root={child}></TreeNode>
         )
 
         return <li data-node-id={this.data.root.id} draggable="true" ondragstart={this.dragStartHandler.bind(this)} ondragleave={this.dragLeaveHandler.bind(this)} ondrop={this.dropHandler.bind(this)} ondragover={this.dragOverHandler.bind(this)} >

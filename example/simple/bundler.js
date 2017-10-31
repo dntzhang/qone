@@ -208,9 +208,7 @@ Omi.tag = function (name, ctor) {
     var cname = name.replace(/-/g, '').toLowerCase();
     Omi.componentConstructor[cname] = ctor;
     ctor.is = name;
-    if (document.documentMode < 9) {
-        document.createElement(name.toLowerCase());
-    }
+
     var uname = Omi._capitalize(name);
     Omi.tags[uname] = Omi.tags.createTag(uname);
 };
@@ -223,12 +221,20 @@ Omi.getConstructor = function (name) {
     }
 };
 
+function isServer() {
+    return !(typeof window !== 'undefined' && window.document);
+}
+
 Omi.render = function (component, renderTo, option) {
+    if (isServer()) return;
     component.renderTo = typeof renderTo === 'string' ? document.querySelector(renderTo) : renderTo;
     if (typeof option === 'boolean') {
         component._omi_increment = option;
     } else if (option) {
         component._omi_increment = option.increment;
+        if (option.ssr) {
+            component.data = Object.assign({}, window.__omiSsrData, component.data);
+        }
     }
     component.install();
     component.beforeRender();
@@ -279,12 +285,16 @@ function props2str(props) {
     return result;
 }
 
-function spreadStyle(component) {
-    var css = component.css;
-    component.children.forEach(function (child) {
-        css += '\n' + spreadStyle(child) + '\n';
-    });
+function spreadStyle() {
+    var css = '';
+    for (var key in Omi.style) {
+        css += '\n' + Omi.style[key] + '\n';
+    }
     return css;
+}
+
+function stringifyData(component) {
+    return '<script>window.__omiSsrData=' + JSON.stringify(component.data) + '</script>';
 }
 
 Omi.renderToString = function (component) {
@@ -292,8 +302,11 @@ Omi.renderToString = function (component) {
     component.install();
     component.beforeRender();
     component._render(true);
-    Omi.ssr = true;
-    return '<style>\n' + spreadStyle(component) + '\n</style>\n' + spread(component._virtualDom);
+    Omi.ssr = false;
+    var result = '<style>' + spreadStyle() + '</style>\n' + spread(component._virtualDom) + stringifyData(component);
+    Omi.style = {};
+    Omi._instanceId = 0;
+    return result;
 };
 
 exports['default'] = Omi;
@@ -331,13 +344,36 @@ var _component2 = _interopRequireDefault(_component);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+if (typeof Object.assign != 'function') {
+  Object.assign = function (target) {
+    'use strict';
+
+    if (target == null) {
+      throw new TypeError('Cannot convert undefined or null to object');
+    }
+
+    target = Object(target);
+    for (var index = 1; index < arguments.length; index++) {
+      var source = arguments[index];
+      if (source != null) {
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+    }
+    return target;
+  };
+}
+
 _omi2['default'].Component = _component2['default'];
 
-if (window && window.Omi) {
-    module.exports = window.Omi;
+if (typeof window !== 'undefined' && window.Omi) {
+  module.exports = window.Omi;
 } else {
-    window && (window.Omi = _omi2['default']);
-    module.exports = _omi2['default'];
+  typeof window !== 'undefined' && (window.Omi = _omi2['default']);
+  module.exports = _omi2['default'];
 }
 
 /***/ }),
@@ -549,6 +585,12 @@ var isHook = __webpack_require__(4);
 module.exports = applyProperties;
 
 function applyProperties(node, props, previous) {
+    if (!node.omixEventList) {
+        node.omixEventList = {};
+    }
+    for (var event in node.omixEventList) {
+        node[event] = null;
+    }
     for (var propName in props) {
         var propValue = props[propName];
 
@@ -572,6 +614,8 @@ function applyProperties(node, props, previous) {
                 //}
                 if (typeof propValue === 'function') {
                     node[propName.toLowerCase()] = propValue;
+                    node.omixEventList[propName.toLowerCase()] = true;
+                    node.omixEventList[propName] = true;
                 } else {
                     node.setAttribute(propName, propValue);
                 }
@@ -596,6 +640,7 @@ function removeProperty(node, propName, propValue, previous) {
                 }
             } else if (typeof previousValue === "string") {
                 node[propName] = "";
+                node.removeAttribute(propName);
             } else {
                 node[propName] = null;
             }
@@ -632,10 +677,18 @@ function patchObject(node, props, previous, propName, propValue) {
         node[propName] = {};
     }
 
-    var replacer = propName === "style" ? "" : undefined;
+    var replacer = propName === "style" ? "" : undefined,
+        json = propValue;
 
-    for (var k in propValue) {
-        var value = propValue[k];
+    if (propName === "style" && Object.prototype.toString.call(propValue) === '[object Array]') {
+        var arr = propValue.slice(0);
+        arr.unshift({});
+
+        json = Object.assign.apply(null, arr);
+    }
+
+    for (var k in json) {
+        var value = json[k];
         node[propName][k] = value === undefined ? replacer : value;
     }
 }
@@ -663,7 +716,9 @@ var _index = __webpack_require__(8);
 
 var _index2 = _interopRequireDefault(_index);
 
-__webpack_require__(41);
+var _hello = __webpack_require__(41);
+
+var _hello2 = _interopRequireDefault(_hello);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -704,11 +759,11 @@ var App = function (_Omi$Component) {
             return _index2['default'].x(
                 'div',
                 null,
-                _index2['default'].x('hello', { name: this.name }),
+                _index2['default'].x(_hello2['default'], { name: this.name }),
                 _index2['default'].x(
                     'h3',
                     { onclick: this.handleClick.bind(this) },
-                    'Scoped css and event test! click me!'
+                    'Scoped css and event test! click me2!'
                 )
             );
         }
@@ -787,7 +842,7 @@ function h(tagName, properties, children) {
     }
 
     // fix cursor bug
-    if (tag === 'INPUT' && !namespace && props.hasOwnProperty('value') && props.value !== undefined && !isHook(props.value)) {
+    if (tag === 'input' && !namespace && props.hasOwnProperty('value') && props.value !== undefined && !isHook(props.value)) {
         props.value = softSetHook(props.value);
     }
 
@@ -982,6 +1037,11 @@ var notClassId = /^\.|#/;
 module.exports = parseTag;
 
 function parseTag(tag, props) {
+
+    if (typeof tag !== 'string') {
+        return tag;
+    }
+
     if (!tag) {
         return 'div';
     }
@@ -1372,10 +1432,7 @@ var Component = function () {
     function Component(data) {
         _classCallCheck(this, Component);
 
-        this.data = Object.assign({
-            scopedSelfCss: false,
-            selfDataFirst: false
-        }, data);
+        this.data = data || {};
         this.id = _omi2['default'].getInstanceId();
         this.children = [];
         this._omi_scopedAttr = _omi2['default'].PREFIX + this.id;
@@ -1510,8 +1567,10 @@ var Component = function () {
             this._normalize(this._virtualDom, first);
             if (this.renderTo) {
                 this.node = (0, _createElement2['default'])(this._virtualDom);
-                while (this.renderTo.firstChild) {
-                    this.renderTo.removeChild(this.renderTo.firstChild);
+                if (!this._omi_increment) {
+                    while (this.renderTo.firstChild) {
+                        this.renderTo.removeChild(this.renderTo.firstChild);
+                    }
                 }
                 this.renderTo.appendChild(this.node);
                 this._mixAttr(this);
@@ -1523,15 +1582,23 @@ var Component = function () {
         value: function _generateCss() {
             var name = this.constructor.is;
             this.css = (this.style() || '').replace(/<\/?style>/g, '');
-            var shareAttr = name ? _omi2['default'].PREFIX + name.toLowerCase() : this._omi_scopedAttr;
+            var shareAttr = name ? this.data.scopedSelfCss ? this._omi_scopedAttr : _omi2['default'].PREFIX + name.toLowerCase() : this._omi_scopedAttr;
 
             if (this.css) {
-                if (this.data.scopedSelfCss || !_omi2['default'].style[shareAttr]) {
+                if (this.data.closeScopedStyle) {
+                    _omi2['default'].style[shareAttr + '_g'] = this.css;
+                    if (!_omi2['default'].ssr) {
+                        if (this.css !== this._preCss) {
+                            _style2['default'].addStyle(this.css, this.id);
+                            this._preCss = this.css;
+                        }
+                    }
+                } else if (this.data.scopedSelfCss || !_omi2['default'].style[shareAttr]) {
                     if (_omi2['default'].scopedStyle) {
                         this.css = _style2['default'].scoper(this.css, this.data.scopedSelfCss ? '[' + this._omi_scopedAttr + ']' : '[' + shareAttr + ']');
                     }
+                    _omi2['default'].style[shareAttr] = this.css;
                     if (!_omi2['default'].ssr) {
-                        _omi2['default'].style[shareAttr] = this.css;
                         if (this.css !== this._preCss) {
                             _style2['default'].addStyle(this.css, this.id);
                             this._preCss = this.css;
@@ -1555,7 +1622,8 @@ var Component = function () {
             }
 
             if (root.tagName) {
-                var Ctor = _omi2['default'].getConstructor(root.tagName);
+
+                var Ctor = typeof root.tagName === 'string' ? _omi2['default'].getConstructor(root.tagName) : root.tagName;
                 if (Ctor) {
                     var cmi = this._getNextChild(root.tagName, parentInstance);
                     // not using pre instance the first time
@@ -1570,36 +1638,36 @@ var Component = function () {
                         cmi._render();
                         parent[index] = cmi._virtualDom;
                     } else {
-                        if (Ctor) {
-                            var instance = new Ctor(root.properties);
-                            if (instance.data.children !== undefined) {
-                                instance.data._children = instance.data.children;
-                                console.warn('The children property will be covered.access it by _children');
-                            }
-                            instance.data.children = root.children;
-                            instance.install();
-                            instance.beforeRender();
-                            instance._render(first);
-                            instance.parent = parentInstance;
-                            instance._omi_needInstalled = true;
-                            if (parentInstance) {
-                                instance.parent = parentInstance;
-                                instance._omi_instanceIndex = parentInstance.children.length;
-                                parentInstance.children.push(instance);
-                                parent[index] = instance._virtualDom;
-                                if (root.properties['omi-name']) {
-                                    parentInstance[root.properties['omi-name']] = instance;
-                                }
-                            } else {
-                                this._virtualDom = instance._virtualDom;
-                                if (root.properties['omi-name']) {
-                                    this[root.properties['omi-name']] = instance;
-                                }
-                            }
 
-                            if (root.properties['omi-id']) {
-                                _omi2['default'].mapping[root.properties['omi-id']] = instance;
+                        var instance = new Ctor(root.properties);
+                        if (instance.data.children !== undefined) {
+                            instance.data._children = instance.data.children;
+                            console.warn('The children property will be covered.access it by _children');
+                        }
+                        instance.data.children = root.children;
+                        instance._using = true;
+                        instance.install();
+                        instance.beforeRender();
+                        instance._render(first);
+                        instance.parent = parentInstance;
+                        instance._omi_needInstalled = true;
+                        if (parentInstance) {
+                            instance.parent = parentInstance;
+                            instance._omi_instanceIndex = parentInstance.children.length;
+                            parentInstance.children.push(instance);
+                            parent[index] = instance._virtualDom;
+                            if (root.properties['omi-name']) {
+                                parentInstance[root.properties['omi-name']] = instance;
                             }
+                        } else {
+                            this._virtualDom = instance._virtualDom;
+                            if (root.properties['omi-name']) {
+                                this[root.properties['omi-name']] = instance;
+                            }
+                        }
+
+                        if (root.properties['omi-id']) {
+                            _omi2['default'].mapping[root.properties['omi-id']] = instance;
                         }
                     }
                 }
@@ -1622,12 +1690,20 @@ var Component = function () {
     }, {
         key: '_getNextChild',
         value: function _getNextChild(cn, parentInstance) {
-            if (parentInstance) {
+            if (typeof cn !== 'string') {
                 for (var i = 0, len = parentInstance.children.length; i < len; i++) {
                     var child = parentInstance.children[i];
-                    if (cn.replace(/-/g, '').toLowerCase() === child.constructor.is.replace(/-/g, '').toLowerCase() && !child._using) {
+                    if (cn === child.constructor && !child._using) {
                         child._using = true;
                         return child;
+                    }
+                }
+            } else if (parentInstance) {
+                for (var _i = 0, _len = parentInstance.children.length; _i < _len; _i++) {
+                    var _child = parentInstance.children[_i];
+                    if (cn.replace(/-/g, '').toLowerCase() === _child.constructor.is.replace(/-/g, '').toLowerCase() && !_child._using) {
+                        _child._using = true;
+                        return _child;
                     }
                 }
             }
@@ -2701,7 +2777,7 @@ var _index = __webpack_require__(8);
 
 var _index2 = _interopRequireDefault(_index);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2719,28 +2795,26 @@ var Hello = function (_Omi$Component) {
     }
 
     _createClass(Hello, [{
-        key: 'render',
+        key: "render",
         value: function render() {
-            return _index2['default'].x(
-                'div',
+            return _index2["default"].x(
+                "div",
                 null,
-                ' Hello ',
-                _index2['default'].x(
-                    'h1',
-                    { style: 'display:inline-block;' },
+                " Hello",
+                _index2["default"].x(
+                    "h1",
+                    { style: "display:inline-block;" },
                     this.data.name
                 ),
-                '!'
+                "!"
             );
         }
     }]);
 
     return Hello;
-}(_index2['default'].Component);
+}(_index2["default"].Component);
 
-_index2['default'].tag('hello', Hello);
-
-exports['default'] = Hello;
+exports["default"] = Hello;
 
 /***/ })
 /******/ ]);

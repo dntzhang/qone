@@ -1,7 +1,7 @@
 import Omi from '../../src/index.js'
 import TreeNode from './tree-node.js'
 
-Omi.tag('tree-node', TreeNode)
+
 
 class Tree extends Omi.Component {
 
@@ -73,7 +73,7 @@ class Tree extends Omi.Component {
     render() {
         return <ul>
             {this.data.root.nodes.map((child) =>
-                <tree-node root={child}></tree-node>
+                <TreeNode root={child}></TreeNode>
             )}
         </ul>
     }

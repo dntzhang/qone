@@ -187,7 +187,8 @@ class Component {
         }
 
         if (root.tagName) {
-            let Ctor = Omi.getConstructor(root.tagName)
+
+            let Ctor = typeof root.tagName === 'string' ? Omi.getConstructor(root.tagName) : root.tagName
             if (Ctor) {
                 let cmi = this._getNextChild(root.tagName, parentInstance)
                 // not using pre instance the first time
@@ -202,38 +203,38 @@ class Component {
                     cmi._render()
                     parent[index] = cmi._virtualDom
                 } else {
-                    if (Ctor) {
-                        let instance = new Ctor(root.properties)
-                        if (instance.data.children !== undefined) {
-                            instance.data._children = instance.data.children
-                            console.warn('The children property will be covered.access it by _children')
-                        }
-                        instance.data.children = root.children
-                        instance._using = true
-                        instance.install()
-                        instance.beforeRender()
-                        instance._render(first)
-                        instance.parent = parentInstance
-                        instance._omi_needInstalled = true
-                        if (parentInstance) {
-                            instance.parent = parentInstance
-                            instance._omi_instanceIndex = parentInstance.children.length
-                            parentInstance.children.push(instance)
-                            parent[index] = instance._virtualDom
-                            if (root.properties['omi-name']) {
-                                parentInstance[root.properties['omi-name']] = instance
-                            }
-                        } else {
-                            this._virtualDom = instance._virtualDom
-                            if (root.properties['omi-name']) {
-                                this[root.properties['omi-name']] = instance
-                            }
-                        }
 
-                        if (root.properties['omi-id']) {
-                            Omi.mapping[root.properties['omi-id']] = instance
+                    let instance = new Ctor(root.properties)
+                    if (instance.data.children !== undefined) {
+                        instance.data._children = instance.data.children
+                        console.warn('The children property will be covered.access it by _children')
+                    }
+                    instance.data.children = root.children
+                    instance._using = true
+                    instance.install()
+                    instance.beforeRender()
+                    instance._render(first)
+                    instance.parent = parentInstance
+                    instance._omi_needInstalled = true
+                    if (parentInstance) {
+                        instance.parent = parentInstance
+                        instance._omi_instanceIndex = parentInstance.children.length
+                        parentInstance.children.push(instance)
+                        parent[index] = instance._virtualDom
+                        if (root.properties['omi-name']) {
+                            parentInstance[root.properties['omi-name']] = instance
+                        }
+                    } else {
+                        this._virtualDom = instance._virtualDom
+                        if (root.properties['omi-name']) {
+                            this[root.properties['omi-name']] = instance
                         }
                     }
+
+                    if (root.properties['omi-id']) {
+                        Omi.mapping[root.properties['omi-id']] = instance
+                    }
+
                 }
             }
         }
@@ -251,7 +252,15 @@ class Component {
     }
 
     _getNextChild(cn, parentInstance) {
-        if (parentInstance) {
+        if(typeof cn !== 'string'){
+            for (let i = 0, len = parentInstance.children.length; i < len; i++) {
+                let child = parentInstance.children[i]
+                if (cn === child.constructor && !child._using) {
+                    child._using = true
+                    return child
+                }
+            }
+        }else if (parentInstance) {
             for (let i = 0, len = parentInstance.children.length; i < len; i++) {
                 let child = parentInstance.children[i]
                 if (cn.replace(/-/g, '').toLowerCase() === child.constructor.is.replace(/-/g, '').toLowerCase() && !child._using) {

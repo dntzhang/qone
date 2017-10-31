@@ -728,8 +728,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var $ = _index2['default'].tags;
-
 var App = function (_Omi$Component) {
     _inherits(App, _Omi$Component);
 
@@ -740,19 +738,34 @@ var App = function (_Omi$Component) {
     }
 
     _createClass(App, [{
+        key: 'install',
+        value: function install() {
+            this.name = 'Omi';
+        }
+    }, {
         key: 'handleClick',
         value: function handleClick(e) {
-            alert(e.target.innerHTML);
+            this.name = 'Omix';
+            this.update();
         }
     }, {
         key: 'style',
         value: function style() {
-            return '\n        <style>\n        h3{\n            color:red;\n            cursor: pointer;\n        }\n        ';
+            return 'h3{\n                    color:red;\n                    cursor: pointer;\n                }';
         }
     }, {
         key: 'render',
         value: function render() {
-            return $.div([$.Hello({ name: 'Omix' }), $.h3({ onclick: this.handleClick.bind(this) }, 'scoped css and event test! click me!')]);
+            return _index2['default'].x(
+                'div',
+                null,
+                _index2['default'].x(_hello2['default'], { name: this.name }),
+                _index2['default'].x(
+                    'h3',
+                    { onclick: this.handleClick.bind(this) },
+                    'Scoped css and event test! click me!'
+                )
+            );
         }
     }]);
 
@@ -814,7 +827,7 @@ function h(tagName, properties, children) {
     }
 
     props = props || properties || {};
-
+    console.log(tagName);
     tag = parseTag(tagName, props);
 
     // support keys
@@ -1552,7 +1565,7 @@ var Component = function () {
         value: function _render(first) {
             this._generateCss();
             this._virtualDom = this.render();
-
+            console.log(this._virtualDom);
             this._normalize(this._virtualDom, first);
             if (this.renderTo) {
                 this.node = (0, _createElement2['default'])(this._virtualDom);
@@ -1611,7 +1624,7 @@ var Component = function () {
             }
 
             if (root.tagName) {
-
+                console.log(root.tagName);
                 var Ctor = typeof root.tagName === 'string' ? _omi2['default'].getConstructor(root.tagName) : root.tagName;
                 if (Ctor) {
                     var cmi = this._getNextChild(root.tagName, parentInstance);
@@ -1627,7 +1640,7 @@ var Component = function () {
                         cmi._render();
                         parent[index] = cmi._virtualDom;
                     } else {
-
+                        console.log(Ctor);
                         var instance = new Ctor(root.properties);
                         if (instance.data.children !== undefined) {
                             instance.data._children = instance.data.children;
@@ -2775,8 +2788,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var $ = _index2['default'].tags;
-
 var Hello = function (_Omi$Component) {
     _inherits(Hello, _Omi$Component);
 
@@ -2787,16 +2798,51 @@ var Hello = function (_Omi$Component) {
     }
 
     _createClass(Hello, [{
+        key: 'clickHandler',
+        value: function clickHandler() {}
+    }, {
         key: 'render',
         value: function render() {
-            return $.div('Hello2 ' + this.data.name + '!');
+            return _index2['default'].x(
+                'div',
+                null,
+                _index2['default'].x(
+                    'div',
+                    { onclick: this.clickHandler.bind(this), style: styles.red },
+                    'just red'
+                ),
+                _index2['default'].x(
+                    'div',
+                    { style: styles.bigblue },
+                    'just bigblue'
+                ),
+                _index2['default'].x(
+                    'div',
+                    { style: [styles.bigblue, styles.red] },
+                    'bigblue, then red'
+                ),
+                _index2['default'].x(
+                    'div',
+                    { style: [styles.red, styles.bigblue] },
+                    'red, then bigblue'
+                )
+            );
         }
     }]);
 
     return Hello;
 }(_index2['default'].Component);
 
-_index2['default'].tag('Hello', Hello);
+var styles = {
+    bigblue: {
+        fontSize: '30px',
+        color: 'blue',
+        fontWeight: 'bold'
+    },
+    red: {
+        color: 'red'
+    }
+};
 
 exports['default'] = Hello;
 

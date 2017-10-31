@@ -2,13 +2,13 @@
 
 import Tree from './tree.js'
 
-Omi.tag('tree', Tree)
+
 
 class App extends Omi.Component {
     render() {
         return <div>
             <div> {this.data.demoName}</div>
-            <tree root={this.data.rootNode}></tree>
+            <Tree root={this.data.rootNode}></Tree>
         </div>
     }
 }

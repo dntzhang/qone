@@ -1,5 +1,5 @@
 /*!
- *  omix v1.1.15 By dntzhang 
+ *  omix v1.2.0 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -624,10 +624,19 @@ function patchObject(node, props, previous, propName, propValue) {
         node[propName] = {}
     }
 
-    var replacer = propName === "style" ? "" : undefined
+    var replacer = propName === "style" ? "" : undefined,
+        json = propValue
 
-    for (var k in propValue) {
-        var value = propValue[k]
+
+    if( propName === "style" && Object.prototype.toString.call(propValue)==='[object Array]'){
+        var arr = propValue.slice(0)
+        arr.unshift({})
+
+        json = Object.assign.apply(null, arr)
+    }
+
+    for (var k in json) {
+        var value = json[k]
         node[propName][k] = (value === undefined) ? replacer : value
     }
 }
@@ -758,7 +767,7 @@ function h(tagName, properties, children) {
     }
 
     // fix cursor bug
-    if (tag === 'INPUT' &&
+    if (tag === 'input' &&
         !namespace &&
         props.hasOwnProperty('value') &&
         props.value !== undefined &&
@@ -963,6 +972,11 @@ var notClassId = /^\.|#/;
 module.exports = parseTag;
 
 function parseTag(tag, props) {
+
+    if(typeof tag !== 'string'){
+        return tag
+    }
+
     if (!tag) {
         return 'div';
     }
@@ -1547,7 +1561,8 @@ var Component = function () {
             }
 
             if (root.tagName) {
-                var Ctor = _omi2['default'].getConstructor(root.tagName);
+
+                var Ctor = typeof root.tagName === 'string' ? _omi2['default'].getConstructor(root.tagName) : root.tagName;
                 if (Ctor) {
                     var cmi = this._getNextChild(root.tagName, parentInstance);
                     // not using pre instance the first time
@@ -1562,37 +1577,36 @@ var Component = function () {
                         cmi._render();
                         parent[index] = cmi._virtualDom;
                     } else {
-                        if (Ctor) {
-                            var instance = new Ctor(root.properties);
-                            if (instance.data.children !== undefined) {
-                                instance.data._children = instance.data.children;
-                                console.warn('The children property will be covered.access it by _children');
-                            }
-                            instance.data.children = root.children;
-                            instance._using = true;
-                            instance.install();
-                            instance.beforeRender();
-                            instance._render(first);
-                            instance.parent = parentInstance;
-                            instance._omi_needInstalled = true;
-                            if (parentInstance) {
-                                instance.parent = parentInstance;
-                                instance._omi_instanceIndex = parentInstance.children.length;
-                                parentInstance.children.push(instance);
-                                parent[index] = instance._virtualDom;
-                                if (root.properties['omi-name']) {
-                                    parentInstance[root.properties['omi-name']] = instance;
-                                }
-                            } else {
-                                this._virtualDom = instance._virtualDom;
-                                if (root.properties['omi-name']) {
-                                    this[root.properties['omi-name']] = instance;
-                                }
-                            }
 
-                            if (root.properties['omi-id']) {
-                                _omi2['default'].mapping[root.properties['omi-id']] = instance;
+                        var instance = new Ctor(root.properties);
+                        if (instance.data.children !== undefined) {
+                            instance.data._children = instance.data.children;
+                            console.warn('The children property will be covered.access it by _children');
+                        }
+                        instance.data.children = root.children;
+                        instance._using = true;
+                        instance.install();
+                        instance.beforeRender();
+                        instance._render(first);
+                        instance.parent = parentInstance;
+                        instance._omi_needInstalled = true;
+                        if (parentInstance) {
+                            instance.parent = parentInstance;
+                            instance._omi_instanceIndex = parentInstance.children.length;
+                            parentInstance.children.push(instance);
+                            parent[index] = instance._virtualDom;
+                            if (root.properties['omi-name']) {
+                                parentInstance[root.properties['omi-name']] = instance;
                             }
+                        } else {
+                            this._virtualDom = instance._virtualDom;
+                            if (root.properties['omi-name']) {
+                                this[root.properties['omi-name']] = instance;
+                            }
+                        }
+
+                        if (root.properties['omi-id']) {
+                            _omi2['default'].mapping[root.properties['omi-id']] = instance;
                         }
                     }
                 }
@@ -1615,12 +1629,20 @@ var Component = function () {
     }, {
         key: '_getNextChild',
         value: function _getNextChild(cn, parentInstance) {
-            if (parentInstance) {
+            if (typeof cn !== 'string') {
                 for (var i = 0, len = parentInstance.children.length; i < len; i++) {
                     var child = parentInstance.children[i];
-                    if (cn.replace(/-/g, '').toLowerCase() === child.constructor.is.replace(/-/g, '').toLowerCase() && !child._using) {
+                    if (cn === child.constructor && !child._using) {
                         child._using = true;
                         return child;
+                    }
+                }
+            } else if (parentInstance) {
+                for (var _i = 0, _len = parentInstance.children.length; _i < _len; _i++) {
+                    var _child = parentInstance.children[_i];
+                    if (cn.replace(/-/g, '').toLowerCase() === _child.constructor.is.replace(/-/g, '').toLowerCase() && !_child._using) {
+                        _child._using = true;
+                        return _child;
                     }
                 }
             }

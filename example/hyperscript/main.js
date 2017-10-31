@@ -1,5 +1,5 @@
 import Omi from '../../src/index.js'
-import './hello.js'
+import Hello from './hello.js'
 
 const $ = Omi.tags
 
@@ -20,7 +20,7 @@ class App extends Omi.Component {
 
     render() {
         return $.div([
-            $.HelloTest({name: 'Omi'}),
+            $.Hello({name: 'Omix'}),
             $.h3({onclick: this.handleClick.bind(this)}, 'scoped css and event test! click me!')
         ])
     }
