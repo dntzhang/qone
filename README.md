@@ -37,6 +37,7 @@ class Hello extends Omi.Component {
 class App extends Omi.Component {
     install() {
         this.name = 'Omi'
+        this.handleClick = this.handleClick.bind(this)
     }
 
     handleClick(e) {
@@ -54,7 +55,7 @@ class App extends Omi.Component {
     render() {
         return <div>
 	            <Hello name={this.name}></Hello>
-	            <h3 onclick={this.handleClick.bind(this)}>Scoped css and event test! click me!</h3>
+	            <h3 onclick={this.handleClick}>Scoped css and event test! click me!</h3>
 	        </div>
     }
 }

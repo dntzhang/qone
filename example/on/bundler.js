@@ -232,6 +232,7 @@ Omi.render = function (component, renderTo, option) {
         component._omi_increment = option;
     } else if (option) {
         component._omi_increment = option.increment;
+        component.$store = option.store;
         if (option.ssr) {
             component.data = Object.assign({}, window.__omiSsrData, component.data);
         }
@@ -297,8 +298,9 @@ function stringifyData(component) {
     return '<script>window.__omiSsrData=' + JSON.stringify(component.data) + '</script>';
 }
 
-Omi.renderToString = function (component) {
+Omi.renderToString = function (component, store) {
     Omi.ssr = true;
+    component.$store = store;
     component.install();
     component.beforeRender();
     component._render(true);
@@ -741,6 +743,8 @@ var App = function (_Omi$Component) {
         key: 'install',
         value: function install() {
             this.name = 'Omi';
+
+            this.handleClick = this.handleClick.bind(this);
         }
     }, {
         key: 'handleClick',
@@ -762,7 +766,7 @@ var App = function (_Omi$Component) {
                 _index2['default'].x(_hello2['default'], { name: this.name }),
                 _index2['default'].x(
                     'h3',
-                    { onclick: this.handleClick.bind(this) },
+                    { onclick: this.handleClick },
                     'Scoped css and event test! click me!'
                 )
             );
@@ -827,7 +831,6 @@ function h(tagName, properties, children) {
     }
 
     props = props || properties || {};
-    console.log(tagName);
     tag = parseTag(tagName, props);
 
     // support keys
@@ -1565,7 +1568,6 @@ var Component = function () {
         value: function _render(first) {
             this._generateCss();
             this._virtualDom = this.render();
-            console.log(this._virtualDom);
             this._normalize(this._virtualDom, first);
             if (this.renderTo) {
                 this.node = (0, _createElement2['default'])(this._virtualDom);
@@ -1624,7 +1626,7 @@ var Component = function () {
             }
 
             if (root.tagName) {
-                console.log(root.tagName);
+
                 var Ctor = typeof root.tagName === 'string' ? _omi2['default'].getConstructor(root.tagName) : root.tagName;
                 if (Ctor) {
                     var cmi = this._getNextChild(root.tagName, parentInstance);
@@ -1640,8 +1642,11 @@ var Component = function () {
                         cmi._render();
                         parent[index] = cmi._virtualDom;
                     } else {
-                        console.log(Ctor);
+
                         var instance = new Ctor(root.properties);
+                        if (parentInstance) {
+                            instance.$store = parentInstance.$store;
+                        }
                         if (instance.data.children !== undefined) {
                             instance.data._children = instance.data.children;
                             console.warn('The children property will be covered.access it by _children');
@@ -2327,7 +2332,6 @@ module.exports = diffProps;
 function diffProps(a, b) {
     var diff;
 
-    console.error(a, b);
     for (var aKey in a) {
         if (!(aKey in b)) {
             diff = diff || {};
@@ -2798,8 +2802,15 @@ var Hello = function (_Omi$Component) {
     }
 
     _createClass(Hello, [{
+        key: 'install',
+        value: function install() {
+            this.clickHandler = this.clickHandler.bind(this);
+        }
+    }, {
         key: 'clickHandler',
-        value: function clickHandler() {}
+        value: function clickHandler() {
+            console.log(1);
+        }
     }, {
         key: 'render',
         value: function render() {
@@ -2808,7 +2819,7 @@ var Hello = function (_Omi$Component) {
                 null,
                 _index2['default'].x(
                     'div',
-                    { onclick: this.clickHandler.bind(this), style: styles.red },
+                    { onclick: this.clickHandler, style: styles.red },
                     'just red'
                 ),
                 _index2['default'].x(
