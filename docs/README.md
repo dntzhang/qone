@@ -79,8 +79,6 @@ class Hello extends Omi.Component {
     }
 }
 
-Omi.tag('hello', Hello)
-
 class App extends Omi.Component {
     install() {
         this.name = 'Omi'
@@ -112,7 +110,6 @@ Omi.render(new App(), '#container')
 * 组件继承自`Omi.Component`，
 * `render`返回的是组件JSX 或者 hyperscript
 * `style`返回的是组件的CSS，是局部的，不会污染组件以外的元素
-* 通过`Omi.tag('hello', Hello)`把组件变成可声明在其他组件中的标签，即:`<hello></hello> `
 * 通过`name={this.name}`把传递给子组件hello，子组件直接在render里可以使用{this.data.name}来使用传递来的数据
 * 通过`onclick={this.handleClick.bind(this)}"`给HTML元素绑定事件，在handleClick回调中可以拿到event对象
 

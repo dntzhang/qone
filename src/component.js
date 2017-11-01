@@ -205,6 +205,9 @@ class Component {
                 } else {
 
                     let instance = new Ctor(root.properties)
+                    if(parentInstance) {
+                        instance.$store = parentInstance.$store
+                    }
                     if (instance.data.children !== undefined) {
                         instance.data._children = instance.data.children
                         console.warn('The children property will be covered.access it by _children')

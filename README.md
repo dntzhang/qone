@@ -2,7 +2,7 @@
   <a href="##Omix"><img src="http://images2017.cnblogs.com/blog/105416/201708/105416-20170807145434955-1872305404.png" alt="Omi"></a>
 </p>
 <p align="center">
-Build UI with JSX or hyperscript - 使用 JSX 或 hyperscript 创建用户界面
+Build UI with JSX - 使用 JSX 创建用户界面
 </p>
 <p align="center">
   <a href="https://circleci.com/gh/AlloyTeam/omix/tree/master"><img src="https://img.shields.io/circleci/project/AlloyTeam/omix/master.svg" alt="Build Status"></a>
@@ -25,9 +25,7 @@ Build UI with JSX or hyperscript - 使用 JSX 或 hyperscript 创建用户界面
 * Support Scoped CSS, reusable components are composed of HTML, Scoped CSS and JS
 * More free updates, each component has a update method, free to choose the right time to update
 
-## Omix 
-
-### with JSX
+## Hello Omix 
 
 ``` js
 class Hello extends Omi.Component {
@@ -64,48 +62,6 @@ class App extends Omi.Component {
 Omi.render(new App(), '#container')
 ```
 
-Please attention, custom component tags must be lowercase!
-
-### with hyperscript
-
-``` js
-const $ = Omi.tags
-
-class Hello extends Omi.Component {
-    render() {
-        return $.div( 'Hello' + this.data.name+'!')
-    }
-}
-
-Omi.tag('Hello', Hello)
-
-class App extends Omi.Component {
-    handleClick(e) {
-        alert(e.target.innerHTML)
-    }
-
-    render() {
-        return $.div([
-	            $.Hello({name: 'Omi'}),
-	            $.h3({onclick: this.handleClick.bind(this)}, 'scoped css and event test! click me!')
-	        ])
-    }
-}
-```
-
-### hyperscript API
-
-```js
-const $ = Omi.tags
-$.TagName(selector)
-$.TagName(attrs)
-$.TagName(children)
-$.TagName(attrs, children)
-$.TagName(selector, children)
-$.TagName(selector, attrs, children)
-$.TagName(selector, attrs, child, child, child ...)
-```
-
 ## omi-cli
 
 ```bash
@@ -124,8 +80,8 @@ npm install omix
 
 or get it from CDN:
 
-* [https://unpkg.com/omix@1.2.0/dist/omix.min.js](https://unpkg.com/omix@1.2.0/dist/omix.min.js)
-* [https://unpkg.com/omix@1.2.0/dist/omix.js](https://unpkg.com/omix@1.2.0/dist/omix.js)
+* [https://unpkg.com/omix@1.2.1/dist/omix.min.js](https://unpkg.com/omix@1.2.1/dist/omix.min.js)
+* [https://unpkg.com/omix@1.2.1/dist/omix.js](https://unpkg.com/omix@1.2.1/dist/omix.js)
 
 # License
 This content is released under the [MIT](http://opensource.org/licenses/MIT) License.

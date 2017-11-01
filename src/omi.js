@@ -69,6 +69,7 @@ Omi.render = function(component, renderTo, option) {
         component._omi_increment = option
     } else if (option) {
         component._omi_increment = option.increment
+        component.$store = option.store
         if (option.ssr) {
             component.data = Object.assign({}, window.__omiSsrData, component.data)
         }
@@ -134,8 +135,9 @@ function stringifyData(component) {
     return '<script>window.__omiSsrData=' + JSON.stringify(component.data) + '</script>'
 }
 
-Omi.renderToString = function(component) {
+Omi.renderToString = function(component, store) {
     Omi.ssr = true
+    component.$store = store
     component.install()
     component.beforeRender()
     component._render(true)
