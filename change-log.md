@@ -1,3 +1,7 @@
+# omix v1.2.1
+
+* 支持 store 系统，根节点注入 $store, 所有子节点都能共享。[例子](https://github.com/AlloyTeam/omix/tree/master/example/store)
+
 # omix v1.2.0
 
 * 使用 JSX 可以不用在写 Omi.tag(xx, xxx)
