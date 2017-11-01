@@ -83,5 +83,13 @@ or get it from CDN:
 * [https://unpkg.com/omix@1.2.1/dist/omix.min.js](https://unpkg.com/omix@1.2.1/dist/omix.min.js)
 * [https://unpkg.com/omix@1.2.1/dist/omix.js](https://unpkg.com/omix@1.2.1/dist/omix.js)
 
+
+## Plugins
+
+* [omi-router](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-router): Router for Omi.
+* [omi-finger](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-finger): Omi /[AlloyFinger](https://github.com/AlloyTeam/AlloyFinger) integration.
+* [omi-transform](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-transform): Omi /[transformjs](https://alloyteam.github.io/AlloyTouch/transformjs/) integration.
+* [omi-touch](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-touch): Omi /[AlloyTouch](https://github.com/AlloyTeam/AlloyTouch) integration.
+
 # License
 This content is released under the [MIT](http://opensource.org/licenses/MIT) License.
