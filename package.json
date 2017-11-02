@@ -1,6 +1,6 @@
 {
   "name": "omix",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Build UI with JSX or hyperscript.",
   "main": "dist/omix.js",
   "scripts": {
@@ -9,6 +9,7 @@
     "lint:example": "eslint example --fix",
     "store": "webpack -w",
     "simple": "webpack -w",
+    "scoped-style": "webpack -w",
     "on": "webpack -w",
     "render-to-string": "webpack -w",
     "newly-added": "webpack -w",

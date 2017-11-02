@@ -28,7 +28,6 @@ class Component {
     }
 
     update() {
-        this._resetUsing(this)
         this.beforeUpdate()
         // this._childrenBeforeUpdate(this)
         this.beforeRender()
@@ -148,9 +147,8 @@ class Component {
     }
 
     _generateCss() {
-        const name = this.constructor.is
         this.css = (this.style() || '').replace(/<\/?style>/g, '')
-        let shareAttr = name ? (this.data.scopedSelfCss ? this._omi_scopedAttr : Omi.PREFIX + name.toLowerCase()) : (this._omi_scopedAttr)
+        let shareAttr =  this.data.scopedSelfCss ? this._omi_scopedAttr : Omi.getAttr(this.constructor)
 
         if (this.css) {
             if(this.data.closeScopedStyle){
@@ -161,7 +159,7 @@ class Component {
                         this._preCss = this.css
                     }
                 }
-            }else if (this.data.scopedSelfCss || !Omi.style[shareAttr]) {
+            }else if (!Omi.style[shareAttr]) {
                 if (Omi.scopedStyle) {
                     this.css = style.scoper(this.css, this.data.scopedSelfCss ? '[' + this._omi_scopedAttr + ']' : '[' + shareAttr + ']')
                 }
@@ -180,8 +178,8 @@ class Component {
         let ps = root.properties
         // for scoped css
         if (ps) {
-            if (Omi.scopedStyle && this.constructor.is) {
-                ps[Omi.PREFIX + this.constructor.is.toLowerCase()] = ''
+            if (Omi.scopedStyle && this.constructor.name) {
+                ps[Omi.getAttr(this.constructor)] = ''
             }
             ps[this._omi_scopedAttr] = ''
         }
@@ -190,7 +188,7 @@ class Component {
 
             let Ctor = typeof root.tagName === 'string' ? Omi.getConstructor(root.tagName) : root.tagName
             if (Ctor) {
-                let cmi = this._getNextChild(root.tagName, parentInstance)
+                let cmi = Omi.getInstanceById(root.properties._omi_component_id)
                 // not using pre instance the first time
                 if (cmi && !first) {
                     if (cmi.data.selfDataFirst) {
@@ -205,6 +203,7 @@ class Component {
                 } else {
 
                     let instance = new Ctor(root.properties)
+                    root.properties._omi_component_id = instance.id
                     if(parentInstance) {
                         instance.$store = parentInstance.$store
                     }
@@ -213,7 +212,6 @@ class Component {
                         console.warn('The children property will be covered.access it by _children')
                     }
                     instance.data.children = root.children
-                    instance._using = true
                     instance.install()
                     instance.beforeRender()
                     instance._render(first)
@@ -245,33 +243,6 @@ class Component {
         root.children && root.children.forEach((child, index) => {
             this._normalize(child, first, root.children, index, this)
         })
-    }
-
-    _resetUsing(root) {
-        root.children.forEach((child) => {
-            this._resetUsing(child)
-            child._using = false
-        })
-    }
-
-    _getNextChild(cn, parentInstance) {
-        if(typeof cn !== 'string'){
-            for (let i = 0, len = parentInstance.children.length; i < len; i++) {
-                let child = parentInstance.children[i]
-                if (cn === child.constructor && !child._using) {
-                    child._using = true
-                    return child
-                }
-            }
-        }else if (parentInstance) {
-            for (let i = 0, len = parentInstance.children.length; i < len; i++) {
-                let child = parentInstance.children[i]
-                if (cn.replace(/-/g, '').toLowerCase() === child.constructor.is.replace(/-/g, '').toLowerCase() && !child._using) {
-                    child._using = true
-                    return child
-                }
-            }
-        }
     }
 
     _fixForm() {

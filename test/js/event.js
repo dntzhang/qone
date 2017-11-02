@@ -26,7 +26,7 @@ class App extends Omi.Component {
 
         return <div>
                     <h3 onClick={this.handleClick.bind(this)}>b</h3>
-                    <hello-tag name={this.name}></hello-tag>
+                    <Hello name={this.name}></Hello>
                 </div>
     }
 }
@@ -43,6 +43,6 @@ innerH3.click()
 
 describe('base', function() {
     it('test event and update method', function() {
-        expect(ctn.innerHTML).toBe('<div __s_2=""><h3 __s_2="">b</h3><div __s_hello-tag="" __s_3=""> Hello Omix!</div></div>')
+        expect(ctn.innerHTML).toBe('<div __st_2="" __s_2=""><h3 __st_2="" __s_2="">b</h3><div __st_3="" __s_4=""> Hello Omix!</div></div>')
     })
 })

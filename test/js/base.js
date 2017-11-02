@@ -26,7 +26,7 @@ class App extends Omi.Component {
 
         return <div>
                     <h3>b</h3>
-                    <hello-tag name={this.name}></hello-tag>
+                    <Hello name={this.name}></Hello>
                 </div>
     }
 }
@@ -40,7 +40,7 @@ let ctn =  document.querySelector('#ctn')
 
 describe('base', function() {
     it('test render', function() {
-        expect(ctn.innerHTML).toBe('<div __s_0=""><h3 __s_0="">b</h3><div __s_hello-tag="" __s_1=""> Hello Omi!</div></div>')
+        expect(ctn.innerHTML).toBe('<div __st_0="" __s_0=""><h3 __st_0="" __s_0="">b</h3><div __st_1="" __s_1=""> Hello Omi!</div></div>')
     })
 })
 

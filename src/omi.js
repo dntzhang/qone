@@ -6,6 +6,8 @@ let Omi = {
     tags: helpers(h),
     instances: {},
     _instanceId: 0,
+    _styleId: 0,
+    STYLEPREFIX: '__st_',
     PREFIX: '__s_',
     getInstanceId: function() {
         return Omi._instanceId++
@@ -15,6 +17,27 @@ let Omi = {
     mapping: {},
     style: {},
     componentConstructor: {}
+}
+
+Omi.getAttr = function(ctor){
+    if(ctor.is){
+        return ctor.is
+    }
+    let inst = Omi.instances,
+        hasAttr = false
+    for(var key in inst) {
+        if (inst[key].constructor === ctor) {
+            hasAttr = true
+            ctor.is = Omi.STYLEPREFIX + Omi._styleId
+            Omi._styleId++
+            return ctor.is
+        }
+    }
+    if(!hasAttr){
+        ctor.is = Omi.STYLEPREFIX + Omi._styleId
+        Omi._styleId++
+        return ctor.is
+    }
 }
 
 Omi.$ = function(selector, context) {
@@ -146,6 +169,19 @@ Omi.renderToString = function(component, store) {
     Omi.style = {}
     Omi._instanceId = 0
     return result
+}
+
+Omi.getInstanceById = function(id){
+    if(typeof id === 'number') {
+        let ins = Omi.instances
+        for (let key in ins) {
+            if (ins.hasOwnProperty(key)) {
+                if (id === ins[key].id) {
+                    return ins[key]
+                }
+            }
+        }
+    }
 }
 
 export default Omi
