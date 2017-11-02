@@ -1,3 +1,7 @@
+# omix v1.2.3
+
+* 性能优化
+
 # omix v1.2.2
 
 * 解决 scoped style 相关问题
