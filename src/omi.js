@@ -1,9 +1,8 @@
 import h from 'virtual-dom-omi/h'
-import helpers from 'hyperscript-helpers'
+
 
 let Omi = {
     x: h,
-    tags: helpers(h),
     instances: {},
     _instanceId: 0,
     _styleId: 0,
@@ -171,17 +170,5 @@ Omi.renderToString = function(component, store) {
     return result
 }
 
-Omi.getInstanceById = function(id){
-    if(typeof id === 'number') {
-        let ins = Omi.instances
-        for (let key in ins) {
-            if (ins.hasOwnProperty(key)) {
-                if (id === ins[key].id) {
-                    return ins[key]
-                }
-            }
-        }
-    }
-}
 
 export default Omi

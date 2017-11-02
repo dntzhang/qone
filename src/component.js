@@ -28,6 +28,7 @@ class Component {
     }
 
     update() {
+        this._resetUsing(this)
         this.beforeUpdate()
         // this._childrenBeforeUpdate(this)
         this.beforeRender()
@@ -188,7 +189,7 @@ class Component {
 
             let Ctor = typeof root.tagName === 'string' ? Omi.getConstructor(root.tagName) : root.tagName
             if (Ctor) {
-                let cmi = Omi.getInstanceById(root.properties._omi_component_id)
+                let cmi = this._getNextChild(root.tagName, parentInstance)
                 // not using pre instance the first time
                 if (cmi && !first) {
                     if (cmi.data.selfDataFirst) {
@@ -203,7 +204,6 @@ class Component {
                 } else {
 
                     let instance = new Ctor(root.properties)
-                    root.properties._omi_component_id = instance.id
                     if(parentInstance) {
                         instance.$store = parentInstance.$store
                     }
@@ -212,6 +212,7 @@ class Component {
                         console.warn('The children property will be covered.access it by _children')
                     }
                     instance.data.children = root.children
+                    instance._using = true
                     instance.install()
                     instance.beforeRender()
                     instance._render(first)
@@ -243,6 +244,33 @@ class Component {
         root.children && root.children.forEach((child, index) => {
             this._normalize(child, first, root.children, index, this)
         })
+    }
+
+    _resetUsing(root) {
+        root.children.forEach((child) => {
+            this._resetUsing(child)
+            child._using = false
+        })
+    }
+
+    _getNextChild(cn, parentInstance) {
+        if(typeof cn !== 'string'){
+            for (let i = 0, len = parentInstance.children.length; i < len; i++) {
+                let child = parentInstance.children[i]
+                if (cn === child.constructor && !child._using) {
+                    child._using = true
+                    return child
+                }
+            }
+        }else if (parentInstance) {
+            for (let i = 0, len = parentInstance.children.length; i < len; i++) {
+                let child = parentInstance.children[i]
+                if (cn.replace(/-/g, '').toLowerCase() === child.constructor.is.replace(/-/g, '').toLowerCase() && !child._using) {
+                    child._using = true
+                    return child
+                }
+            }
+        }
     }
 
     _fixForm() {

@@ -6,8 +6,6 @@
 * [安装Omix](#安装-omix)
 * [Hello Omix](#hello-omix)
 * [介绍 JSX](#介绍-jsx)
-* [介绍 hyperscript](#介绍-hyperscript)
-* [JSX vs hyperscript](#jsx-vs-hyperscript)
 * [组件与通讯](#组件与通讯)
     * [组件体系](#组件体系)
     * [父子通讯](#父子通讯)
@@ -28,7 +26,7 @@
 
 ## 简介
     
-    Omix（读音 / [ˈomɪkɜ:s] /, 汉字类似于 欧米可思） 是一款使用 JSX 或者 hyperscript 创建Web用户界面的组件化框架，故得名：Omix。
+    Omix（读音 / [ˈomɪkɜ:s] /, 汉字类似于 欧米可思） 是一款使用 JSX 创建Web用户界面的组件化框架，故得名：Omix。
 其代码已托管至Github地址: [https://github.com/AlloyTeam/omix](https://github.com/AlloyTeam/omix)
 
 [Omix框架](https://github.com/AlloyTeam/omix) 并不是用来替代 [Omi框架](https://github.com/AlloyTeam/omi) ，而是另外一种选择。概括起来包含下面优点和特性:
@@ -237,43 +235,7 @@ const element = Omi.x(
 >
 >如果你是在使用本地编辑器编写 JSX 代码的话，推荐你去装一个支持 JSX 高亮的插件，这样更方便之后的开发学习。
 
-## 介绍 hyperscript
-
-(摘自 [https://github.com/ohanhi/hyperscript-helpers#api](https://github.com/ohanhi/hyperscript-helpers#api))
-
-Because **hyperscript-helpers** are hyperscript-agnostic there is no "exact" API.
-But, just to give you a direction of what should be possible:
-
-```js
-const $ = Omi.tags
-$.TagName(selector)
-$.TagName(attrs)
-$.TagName(children)
-$.TagName(attrs, children)
-$.TagName(selector, children)
-$.TagName(selector, attrs, children)
-$.TagName(selector, attrs, child, child, child ...)
-```
-
-Where
-* `selector` is string, starting with "." or "#".
-* `attrs` is an object of attributes.
-* `children` is a hyperscript node, an array of hyperscript nodes, a string or an array of strings.
-
-**hyperscript-helpers** is a collection of wrapper functions, so the syntax of your exact hyperscript library
-(like [virtual-hyperscript](https://github.com/Matt-Esch/virtual-dom/tree/master/virtual-hyperscript)) still applies.
-
-For example, for multiple classes:
-
-```js
-$.Button({class: "btn btn-default"}); // ← separated by space!
-$.Button(".btn.btn-default");             // ← separated by dot!
-```
-
-Other hyperscript libraries may have other syntax conventions.
-
-
-## JSX vs hyperscript
+## JSX 例子
 
 ```
 // JSX
@@ -283,13 +245,7 @@ Other hyperscript libraries may have other syntax conventions.
   )}
 </ul>
 ```
-vs
-```
-// hyperscript-helpers
-$.ul('#bestest-menu', items.map( item =>
-  $.li('.item', attrs(item.id), item.title))
-);
-```
+
 
 
 ```
@@ -298,27 +254,12 @@ $.ul('#bestest-menu', items.map( item =>
     <MyItem id={item.id} title={item.title} />
 )}</MyList>
 ```
-vs
-```
-// hyperscript-helpers
-$.MyList(items.map(item => 
-    $.MyItem(item.id, item.title)
-))
-```
+
 
 ```
 <MyComponent someProp={{x: 1, y: 2}}/>
 ```
-vs
-```
-$.MyComponent({x: 1, y: 2})
-```
 
-注意，上面 hyperscript 的前提代码是:
-
-```js
-const $ = Omi.tags
-```
 
 ## 组件与通讯
 

@@ -1,5 +1,5 @@
 /*!
- *  omix v1.2.2 By dntzhang 
+ *  omix v1.2.3 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -163,15 +163,10 @@ var _h = __webpack_require__(16);
 
 var _h2 = _interopRequireDefault(_h);
 
-var _hyperscriptHelpers = __webpack_require__(27);
-
-var _hyperscriptHelpers2 = _interopRequireDefault(_hyperscriptHelpers);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var Omi = {
     x: _h2['default'],
-    tags: (0, _hyperscriptHelpers2['default'])(_h2['default']),
     instances: {},
     _instanceId: 0,
     _styleId: 0,
@@ -339,19 +334,6 @@ Omi.renderToString = function (component, store) {
     return result;
 };
 
-Omi.getInstanceById = function (id) {
-    if (typeof id === 'number') {
-        var ins = Omi.instances;
-        for (var key in ins) {
-            if (ins.hasOwnProperty(key)) {
-                if (id === ins[key].id) {
-                    return ins[key];
-                }
-            }
-        }
-    }
-};
-
 exports['default'] = Omi;
 
 /***/ }),
@@ -487,7 +469,7 @@ module.exports = function isObject(x) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
-var minDoc = __webpack_require__(35);
+var minDoc = __webpack_require__(34);
 
 var doccy;
 
@@ -701,7 +683,7 @@ var _omi = __webpack_require__(6);
 
 var _omi2 = _interopRequireDefault(_omi);
 
-var _component = __webpack_require__(28);
+var _component = __webpack_require__(27);
 
 var _component2 = _interopRequireDefault(_component);
 
@@ -1333,59 +1315,6 @@ function Individual(key, value) {
 "use strict";
 
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-var isValidString = function isValidString(param) {
-  return typeof param === 'string' && param.length > 0;
-};
-
-var startsWith = function startsWith(string, start) {
-  return string[0] === start;
-};
-
-var isSelector = function isSelector(param) {
-  return isValidString(param) && (startsWith(param, '.') || startsWith(param, '#'));
-};
-
-var node = function node(h) {
-  return function (tagName) {
-    return function (first) {
-      for (var _len = arguments.length, rest = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        rest[_key - 1] = arguments[_key];
-      }
-
-      if (isSelector(first)) {
-        return h.apply(undefined, [tagName + first].concat(rest));
-      } else if (typeof first === 'undefined') {
-        return h(tagName);
-      } else {
-        return h.apply(undefined, [tagName, first].concat(rest));
-      }
-    };
-  };
-};
-
-var TAG_NAMES = ['a', 'abbr', 'acronym', 'address', 'applet', 'area', 'article', 'aside', 'audio', 'b', 'base', 'basefont', 'bdi', 'bdo', 'bgsound', 'big', 'blink', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'command', 'content', 'data', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog', 'dir', 'div', 'dl', 'dt', 'element', 'em', 'embed', 'fieldset', 'figcaption', 'figure', 'font', 'footer', 'form', 'frame', 'frameset', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'iframe', 'image', 'img', 'input', 'ins', 'isindex', 'kbd', 'keygen', 'label', 'legend', 'li', 'link', 'listing', 'main', 'map', 'mark', 'marquee', 'math', 'menu', 'menuitem', 'meta', 'meter', 'multicol', 'nav', 'nextid', 'nobr', 'noembed', 'noframes', 'noscript', 'object', 'ol', 'optgroup', 'option', 'output', 'p', 'param', 'picture', 'plaintext', 'pre', 'progress', 'q', 'rb', 'rbc', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp', 'script', 'section', 'select', 'shadow', 'slot', 'small', 'source', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'summary', 'sup', 'svg', 'table', 'tbody', 'td', 'template', 'textarea', 'tfoot', 'th', 'thead', 'time', 'title', 'tr', 'track', 'tt', 'u', 'ul', 'var', 'video', 'wbr', 'xmp'];
-
-exports['default'] = function (h) {
-  var createTag = node(h);
-  var exported = { TAG_NAMES: TAG_NAMES, isSelector: isSelector, createTag: createTag };
-  TAG_NAMES.forEach(function (n) {
-    exported[n] = createTag(n);
-  });
-  return exported;
-};
-
-module.exports = exports['default'];
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -1396,19 +1325,19 @@ var _omi = __webpack_require__(6);
 
 var _omi2 = _interopRequireDefault(_omi);
 
-var _style = __webpack_require__(29);
+var _style = __webpack_require__(28);
 
 var _style2 = _interopRequireDefault(_style);
 
-var _diff = __webpack_require__(30);
+var _diff = __webpack_require__(29);
 
 var _diff2 = _interopRequireDefault(_diff);
 
-var _patch = __webpack_require__(33);
+var _patch = __webpack_require__(32);
 
 var _patch2 = _interopRequireDefault(_patch);
 
-var _createElement = __webpack_require__(39);
+var _createElement = __webpack_require__(38);
 
 var _createElement2 = _interopRequireDefault(_createElement);
 
@@ -1440,6 +1369,7 @@ var Component = function () {
     }, {
         key: 'update',
         value: function update() {
+            this._resetUsing(this);
             this.beforeUpdate();
             // this._childrenBeforeUpdate(this)
             this.beforeRender();
@@ -1611,7 +1541,7 @@ var Component = function () {
 
                 var Ctor = typeof root.tagName === 'string' ? _omi2['default'].getConstructor(root.tagName) : root.tagName;
                 if (Ctor) {
-                    var cmi = _omi2['default'].getInstanceById(root.properties._omi_component_id);
+                    var cmi = this._getNextChild(root.tagName, parentInstance);
                     // not using pre instance the first time
                     if (cmi && !first) {
                         if (cmi.data.selfDataFirst) {
@@ -1626,7 +1556,6 @@ var Component = function () {
                     } else {
 
                         var instance = new Ctor(root.properties);
-                        root.properties._omi_component_id = instance.id;
                         if (parentInstance) {
                             instance.$store = parentInstance.$store;
                         }
@@ -1635,6 +1564,7 @@ var Component = function () {
                             console.warn('The children property will be covered.access it by _children');
                         }
                         instance.data.children = root.children;
+                        instance._using = true;
                         instance.install();
                         instance.beforeRender();
                         instance._render(first);
@@ -1665,6 +1595,37 @@ var Component = function () {
             root.children && root.children.forEach(function (child, index) {
                 _this3._normalize(child, first, root.children, index, _this3);
             });
+        }
+    }, {
+        key: '_resetUsing',
+        value: function _resetUsing(root) {
+            var _this4 = this;
+
+            root.children.forEach(function (child) {
+                _this4._resetUsing(child);
+                child._using = false;
+            });
+        }
+    }, {
+        key: '_getNextChild',
+        value: function _getNextChild(cn, parentInstance) {
+            if (typeof cn !== 'string') {
+                for (var i = 0, len = parentInstance.children.length; i < len; i++) {
+                    var child = parentInstance.children[i];
+                    if (cn === child.constructor && !child._using) {
+                        child._using = true;
+                        return child;
+                    }
+                }
+            } else if (parentInstance) {
+                for (var _i = 0, _len = parentInstance.children.length; _i < _len; _i++) {
+                    var _child = parentInstance.children[_i];
+                    if (cn.replace(/-/g, '').toLowerCase() === _child.constructor.is.replace(/-/g, '').toLowerCase() && !_child._using) {
+                        _child._using = true;
+                        return _child;
+                    }
+                }
+            }
         }
     }, {
         key: '_fixForm',
@@ -1704,10 +1665,10 @@ var Component = function () {
     }, {
         key: '_childrenInstalled',
         value: function _childrenInstalled(root) {
-            var _this4 = this;
+            var _this5 = this;
 
             root.children.forEach(function (child) {
-                _this4._childrenInstalled(child);
+                _this5._childrenInstalled(child);
                 child._omi_needInstalled && child.installed();
                 child._omi_needInstalled = false;
                 child._execInstalledHandlers();
@@ -1716,30 +1677,30 @@ var Component = function () {
     }, {
         key: '_mixPlugins',
         value: function _mixPlugins() {
-            var _this5 = this;
+            var _this6 = this;
 
             Object.keys(_omi2['default'].plugins).forEach(function (item) {
-                var nodes = _omi2['default'].$$('*[' + item + ']', _this5.node);
+                var nodes = _omi2['default'].$$('*[' + item + ']', _this6.node);
                 nodes.forEach(function (node) {
-                    if (node.hasAttribute(_this5._omi_scopedAttr)) {
-                        _omi2['default'].plugins[item](node, _this5);
+                    if (node.hasAttribute(_this6._omi_scopedAttr)) {
+                        _omi2['default'].plugins[item](node, _this6);
                     }
                 });
-                if (_this5.node.hasAttribute(item)) {
-                    _omi2['default'].plugins[item](_this5.node, _this5);
+                if (_this6.node.hasAttribute(item)) {
+                    _omi2['default'].plugins[item](_this6.node, _this6);
                 }
             });
         }
     }, {
         key: '_mixRefs',
         value: function _mixRefs() {
-            var _this6 = this;
+            var _this7 = this;
 
             this.refs = {};
             var nodes = _omi2['default'].$$('*[ref]', this.node);
             nodes.forEach(function (node) {
-                if (node.hasAttribute(_this6._omi_scopedAttr)) {
-                    _this6.refs[node.getAttribute('ref')] = node;
+                if (node.hasAttribute(_this7._omi_scopedAttr)) {
+                    _this7.refs[node.getAttribute('ref')] = node;
                 }
             });
             var attr = this.node.getAttribute('ref');
@@ -1774,7 +1735,7 @@ var Component = function () {
 exports['default'] = Component;
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1847,16 +1808,16 @@ exports['default'] = {
 };
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var diff = __webpack_require__(31)
+var diff = __webpack_require__(30)
 
 module.exports = diff
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(7)
@@ -1868,7 +1829,7 @@ var isWidget = __webpack_require__(0)
 var isThunk = __webpack_require__(3)
 var handleThunk = __webpack_require__(10)
 
-var diffProps = __webpack_require__(32)
+var diffProps = __webpack_require__(31)
 
 module.exports = diff
 
@@ -2289,7 +2250,7 @@ function appendPatch(apply, patch) {
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(11)
@@ -2353,24 +2314,24 @@ function getPrototype(value) {
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var patch = __webpack_require__(34)
+var patch = __webpack_require__(33)
 
 module.exports = patch
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var document = __webpack_require__(12)
 var isArray = __webpack_require__(7)
 
 var render = __webpack_require__(13)
-var domIndex = __webpack_require__(36)
-var patchOp = __webpack_require__(37)
+var domIndex = __webpack_require__(35)
+var patchOp = __webpack_require__(36)
 module.exports = patch
 
 function patch(rootNode, patches, renderOptions) {
@@ -2448,13 +2409,13 @@ function patchIndices(patches) {
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports) {
 
 // Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
@@ -2545,7 +2506,7 @@ function ascending(a, b) {
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var applyProperties = __webpack_require__(14)
@@ -2553,7 +2514,7 @@ var applyProperties = __webpack_require__(14)
 var isWidget = __webpack_require__(0)
 var VPatch = __webpack_require__(9)
 
-var updateWidget = __webpack_require__(38)
+var updateWidget = __webpack_require__(37)
 
 module.exports = applyPatch
 
@@ -2702,7 +2663,7 @@ function replaceRoot(oldRoot, newRoot) {
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isWidget = __webpack_require__(0)
@@ -2723,7 +2684,7 @@ function updateWidget(a, b) {
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var createElement = __webpack_require__(13)
