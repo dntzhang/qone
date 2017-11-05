@@ -1,5 +1,5 @@
 /*!
- *  omix v1.2.3 By dntzhang 
+ *  omix v1.2.4 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -1528,6 +1528,9 @@ var Component = function () {
         value: function _normalize(root, first, parent, index, parentInstance) {
             var _this3 = this;
 
+            if (_omi2['default'].NativeComponent && root.tagName.isNativeBaseComponent) {
+                return;
+            }
             var ps = root.properties;
             // for scoped css
             if (ps) {
@@ -1609,6 +1612,7 @@ var Component = function () {
     }, {
         key: '_getNextChild',
         value: function _getNextChild(cn, parentInstance) {
+            if (!parentInstance) return;
             if (typeof cn !== 'string') {
                 for (var i = 0, len = parentInstance.children.length; i < len; i++) {
                     var child = parentInstance.children[i];
