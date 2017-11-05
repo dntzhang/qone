@@ -1,6 +1,6 @@
 import Omi from '../../src/index.js'
-import './nodes-list.js'
-import './hello.js'
+import Noteslist from './nodes-list.js'
+import Hello from './hello.js'
 
 class App extends Omi.Component {
     install(){
@@ -8,11 +8,11 @@ class App extends Omi.Component {
     }
 
     render() {
-        return <notes-list a="a" class="sfds">
+        return <Noteslist a="a" class="sfds">
             <span>hello</span>
-            <span>world</span>
-            <hello name={this.name}></hello>
-        </notes-list>
+            <span>world!</span>
+            <Hello name={this.name}></Hello>
+        </Noteslist>
     }
 }
 

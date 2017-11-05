@@ -6,6 +6,4 @@ class Hello extends Omi.Component {
     }
 }
 
-Omi.tag('hello', Hello)
-
 export default Hello

@@ -10,6 +10,4 @@ class NotesList extends Omi.Component {
     }
 }
 
-Omi.tag('notes-list', NotesList)
-
 export default NotesList
