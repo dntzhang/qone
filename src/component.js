@@ -176,6 +176,9 @@ class Component {
     }
 
     _normalize(root, first, parent, index, parentInstance) {
+        if(Omi.NativeComponent&&root.tagName.isNativeBaseComponent){
+                return
+        }
         let ps = root.properties
         // for scoped css
         if (ps) {
@@ -254,6 +257,7 @@ class Component {
     }
 
     _getNextChild(cn, parentInstance) {
+        if(!parentInstance) return
         if(typeof cn !== 'string'){
             for (let i = 0, len = parentInstance.children.length; i < len; i++) {
                 let child = parentInstance.children[i]
