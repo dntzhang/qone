@@ -1,4 +1,4 @@
-import h from 'virtual-dom-omi/h'
+import h from './vdom/h'
 
 
 let Omi = {

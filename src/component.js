@@ -1,9 +1,9 @@
 import Omi from './omi.js'
 import style from './style.js'
 
-import diff from 'virtual-dom-omi/diff'
-import patch from 'virtual-dom-omi/patch'
-import createElement from 'virtual-dom-omi/create-element'
+import diff from './vdom/diff'
+import patch from './vdom/patch'
+import createElement from './vdom/create-element'
 
 class Component {
     constructor(data) {
@@ -37,7 +37,7 @@ class Component {
         this._normalize(this._virtualDom)
 
         this._fixVirtualDomCount(this._virtualDomCount(this._preVirtualDom, [[this._preVirtualDom]]))
-        this._fixVirtualDomCount(this._virtualDomCount(this._virtualDom, [[this._virtualDom]]))
+        //this._fixVirtualDomCount(this._virtualDomCount(this._virtualDom, [[this._virtualDom]]))
 
         patch(this.node, diff(this._preVirtualDom, this._virtualDom))
 
@@ -179,7 +179,7 @@ class Component {
         if(Omi.NativeComponent&&root.tagName.isNativeBaseComponent){
                 return
         }
-        let ps = root.properties
+        let ps = root.props
         // for scoped css
         if (ps) {
             if (Omi.scopedStyle && this.constructor.name) {
@@ -196,9 +196,9 @@ class Component {
                 // not using pre instance the first time
                 if (cmi && !first) {
                     if (cmi.data.selfDataFirst) {
-                        cmi.data = Object.assign({}, root.properties, cmi.data)
+                        cmi.data = Object.assign({}, root.props, cmi.data)
                     } else {
-                        cmi.data = Object.assign({}, cmi.data, root.properties)
+                        cmi.data = Object.assign({}, cmi.data, root.props)
                     }
                     cmi.beforeUpdate()
                     cmi.beforeRender()
@@ -206,7 +206,7 @@ class Component {
                     parent[index] = cmi._virtualDom
                 } else {
 
-                    let instance = new Ctor(root.properties)
+                    let instance = new Ctor(root.props)
                     if(parentInstance) {
                         instance.$store = parentInstance.$store
                     }
@@ -226,18 +226,18 @@ class Component {
                         instance._omi_instanceIndex = parentInstance.children.length
                         parentInstance.children.push(instance)
                         parent[index] = instance._virtualDom
-                        if (root.properties['omi-name']) {
-                            parentInstance[root.properties['omi-name']] = instance
+                        if (root.props['omi-name']) {
+                            parentInstance[root.props['omi-name']] = instance
                         }
                     } else {
                         this._virtualDom = instance._virtualDom
-                        if (root.properties['omi-name']) {
-                            this[root.properties['omi-name']] = instance
+                        if (root.props['omi-name']) {
+                            this[root.props['omi-name']] = instance
                         }
                     }
 
-                    if (root.properties['omi-id']) {
-                        Omi.mapping[root.properties['omi-id']] = instance
+                    if (root.props['omi-id']) {
+                        Omi.mapping[root.props['omi-id']] = instance
                     }
 
                 }
