@@ -1,10 +1,6 @@
 
 import applyProperties from './apply-properties.js'
 
-function isObject(x) {
-    return typeof x === 'object' && x !== null;
-}
-
 
 
 function getPrototype(value) {
@@ -24,18 +20,12 @@ function getPrototype(value) {
 
 function createElement(vnode, opts) {
     var doc = opts ? opts.document || document : document
-    var warn = opts ? opts.warn : null
 
    // vnode = handleThunk(vnode).a
 
     if (typeof vnode == 'string') {
 
         return doc.createTextNode(vnode)
-    } else if (!isObject(vnode)) {
-        if (warn) {
-            warn("Item is not a valid virtual dom node", vnode)
-        }
-        return null
     }
 
     var node = doc.createElement(vnode.tagName)
