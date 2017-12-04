@@ -1,12 +1,13 @@
 class Store  {
-    constructor(data) {
+    constructor(data,callbacks) {
         this.items = data.items
         this.text = data.text
-        this.change = data.change || function(){}
+        this.onAdd = callbacks.add || function(){}
     }
 
     add(text){
         this.items.push({id: this.items.length + 1, text: text})
+        this.onAdd(text)
     }
 
     clear(){

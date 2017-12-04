@@ -9,7 +9,6 @@ class TodoApp extends Omi.Component {
         e.preventDefault()
         this.$store.add(this.$store.text)
         this.$store.text = ''
-        this.update()
     }
 
     handleChange(e) {

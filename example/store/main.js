@@ -11,8 +11,12 @@ let store = new Store({
     ],
     text: ''
 },{
-    change: ()=> {
-        app.update()
+    add: (text)=>{
+        //这里可以注入动画特效或其他逻辑再进行app.update。灵活方便
+        setTimeout(()=>{
+            app.update()
+        },1000)
+
     }
 })
 
