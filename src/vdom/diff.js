@@ -19,7 +19,7 @@ function walk(a, b, patch, index) {
     } else if ( isObject(a) ) {
         if ( isObject(b)) {
             if (a.tagName === b.tagName) {
-                var propsPatch = diffProps(a.properties, b.properties)
+                var propsPatch = diffProps(a.props, b.props)
                 if (propsPatch) {
                     apply = appendPatch(apply,
                         {p:["PROPS", a, propsPatch]})
@@ -52,7 +52,7 @@ function walk(a, b, patch, index) {
 
 function appendPatch(apply, patch) {
     if (apply) {
-        if (isArray(apply)) {
+        if (Object.prototype.toString.call(apply)==='[object Array]') {
             apply.push(patch)
         } else {
             apply = [apply, patch]

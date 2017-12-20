@@ -141,7 +141,7 @@ function patchOp(vpatch, domNode, renderOptions) {
             reorderChildren(domNode, patch)
             return domNode
         case 'PROPS':
-            applyProperties(domNode, patch, vNode.properties)
+            applyProperties(domNode, patch, vNode.props)
             return domNode
         default:
             return domNode

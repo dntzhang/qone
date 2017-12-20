@@ -122,7 +122,7 @@ function spread(vd) {
     const type = vd.type
     switch (type) {
     case 'VirtualNode':
-        str += `<${vd.tagName} ${props2str(vd.properties)}>${vd.children.map(child => {
+        str += `<${vd.tagName} ${props2str(vd.props)}>${vd.children.map(child => {
             return spread(child)
         }).join('')}</${vd.tagName}>`
         break

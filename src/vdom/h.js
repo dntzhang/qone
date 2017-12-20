@@ -33,19 +33,20 @@ function h(tagName, props) {
             if (typeof child==='boolean') child = null;
 
             if ((simple = typeof tagName!=='function')) {
-                if (child==null) child = '';
-                else if (typeof child==='number') child = String(child);
+                if (typeof child==='number') child = String(child);
                 else if (typeof child!=='string') simple = false;
             }
 
             if (simple && lastSimple) {
                 children[children.length-1] += child;
             }
-            else if (children===EMPTY_CHILDREN) {
-                children = [child];
-            }
-            else {
-                children.push(child);
+            else if(child != null){
+                if (children===EMPTY_CHILDREN) {
+                    children = [child];
+                }
+                else {
+                    children.push(child);
+                }
             }
 
             lastSimple = simple;
@@ -64,7 +65,7 @@ function h(tagName, props) {
     p.count = children.length
     p.host = Omi.host
     p.children.forEach(function(nChild){
-        if( nChild.count) {
+        if(nChild&& nChild.count) {
             p.count += nChild.count
         }
     })
