@@ -7,30 +7,25 @@
 
 ;(function () {
 
-    if(typeof Omi === 'undefined') return
-
-    var OmiTap = {};
-
-
-
-    var noop = function(){
-
-    };
+    if (typeof Omi === 'undefined') {
+        return
+    }
 
 
-    Omi.extendPlugin('omi-tap',function(dom, instance) {
+    Omi.extendPlugin('omi-tap', function (dom, instance) {
 
         var x1,
-            y1
+            y1,
+            scrollTop
         dom.addEventListener('touchstart', function (evt) {
             x1 = evt.touches[0].pageX
             y1 = evt.touches[0].pageY
-
+            scrollTop = document.body.scrollTop
         }, false)
-        dom.addEventListener('touchend', function (evt) {
 
-            if (evt.changedTouches[0].pageX - x1 < 30 && evt.changedTouches[0].pageY - y1 < 30) {
-                getHandler('tap',dom,instance)(evt)
+        dom.addEventListener('touchend', function (evt) {
+            if (Math.abs(evt.changedTouches[0].pageX - x1) < 30 && Math.abs(evt.changedTouches[0].pageY - y1) < 30 && Math.abs(document.body.scrollTop - scrollTop) < 30) {
+                getHandler('tap', dom, instance)(evt)
             }
         }, false)
     });
@@ -50,13 +45,5 @@
             }
         }
     };
-
-    if (typeof exports == "object") {
-        module.exports = OmiTap;
-    } else if (typeof define == "function" && define.amd) {
-        define([], function(){ return OmiTap });
-    } else {
-        window.OmiFinger = OmiTap;
-    }
 
 })();
