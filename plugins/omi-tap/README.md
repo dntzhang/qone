@@ -4,7 +4,7 @@ Support tap event in your [Omi](https://github.com/AlloyTeam/omix) project.
 
 ---
 
-## install
+## Install
 
 ``` js
 npm install omi-tap
@@ -30,6 +30,25 @@ class App extends Component {
 }
 
 Omi.render(new App(),"#container");
+```
+
+# Debug The Project
+
+```
+yarn global add parcel-bundler
+```
+or:
+```
+npm install -g parcel-bundler
+```
+
+then:
+```
+npm start
+```
+or
+```
+parcel example/index.html --open
 ```
 
 # License
