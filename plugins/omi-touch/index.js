@@ -9,7 +9,7 @@
     if(typeof Omi === 'undefined') return
 
     var OmiTouch = {};
-    var AlloyTouch = typeof require === 'function' ? require('alloytouch') : window.AlloyTouch;
+    var AlloyTouch = typeof require === 'function' ? require('alloytouch/alloy_touch.css.js') : window.AlloyTouch;
     var Transform = typeof require === 'function' ? require('css3transform') : window.Transform;
 
 
