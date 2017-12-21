@@ -19,8 +19,6 @@ or:
 npm install -g parcel-bundler
 ```
 
-创建 package.json:
-
 创建一个 package.json 文件:
 ```
 yarn init -y
