@@ -56,6 +56,15 @@ parcel example/index.html --open
 ```
 带上--open会自动打开浏览器。parcel打包可以使用js或者html为入口文件。
 
+添加 .babelrc ,如下:
+```
+{
+  "presets": [
+    "env", "omi"
+  ]
+}
+```
+
 ## 实现 omi-tap
 
 ```js
