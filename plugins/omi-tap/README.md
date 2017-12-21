@@ -4,17 +4,13 @@ Support tap event in your [Omi](https://github.com/AlloyTeam/omix) project.
 
 ---
 
-## Demo
-
-[https://alloyteam.github.io/omix/plugins/omi-tap/example/](https://alloyteam.github.io/omix/plugins/omi-tap/example/)
-
 ## install
 
 ``` js
 npm install omi-tap
 ```
 
-## 使用
+## Usage
 
 ```js
 import 'omi-tap';
