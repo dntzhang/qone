@@ -1,4 +1,4 @@
-## 腾讯发布 Omix 1.0 - 用 JSX 或 hyperscript 创建用户界面
+## 腾讯发布 Omix 1.0 - 用 JSX 创建用户界面
 
 ![http://images2017.cnblogs.com/blog/105416/201708/105416-20170807145434955-1872305404.png](http://images2017.cnblogs.com/blog/105416/201708/105416-20170807145434955-1872305404.png)
 
@@ -11,7 +11,7 @@
 * 超级快的速度, [点击这里体验一下](https://alloyteam.github.io/omix/example/perfs)
 * 超小的尺寸, 7 KB (gzip)
 * 良好的兼容性 IE8
-* 同时支持JSX 和 hyperscript
+* 完整支持JSX
 * 支持局部 CSS, 不用费尽心思去想选择器了，让CSS更加简单
 * 更自由的更新，每个组件都有 update 方法，可以自由选择最佳更新的时机，也可和第三方库集成实现双向绑定，退可以自己手动更新。进可攻退可守
 * 灵活的插件体系和丰富的插件生态
@@ -31,7 +31,6 @@ class Hello extends Omi.Component {
     }
 }
 
-Omi.tag('hello', Hello)
 
 class App extends Omi.Component {
     install() {
@@ -52,7 +51,7 @@ class App extends Omi.Component {
 
     render() {
         return <div>
-	            <hello name={this.name}></hello>
+	            <Hello name={this.name} />
 	            <h3 onclick={this.handleClick.bind(this)}>Scoped css and event test! click me!</h3>
 	        </div>
     }
@@ -61,49 +60,7 @@ class App extends Omi.Component {
 Omi.render(new App(), '#container')
 ```
 
-### 使用 hyperscript
-
-``` js
-const $ = Omi.tags
-
-class Hello extends Omi.Component {
-    render() {
-        return $.div( 'Hello' + this.data.name+'!')
-    }
-}
-
-Omi.tag('hello-tag', Hello)
-
-class App extends Omi.Component {
-    handleClick(e) {
-        alert(e.target.innerHTML)
-    }
-
-    render() {
-        return $.div([
-	            $.HelloTag({name: 'Omi'}),
-	            $.h3({onclick: this.handleClick}, 'scoped css and event test! click me!')
-	        ])
-    }
-}
-```
-
-### hyperscript API
-
-```js
-const $ = Omi.tags
-$.tagName(selector)
-$.tagName(attrs)
-$.tagName(children)
-$.tagName(attrs, children)
-$.tagName(selector, children)
-$.tagName(selector, attrs, children)
-```
-
-### JSX vs hyperscript
-
-海外有大量的工程师觉得的 hyperscript 比 JSX 要更加简洁和方便，但是我们团队内部喜欢 JSX 和 hyperscript 一半一半。但是没有关系, Omix 同时支持两种方式。下面稍微对比一下两者的使用差异:
-
+## 其他JSX 语法
 ```
 // JSX
 <ul id="bestest-menu">
@@ -111,13 +68,6 @@ $.tagName(selector, attrs, children)
     <li class="item" {...attrs(item.id)}>{item.title}</li>
   )}
 </ul>
-```
-vs
-```
-// hyperscript-helpers
-$.ul('#bestest-menu', items.map( item =>
-  $.li('.item', attrs(item.id), item.title))
-);
 ```
 
 
@@ -127,21 +77,11 @@ $.ul('#bestest-menu', items.map( item =>
     <MyItem id={item.id} title={item.title} />
 )}</MyList>
 ```
-vs
-```
-// hyperscript-helpers
-$.MyList(items.map(item => 
-    $.MyItem(item.id, item.title)
-))
-```
 
 ```
 <MyComponent someProp={{x: 1, y: 2}}/>
 ```
-vs
-```
-$.MyComponent({x: 1, y: 2})
-```
+
 
 ## 插件举例
 
