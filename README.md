@@ -87,6 +87,7 @@ or get it from CDN:
 
 ## Plugins
 
+* [omi-tap](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-tap): Support tap event in your Omi project..
 * [omi-router](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-router): Router for Omi.
 * [omi-finger](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-finger): Omi /[AlloyFinger](https://github.com/AlloyTeam/AlloyFinger) integration.
 * [omi-transform](https://github.com/AlloyTeam/omix/tree/master/plugins/omi-transform): Omi /[transformjs](https://alloyteam.github.io/AlloyTouch/transformjs/) integration.
