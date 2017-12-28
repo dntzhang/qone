@@ -81,8 +81,8 @@ npm install omix
 
 or get it from CDN:
 
-* [https://unpkg.com/omix@1.2.5/dist/omix.min.js](https://unpkg.com/omix@1.2.5/dist/omix.min.js)
-* [https://unpkg.com/omix@1.2.5/dist/omix.js](https://unpkg.com/omix@1.2.5/dist/omix.js)
+* [https://unpkg.com/omix@1.2.6/dist/omix.min.js](https://unpkg.com/omix@1.2.6/dist/omix.min.js)
+* [https://unpkg.com/omix@1.2.6/dist/omix.js](https://unpkg.com/omix@1.2.6/dist/omix.js)
 
 
 ## Plugins

@@ -1,3 +1,11 @@
+# omix v1.2.6
+
+* fix 老的 IOS 9 和 10 下 style 为 readonly 的bug
+
+# omix v1.2.5
+
+* 代码精简
+
 # omix v1.2.3
 
 * 性能优化

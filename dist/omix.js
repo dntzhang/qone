@@ -1,5 +1,5 @@
 /*!
- *  omix v1.2.5 By dntzhang 
+ *  omix v1.2.6 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -440,7 +440,10 @@ function applyProperties(node, props, previous) {
                 } else {
                     node.setAttribute(propName, propValue);
                 }
-                node[propName] = propValue;
+                if (propName != 'style') {
+                    //fix readonly bug in ios
+                    node[propName] = propValue;
+                }
             }
         }
     }

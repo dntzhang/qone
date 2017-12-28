@@ -105,7 +105,9 @@ export default function applyProperties(node, props, previous) {
                 }else {
                     node.setAttribute(propName, propValue)
                 }
-                node[propName] = propValue
+                if(propName != 'style') { //fix readonly bug in ios
+                    node[propName] = propValue
+                }
             }
         }
     }
