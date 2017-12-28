@@ -1,14 +1,11 @@
-import  createElement from'./create-element.js'
-import  applyProperties from'./apply-properties.js'
+import createElement from './create-element.js'
+import applyProperties from './apply-properties.js'
 
 function isArray(obj) {
-    return Object.prototype.toString.call(obj) === "[object Array]"
+    return Object.prototype.toString.call(obj) === '[object Array]'
 }
 
-
-
 var noChild = {}
-
 
 function domIndex(rootNode, tree, indices, nodes) {
     if (!indices || indices.length === 0) {
@@ -22,7 +19,6 @@ function domIndex(rootNode, tree, indices, nodes) {
 function recurse(rootNode, tree, indices, nodes, rootIndex) {
     nodes = nodes || {}
 
-
     if (rootNode) {
         if (indexInRange(indices, rootIndex, rootIndex)) {
             nodes[rootIndex] = rootNode
@@ -31,7 +27,6 @@ function recurse(rootNode, tree, indices, nodes, rootIndex) {
         var vChildren = tree.children
 
         if (vChildren) {
-
             var childNodes = rootNode.childNodes
 
             for (var i = 0; i < tree.children.length; i++) {
@@ -72,37 +67,25 @@ function indexInRange(indices, left, right) {
             return currentItem >= left && currentItem <= right
         } else if (currentItem < left) {
             minIndex = currentIndex + 1
-        } else  if (currentItem > right) {
+        } else if (currentItem > right) {
             maxIndex = currentIndex - 1
         } else {
             return true
         }
     }
 
-    return false;
+    return false
 }
 
 function ascending(a, b) {
     return a > b ? 1 : -1
 }
 
-
-
-
-
-
-
-
-
-
-
-
 function VPatch(type, vNode, patch) {
     this.type = Number(type)
     this.vNode = vNode
     this.patch = patch
 }
-
 
 VPatch.NONE = 0
 VPatch.VTEXT = 1
@@ -113,38 +96,30 @@ VPatch.ORDER = 5
 VPatch.INSERT = 6
 VPatch.REMOVE = 7
 
-
-
-
-
-
 function patchOp(vpatch, domNode, renderOptions) {
-
-
     var type = vpatch.p[0]
     var vNode = vpatch.p[1]
     var patch = vpatch.p[2]
 
-
     switch (type) {
-        case 'REMOVE':
-            return removeNode(domNode, vNode)
-        case 'INSERT':
-            return insertNode(domNode, patch, renderOptions)
-        case 'VTEXT':
+    case 'REMOVE':
+        return removeNode(domNode, vNode)
+    case 'INSERT':
+        return insertNode(domNode, patch, renderOptions)
+    case 'VTEXT':
 
-            return stringPatch(domNode, vNode, patch, renderOptions)
+        return stringPatch(domNode, vNode, patch, renderOptions)
 
-        case 'VNODE':
-            return vNodePatch(domNode, vNode, patch, renderOptions)
-        case 'ORDER':
-            reorderChildren(domNode, patch)
-            return domNode
-        case 'PROPS':
-            applyProperties(domNode, patch, vNode.props)
-            return domNode
-        default:
-            return domNode
+    case 'VNODE':
+        return vNodePatch(domNode, vNode, patch, renderOptions)
+    case 'ORDER':
+        reorderChildren(domNode, patch)
+        return domNode
+    case 'PROPS':
+        applyProperties(domNode, patch, vNode.props)
+        return domNode
+    default:
+        return domNode
     }
 }
 
@@ -154,8 +129,6 @@ function removeNode(domNode, vNode) {
     if (parentNode) {
         parentNode.removeChild(domNode)
     }
-
-
 
     return null
 }
@@ -176,11 +149,10 @@ function stringPatch(domNode, leftVNode, vText, renderOptions) {
     if (domNode.nodeType === 3) {
         domNode.replaceData(0, domNode.length, vText)
         newNode = domNode
-
-    }else {
+    } else {
         var parentNode = domNode.parentNode
 
-        newNode = renderOptions.render({text:vText}, renderOptions)
+        newNode = renderOptions.render({text: vText}, renderOptions)
 
         if (parentNode && newNode !== domNode) {
             parentNode.replaceChild(newNode, domNode)
@@ -189,7 +161,6 @@ function stringPatch(domNode, leftVNode, vText, renderOptions) {
 
     return newNode
 }
-
 
 function vNodePatch(domNode, leftVNode, vNode, renderOptions) {
     var parentNode = domNode.parentNode
@@ -201,8 +172,6 @@ function vNodePatch(domNode, leftVNode, vNode, renderOptions) {
 
     return newNode
 }
-
-
 
 function reorderChildren(domNode, moves) {
     var childNodes = domNode.childNodes
@@ -229,16 +198,6 @@ function reorderChildren(domNode, moves) {
     }
 }
 
-function replaceRoot(oldRoot, newRoot) {
-    if (oldRoot && newRoot && oldRoot !== newRoot && oldRoot.parentNode) {
-        oldRoot.parentNode.replaceChild(newRoot, oldRoot)
-    }
-
-    return newRoot;
-}
-
-
-
 function patch(rootNode, patches, renderOptions) {
     renderOptions = renderOptions || {}
     renderOptions.patch = renderOptions.patch && renderOptions.patch !== patch
@@ -256,16 +215,13 @@ function patchRecursive(rootNode, patches, renderOptions) {
         return rootNode
     }
 
-
     var nodes = domIndex(rootNode, patches.a, indices)
-
 
     var ownerDocument = rootNode.ownerDocument
 
     if (!renderOptions.document && ownerDocument !== document) {
         renderOptions.document = ownerDocument
     }
-
 
     for (var i = 0; i < indices.length; i++) {
         var nodeIndex = indices[i]
@@ -287,9 +243,7 @@ function applyPatch(rootNode, domNode, patchList, renderOptions) {
     var newNode
 
     if (isArray(patchList)) {
-
         for (var i = 0; i < patchList.length; i++) {
-
             newNode = patchOp(patchList[i], domNode, renderOptions)
 
             if (domNode === rootNode) {
@@ -297,7 +251,7 @@ function applyPatch(rootNode, domNode, patchList, renderOptions) {
             }
         }
     } else {
-      newNode = patchOp(patchList, domNode, renderOptions)
+        newNode = patchOp(patchList, domNode, renderOptions)
 
         if (domNode === rootNode) {
             rootNode = newNode
@@ -311,13 +265,12 @@ function patchIndices(patches) {
     var indices = []
 
     for (var key in patches) {
-        if (key !== "a") {
+        if (key !== 'a') {
             indices.push(Number(key))
         }
     }
 
     return indices
 }
-
 
 export default patch

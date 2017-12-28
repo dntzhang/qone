@@ -1,5 +1,5 @@
 /*!
- *  omix v1.2.6 By dntzhang 
+ *  omix v1.2.7 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -91,7 +91,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _h = __webpack_require__(4);
+var _h = __webpack_require__(5);
 
 var _h2 = _interopRequireDefault(_h);
 
@@ -279,29 +279,45 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _applyProperties = __webpack_require__(2);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _applyProperties2 = _interopRequireDefault(_applyProperties);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
+exports.getPrototype = getPrototype;
+exports.isObject = isObject;
 function getPrototype(value) {
     if (Object.getPrototypeOf) {
         return Object.getPrototypeOf(value);
-    } else if (value.__proto__) {
-        return value.__proto__;
     } else if (value.constructor) {
         return value.constructor.prototype;
     }
 }
+
+function isObject(x) {
+    return (typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object' && x !== null;
+}
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _applyProperties = __webpack_require__(3);
+
+var _applyProperties2 = _interopRequireDefault(_applyProperties);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function createElement(vnode, opts) {
     var doc = opts ? opts.document || document : document;
 
     // vnode = handleThunk(vnode).a
 
-    if (typeof vnode == 'string') {
-
+    if (typeof vnode === 'string') {
         return doc.createTextNode(vnode);
     }
 
@@ -326,7 +342,7 @@ function createElement(vnode, opts) {
 exports['default'] = createElement;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -335,28 +351,24 @@ exports['default'] = createElement;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports['default'] = applyProperties;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports["default"] = applyProperties;
-function isObject(x) {
-    return (typeof x === "undefined" ? "undefined" : _typeof(x)) === 'object' && x !== null;
-}
+var _util = __webpack_require__(1);
 
 function removeProperty(node, propName, propValue, previous) {
     if (previous) {
         var previousValue = previous[propName];
 
-        if (propName === "attributes") {
+        if (propName === 'attributes') {
             for (var attrName in previousValue) {
                 node.removeAttribute(attrName);
             }
-        } else if (propName === "style") {
+        } else if (propName === 'style') {
             for (var i in previousValue) {
-                node.style[i] = "";
+                node.style[i] = '';
             }
-        } else if (typeof previousValue === "string") {
-            node[propName] = "";
+        } else if (typeof previousValue === 'string') {
+            node[propName] = '';
             node.removeAttribute(propName);
         } else {
             node[propName] = null;
@@ -368,7 +380,7 @@ function patchObject(node, props, previous, propName, propValue) {
     var previousValue = previous ? previous[propName] : undefined;
 
     // Set attributes
-    if (propName === "attributes") {
+    if (propName === 'attributes') {
         for (var attrName in propValue) {
             var attrValue = propValue[attrName];
 
@@ -382,19 +394,19 @@ function patchObject(node, props, previous, propName, propValue) {
         return;
     }
 
-    if (previousValue && isObject(previousValue) && getPrototype(previousValue) !== getPrototype(propValue)) {
+    if (previousValue && (0, _util.isObject)(previousValue) && (0, _util.getPrototype)(previousValue) !== (0, _util.getPrototype)(propValue)) {
         node[propName] = propValue;
         return;
     }
 
-    if (!isObject(node[propName])) {
+    if (!(0, _util.isObject)(node[propName])) {
         node[propName] = {};
     }
 
-    var replacer = propName === "style" ? "" : undefined,
+    var replacer = propName === 'style' ? '' : undefined,
         json = propValue;
 
-    if (propName === "style" && Object.prototype.toString.call(propValue) === '[object Array]') {
+    if (propName === 'style' && Object.prototype.toString.call(propValue) === '[object Array]') {
         var arr = propValue.slice(0);
         arr.unshift({});
 
@@ -402,7 +414,6 @@ function patchObject(node, props, previous, propName, propValue) {
     }
 
     for (var k in json) {
-
         var value = json[k];
 
         node[propName][k] = value === undefined ? replacer : value;
@@ -422,17 +433,10 @@ function applyProperties(node, props, previous) {
         if (propValue === undefined) {
             removeProperty(node, propName, propValue, previous);
         } else {
-            if (isObject(propValue)) {
-
+            if ((0, _util.isObject)(propValue)) {
                 patchObject(node, props, previous, propName, propValue);
             } else {
-                //https://stackoverflow.com/questions/12718186/element-setattributeprop-value-vs-element-prop-value
-                //node.setAttribute(propName,propValue)
-                //if(propName.indexOf('omi-') === 0 ||propName.indexOf('__s_') === 0 || propName === 'ref'){
-                //    node.setAttribute(propName, propValue)
-                //}else {
-                //    node[propName] = propValue
-                //}
+                // https://stackoverflow.com/questions/12718186/element-setattributeprop-value-vs-element-prop-value
                 if (typeof propValue === 'function') {
                     node[propName.toLowerCase()] = propValue;
                     node.omixEventList[propName.toLowerCase()] = true;
@@ -440,73 +444,13 @@ function applyProperties(node, props, previous) {
                 } else {
                     node.setAttribute(propName, propValue);
                 }
-                if (propName != 'style') {
-                    //fix readonly bug in ios
+                if (propName !== 'style') {
+                    // fix readonly bug in ios
                     node[propName] = propValue;
                 }
             }
         }
     }
-}
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _omi = __webpack_require__(0);
-
-var _omi2 = _interopRequireDefault(_omi);
-
-var _component = __webpack_require__(5);
-
-var _component2 = _interopRequireDefault(_component);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-if (typeof Object.assign != 'function') {
-  Object.assign = function (target) {
-    'use strict';
-
-    if (target == null) {
-      throw new TypeError('Cannot convert undefined or null to object');
-    }
-
-    target = Object(target);
-    for (var index = 1; index < arguments.length; index++) {
-      var source = arguments[index];
-      if (source != null) {
-        for (var key in source) {
-          if (Object.prototype.hasOwnProperty.call(source, key)) {
-            target[key] = source[key];
-          }
-        }
-      }
-    }
-    return target;
-  };
-}
-
-if (Function.prototype.name === undefined && Object.defineProperty !== undefined) {
-  Object.defineProperty(Function.prototype, 'name', {
-    get: function get() {
-      var funcNameRegex = /function\s([^(]{1,})\(/;
-      var results = funcNameRegex.exec(this.toString());
-      return results && results.length > 1 ? results[1].trim() : "";
-    },
-    set: function set(value) {}
-  });
-}
-
-_omi2['default'].Component = _component2['default'];
-
-if (typeof window !== 'undefined' && window.Omi) {
-  module.exports = window.Omi;
-} else {
-  typeof window !== 'undefined' && (window.Omi = _omi2['default']);
-  module.exports = _omi2['default'];
 }
 
 /***/ }),
@@ -516,10 +460,59 @@ if (typeof window !== 'undefined' && window.Omi) {
 "use strict";
 
 
+var _omi = __webpack_require__(0);
+
+var _omi2 = _interopRequireDefault(_omi);
+
+var _component = __webpack_require__(6);
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+if (typeof Object.assign !== 'function') {
+    Object.assign = function (target) {
+        'use strict';
+
+        if (target == null) {
+            throw new TypeError('Cannot convert undefined or null to object');
+        }
+
+        target = Object(target);
+        for (var index = 1; index < arguments.length; index++) {
+            var source = arguments[index];
+            if (source != null) {
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+        }
+        return target;
+    };
+}
+
+_omi2['default'].Component = _component2['default'];
+
+if (typeof window !== 'undefined' && window.Omi) {
+    module.exports = window.Omi;
+} else {
+    typeof window !== 'undefined' && (window.Omi = _omi2['default']);
+    module.exports = _omi2['default'];
+}
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-//from  preact
+// from  preact
 /** Virtual DOM Node */
 
 function VNode() {}
@@ -529,9 +522,9 @@ var stack = [];
 var EMPTY_CHILDREN = [];
 
 /** JSX/hyperscript reviver
- *	Benchmarks: https://esbench.com/bench/57ee8f8e330ab09900a1a1a0
- *	@see http://jasonformat.com/wtf-is-jsx
- *	@public
+    Benchmarks: https://esbench.com/bench/57ee8f8e330ab09900a1a1a0
+    @see http://jasonformat.com/wtf-is-jsx
+    @public
  */
 function h(tagName, props) {
     var children = EMPTY_CHILDREN,
@@ -579,10 +572,10 @@ function h(tagName, props) {
     p.key = props == null ? undefined : props.key;
 
     // if a "vnode hook" is defined, pass every created VNode to it
-    //if (options.vnode!==undefined) options.vnode(p);
+    // if (options.vnode!==undefined) options.vnode(p);
 
     p.count = children.length;
-    p.host = Omi.host;
+
     p.children.forEach(function (nChild) {
         if (nChild && nChild.count) {
             p.count += nChild.count;
@@ -594,7 +587,7 @@ function h(tagName, props) {
 exports['default'] = h;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -610,19 +603,19 @@ var _omi = __webpack_require__(0);
 
 var _omi2 = _interopRequireDefault(_omi);
 
-var _style = __webpack_require__(6);
+var _style = __webpack_require__(7);
 
 var _style2 = _interopRequireDefault(_style);
 
-var _diff = __webpack_require__(7);
+var _diff = __webpack_require__(8);
 
 var _diff2 = _interopRequireDefault(_diff);
 
-var _patch = __webpack_require__(8);
+var _patch = __webpack_require__(9);
 
 var _patch2 = _interopRequireDefault(_patch);
 
-var _createElement = __webpack_require__(1);
+var _createElement = __webpack_require__(2);
 
 var _createElement2 = _interopRequireDefault(_createElement);
 
@@ -663,7 +656,7 @@ var Component = function () {
             this._normalize(this._virtualDom);
 
             this._fixVirtualDomCount(this._virtualDomCount(this._preVirtualDom, [[this._preVirtualDom]]));
-            //this._fixVirtualDomCount(this._virtualDomCount(this._virtualDom, [[this._virtualDom]]))
+            // this._fixVirtualDomCount(this._virtualDomCount(this._virtualDom, [[this._virtualDom]]))
 
             (0, _patch2['default'])(this.node, (0, _diff2['default'])(this._preVirtualDom, this._virtualDom));
 
@@ -826,7 +819,6 @@ var Component = function () {
             }
 
             if (root.tagName) {
-
                 var Ctor = typeof root.tagName === 'string' ? _omi2['default'].getConstructor(root.tagName) : root.tagName;
                 if (Ctor) {
                     var cmi = this._getNextChild(root.tagName, parentInstance);
@@ -842,7 +834,6 @@ var Component = function () {
                         cmi._render();
                         parent[index] = cmi._virtualDom;
                     } else {
-
                         var instance = new Ctor(root.props);
                         if (parentInstance) {
                             instance.$store = parentInstance.$store;
@@ -1024,7 +1015,7 @@ var Component = function () {
 exports['default'] = Component;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1097,7 +1088,7 @@ exports['default'] = {
 };
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1107,14 +1098,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-function isObject(x) {
-    return (typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object' && x !== null;
-}
+var _util = __webpack_require__(1);
 
 function diff(a, b) {
-
     var patch = { a: a };
     walk(a, b, patch, 0);
     return patch;
@@ -1123,25 +1109,23 @@ function diff(a, b) {
 function walk(a, b, patch, index) {
     var apply = patch[index];
     if (b == null) {
-
         apply = appendPatch(apply, { p: ['REMOVE', a, b] });
-    } else if (isObject(a)) {
-        if (isObject(b)) {
+    } else if ((0, _util.isObject)(a)) {
+        if ((0, _util.isObject)(b)) {
             if (a.tagName === b.tagName) {
                 var propsPatch = diffProps(a.props, b.props);
                 if (propsPatch) {
-                    apply = appendPatch(apply, { p: ["PROPS", a, propsPatch] });
+                    apply = appendPatch(apply, { p: ['PROPS', a, propsPatch] });
                 }
 
                 apply = diffChildren(a, b, patch, apply, index);
             } else {
-
                 apply = appendPatch(apply, { p: ['VNODE', a, b] });
             }
         } else {
             apply = appendPatch(apply, { p: ['VNODE', a, b] });
         }
-    } else if (typeof a == 'string') {
+    } else if (typeof a === 'string') {
         if (typeof b !== 'string') {
             apply = appendPatch(apply, { p: ['VTEXT', a, b] });
         } else if (a !== b) {
@@ -1186,20 +1170,20 @@ function diffChildren(a, b, patch, apply, index) {
             if (rightNode) {
                 // Excess nodes in b need to be added
 
-                apply = appendPatch(apply, { p: ["INSERT", null, rightNode] });
+                apply = appendPatch(apply, { p: ['INSERT', null, rightNode] });
             }
         } else {
             walk(leftNode, rightNode, patch, index);
         }
 
-        if (isObject(leftNode) && leftNode.count) {
+        if ((0, _util.isObject)(leftNode) && leftNode.count) {
             index += leftNode.count;
         }
     }
 
     if (orderedSet.moves) {
         // Reorder nodes last
-        apply = appendPatch(apply, { p: ["ORDER", a, orderedSet.moves] });
+        apply = appendPatch(apply, { p: ['ORDER', a, orderedSet.moves] });
     }
 
     return apply;
@@ -1316,11 +1300,10 @@ function reorder(aChildren, bChildren) {
                         // if the remove didn't put the wanted item in place, we need to insert it
                         if (!simulateItem || simulateItem.key !== wantedItem.key) {
                             inserts.push({ key: wantedItem.key, to: k });
+                        } else {
+                            // items are matching, so skip ahead
+                            simulateIndex++;
                         }
-                        // items are matching, so skip ahead
-                        else {
-                                simulateIndex++;
-                            }
                     } else {
                         inserts.push({ key: wantedItem.key, to: k });
                     }
@@ -1328,11 +1311,10 @@ function reorder(aChildren, bChildren) {
                     inserts.push({ key: wantedItem.key, to: k });
                 }
                 k++;
+            } else if (simulateItem && simulateItem.key) {
+                // a key in simulate has no matching wanted key, remove it
+                removes.push(remove(simulate, simulateIndex, simulateItem.key));
             }
-            // a key in simulate has no matching wanted key, remove it
-            else if (simulateItem && simulateItem.key) {
-                    removes.push(remove(simulate, simulateIndex, simulateItem.key));
-                }
         } else {
             simulateIndex++;
             k++;
@@ -1407,8 +1389,8 @@ function diffProps(a, b) {
 
         if (aValue === bValue) {
             continue;
-        } else if (isObject(aValue) && isObject(bValue)) {
-            if (getPrototype(bValue) !== getPrototype(aValue)) {
+        } else if ((0, _util.isObject)(aValue) && (0, _util.isObject)(bValue)) {
+            if ((0, _util.getPrototype)(bValue) !== (0, _util.getPrototype)(aValue)) {
                 diff = diff || {};
                 diff[aKey] = bValue;
             } else {
@@ -1434,20 +1416,10 @@ function diffProps(a, b) {
     return diff;
 }
 
-function getPrototype(value) {
-    if (Object.getPrototypeOf) {
-        return Object.getPrototypeOf(value);
-    } else if (value.__proto__) {
-        return value.__proto__;
-    } else if (value.constructor) {
-        return value.constructor.prototype;
-    }
-}
-
 exports['default'] = diff;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1457,18 +1429,18 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createElement = __webpack_require__(1);
+var _createElement = __webpack_require__(2);
 
 var _createElement2 = _interopRequireDefault(_createElement);
 
-var _applyProperties = __webpack_require__(2);
+var _applyProperties = __webpack_require__(3);
 
 var _applyProperties2 = _interopRequireDefault(_applyProperties);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function isArray(obj) {
-    return Object.prototype.toString.call(obj) === "[object Array]";
+    return Object.prototype.toString.call(obj) === '[object Array]';
 }
 
 var noChild = {};
@@ -1493,7 +1465,6 @@ function recurse(rootNode, tree, indices, nodes, rootIndex) {
         var vChildren = tree.children;
 
         if (vChildren) {
-
             var childNodes = rootNode.childNodes;
 
             for (var i = 0; i < tree.children.length; i++) {
@@ -1564,7 +1535,6 @@ VPatch.INSERT = 6;
 VPatch.REMOVE = 7;
 
 function patchOp(vpatch, domNode, renderOptions) {
-
     var type = vpatch.p[0];
     var vNode = vpatch.p[1];
     var patch = vpatch.p[2];
@@ -1666,14 +1636,6 @@ function reorderChildren(domNode, moves) {
     }
 }
 
-function replaceRoot(oldRoot, newRoot) {
-    if (oldRoot && newRoot && oldRoot !== newRoot && oldRoot.parentNode) {
-        oldRoot.parentNode.replaceChild(newRoot, oldRoot);
-    }
-
-    return newRoot;
-}
-
 function patch(rootNode, patches, renderOptions) {
     renderOptions = renderOptions || {};
     renderOptions.patch = renderOptions.patch && renderOptions.patch !== patch ? renderOptions.patch : patchRecursive;
@@ -1714,9 +1676,7 @@ function applyPatch(rootNode, domNode, patchList, renderOptions) {
     var newNode;
 
     if (isArray(patchList)) {
-
         for (var i = 0; i < patchList.length; i++) {
-
             newNode = patchOp(patchList[i], domNode, renderOptions);
 
             if (domNode === rootNode) {
@@ -1738,7 +1698,7 @@ function patchIndices(patches) {
     var indices = [];
 
     for (var key in patches) {
-        if (key !== "a") {
+        if (key !== 'a') {
             indices.push(Number(key));
         }
     }

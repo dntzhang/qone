@@ -1,37 +1,31 @@
-function isObject(x) {
-    return typeof x === 'object' && x !== null;
-}
+import {getPrototype, isObject} from './util.js'
 
 function removeProperty(node, propName, propValue, previous) {
     if (previous) {
         var previousValue = previous[propName]
 
-
-        if (propName === "attributes") {
+        if (propName === 'attributes') {
             for (var attrName in previousValue) {
                 node.removeAttribute(attrName)
             }
-        } else if (propName === "style") {
+        } else if (propName === 'style') {
             for (var i in previousValue) {
-                node.style[i] = ""
+                node.style[i] = ''
             }
-        } else if (typeof previousValue === "string") {
-            node[propName] = ""
+        } else if (typeof previousValue === 'string') {
+            node[propName] = ''
             node.removeAttribute(propName)
         } else {
             node[propName] = null
         }
     }
-
 }
-
-
 
 function patchObject(node, props, previous, propName, propValue) {
     var previousValue = previous ? previous[propName] : undefined
 
     // Set attributes
-    if (propName === "attributes") {
+    if (propName === 'attributes') {
         for (var attrName in propValue) {
             var attrValue = propValue[attrName]
 
@@ -45,7 +39,7 @@ function patchObject(node, props, previous, propName, propValue) {
         return
     }
 
-    if(previousValue && isObject(previousValue) &&
+    if (previousValue && isObject(previousValue) &&
         getPrototype(previousValue) !== getPrototype(propValue)) {
         node[propName] = propValue
         return
@@ -55,11 +49,10 @@ function patchObject(node, props, previous, propName, propValue) {
         node[propName] = {}
     }
 
-    var replacer = propName === "style" ? "" : undefined,
+    var replacer = propName === 'style' ? '' : undefined,
         json = propValue
 
-
-    if( propName === "style" && Object.prototype.toString.call(propValue)==='[object Array]'){
+    if (propName === 'style' && Object.prototype.toString.call(propValue) === '[object Array]') {
         var arr = propValue.slice(0)
         arr.unshift({})
 
@@ -67,7 +60,6 @@ function patchObject(node, props, previous, propName, propValue) {
     }
 
     for (var k in json) {
-
         var value = json[k]
 
         node[propName][k] = (value === undefined) ? replacer : value
@@ -75,37 +67,30 @@ function patchObject(node, props, previous, propName, propValue) {
 }
 
 export default function applyProperties(node, props, previous) {
-    if(!node.omixEventList){
-        node.omixEventList=  {}
+    if (!node.omixEventList) {
+        node.omixEventList = {}
     }
-    for(var event in  node.omixEventList){
+    for (var event in node.omixEventList) {
         node[event] = null
     }
     for (var propName in props) {
         var propValue = props[propName]
 
         if (propValue === undefined) {
-            removeProperty(node, propName, propValue, previous);
+            removeProperty(node, propName, propValue, previous)
         } else {
             if (isObject(propValue)) {
-
-                patchObject(node, props, previous, propName, propValue);
+                patchObject(node, props, previous, propName, propValue)
             } else {
-                //https://stackoverflow.com/questions/12718186/element-setattributeprop-value-vs-element-prop-value
-                //node.setAttribute(propName,propValue)
-                //if(propName.indexOf('omi-') === 0 ||propName.indexOf('__s_') === 0 || propName === 'ref'){
-                //    node.setAttribute(propName, propValue)
-                //}else {
-                //    node[propName] = propValue
-                //}
-                if(typeof propValue === 'function' ){
+                // https://stackoverflow.com/questions/12718186/element-setattributeprop-value-vs-element-prop-value
+                if (typeof propValue === 'function') {
                     node[propName.toLowerCase()] = propValue
                     node.omixEventList[propName.toLowerCase()] = true
                     node.omixEventList[propName] = true
-                }else {
+                } else {
                     node.setAttribute(propName, propValue)
                 }
-                if(propName != 'style') { //fix readonly bug in ios
+                if (propName !== 'style') { // fix readonly bug in ios
                     node[propName] = propValue
                 }
             }

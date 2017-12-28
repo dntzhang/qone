@@ -37,7 +37,7 @@ class Component {
         this._normalize(this._virtualDom)
 
         this._fixVirtualDomCount(this._virtualDomCount(this._preVirtualDom, [[this._preVirtualDom]]))
-        //this._fixVirtualDomCount(this._virtualDomCount(this._virtualDom, [[this._virtualDom]]))
+        // this._fixVirtualDomCount(this._virtualDomCount(this._virtualDom, [[this._virtualDom]]))
 
         patch(this.node, diff(this._preVirtualDom, this._virtualDom))
 
@@ -136,7 +136,7 @@ class Component {
         this._normalize(this._virtualDom, first)
         if (this.renderTo) {
             this.node = createElement(this._virtualDom)
-            if(!this._omi_increment) {
+            if (!this._omi_increment) {
                 while (this.renderTo.firstChild) {
                     this.renderTo.removeChild(this.renderTo.firstChild)
                 }
@@ -149,18 +149,18 @@ class Component {
 
     _generateCss() {
         this.css = (this.style() || '').replace(/<\/?style>/g, '')
-        let shareAttr =  this.data.scopedSelfCss ? this._omi_scopedAttr : Omi.getAttr(this.constructor)
+        let shareAttr = this.data.scopedSelfCss ? this._omi_scopedAttr : Omi.getAttr(this.constructor)
 
         if (this.css) {
-            if(this.data.closeScopedStyle){
-                Omi.style[shareAttr+'_g'] = this.css
+            if (this.data.closeScopedStyle) {
+                Omi.style[shareAttr + '_g'] = this.css
                 if (!Omi.ssr) {
                     if (this.css !== this._preCss) {
                         style.addStyle(this.css, this.id)
                         this._preCss = this.css
                     }
                 }
-            }else if (!Omi.style[shareAttr]) {
+            } else if (!Omi.style[shareAttr]) {
                 if (Omi.scopedStyle) {
                     this.css = style.scoper(this.css, this.data.scopedSelfCss ? '[' + this._omi_scopedAttr + ']' : '[' + shareAttr + ']')
                 }
@@ -176,8 +176,8 @@ class Component {
     }
 
     _normalize(root, first, parent, index, parentInstance) {
-        if(Omi.NativeComponent&&root.tagName.isNativeBaseComponent){
-                return
+        if (Omi.NativeComponent && root.tagName.isNativeBaseComponent) {
+            return
         }
         let ps = root.props
         // for scoped css
@@ -189,7 +189,6 @@ class Component {
         }
 
         if (root.tagName) {
-
             let Ctor = typeof root.tagName === 'string' ? Omi.getConstructor(root.tagName) : root.tagName
             if (Ctor) {
                 let cmi = this._getNextChild(root.tagName, parentInstance)
@@ -205,9 +204,8 @@ class Component {
                     cmi._render()
                     parent[index] = cmi._virtualDom
                 } else {
-
                     let instance = new Ctor(root.props)
-                    if(parentInstance) {
+                    if (parentInstance) {
                         instance.$store = parentInstance.$store
                     }
                     if (instance.data.children !== undefined) {
@@ -239,7 +237,6 @@ class Component {
                     if (root.props['omi-id']) {
                         Omi.mapping[root.props['omi-id']] = instance
                     }
-
                 }
             }
         }
@@ -257,8 +254,8 @@ class Component {
     }
 
     _getNextChild(cn, parentInstance) {
-        if(!parentInstance) return
-        if(typeof cn !== 'string'){
+        if (!parentInstance) return
+        if (typeof cn !== 'string') {
             for (let i = 0, len = parentInstance.children.length; i < len; i++) {
                 let child = parentInstance.children[i]
                 if (cn === child.constructor && !child._using) {
@@ -266,7 +263,7 @@ class Component {
                     return child
                 }
             }
-        }else if (parentInstance) {
+        } else if (parentInstance) {
             for (let i = 0, len = parentInstance.children.length; i < len; i++) {
                 let child = parentInstance.children[i]
                 if (cn.replace(/-/g, '').toLowerCase() === child.constructor.is.replace(/-/g, '').toLowerCase() && !child._using) {

@@ -1,6 +1,5 @@
 import h from './vdom/h'
 
-
 let Omi = {
     x: h,
     instances: {},
@@ -18,13 +17,13 @@ let Omi = {
     componentConstructor: {}
 }
 
-Omi.getAttr = function(ctor){
-    if(ctor.is){
+Omi.getAttr = function(ctor) {
+    if (ctor.is) {
         return ctor.is
     }
     let inst = Omi.instances,
         hasAttr = false
-    for(var key in inst) {
+    for (var key in inst) {
         if (inst[key].constructor === ctor) {
             hasAttr = true
             ctor.is = Omi.STYLEPREFIX + Omi._styleId
@@ -32,7 +31,7 @@ Omi.getAttr = function(ctor){
             return ctor.is
         }
     }
-    if(!hasAttr){
+    if (!hasAttr) {
         ctor.is = Omi.STYLEPREFIX + Omi._styleId
         Omi._styleId++
         return ctor.is
@@ -169,6 +168,5 @@ Omi.renderToString = function(component, store) {
     Omi._instanceId = 0
     return result
 }
-
 
 export default Omi

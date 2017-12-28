@@ -1,46 +1,36 @@
+import {getPrototype, isObject} from './util.js'
 
-function isObject(x) {
-    return typeof x === 'object' && x !== null;
-}
-
-function diff(a,b){
-
+function diff(a, b) {
     var patch = { a: a }
     walk(a, b, patch, 0)
     return patch
 }
 
-
 function walk(a, b, patch, index) {
     var apply = patch[index]
     if (b == null) {
-
-        apply = appendPatch(apply, {p:['REMOVE', a, b]})
-    } else if ( isObject(a) ) {
-        if ( isObject(b)) {
+        apply = appendPatch(apply, {p: ['REMOVE', a, b]})
+    } else if (isObject(a)) {
+        if (isObject(b)) {
             if (a.tagName === b.tagName) {
                 var propsPatch = diffProps(a.props, b.props)
                 if (propsPatch) {
                     apply = appendPatch(apply,
-                        {p:["PROPS", a, propsPatch]})
+                        {p: ['PROPS', a, propsPatch]})
                 }
-
 
                 apply = diffChildren(a, b, patch, apply, index)
             } else {
-
-                apply = appendPatch(apply,{p:['VNODE', a, b]})
-
+                apply = appendPatch(apply, {p: ['VNODE', a, b]})
             }
         } else {
-            apply = appendPatch(apply, {p:['VNODE', a, b]})
-
+            apply = appendPatch(apply, {p: ['VNODE', a, b]})
         }
-    } else if (typeof a == 'string') {
+    } else if (typeof a === 'string') {
         if (typeof b !== 'string') {
-            apply = appendPatch(apply, {p:['VTEXT', a, b]})
+            apply = appendPatch(apply, {p: ['VTEXT', a, b]})
         } else if (a !== b) {
-            apply = appendPatch(apply, {p:['VTEXT', a, b]})
+            apply = appendPatch(apply, {p: ['VTEXT', a, b]})
         }
     }
 
@@ -49,10 +39,9 @@ function walk(a, b, patch, index) {
     }
 }
 
-
 function appendPatch(apply, patch) {
     if (apply) {
-        if (Object.prototype.toString.call(apply)==='[object Array]') {
+        if (Object.prototype.toString.call(apply) === '[object Array]') {
             apply.push(patch)
         } else {
             apply = [apply, patch]
@@ -63,7 +52,6 @@ function appendPatch(apply, patch) {
         return patch
     }
 }
-
 
 function diffChildren(a, b, patch, apply, index) {
     var aChildren = a.children
@@ -83,7 +71,7 @@ function diffChildren(a, b, patch, apply, index) {
             if (rightNode) {
                 // Excess nodes in b need to be added
 
-                apply = appendPatch(apply,{p:["INSERT", null, rightNode]} )
+                apply = appendPatch(apply, {p: ['INSERT', null, rightNode]})
             }
         } else {
             walk(leftNode, rightNode, patch, index)
@@ -97,7 +85,7 @@ function diffChildren(a, b, patch, apply, index) {
     if (orderedSet.moves) {
         // Reorder nodes last
         apply = appendPatch(apply,
-            {p:["ORDER",
+            {p: ['ORDER',
                 a,
                 orderedSet.moves]}
         )
@@ -141,7 +129,7 @@ function reorder(aChildren, bChildren) {
 
     // Iterate through a and match a node in b
     // O(N) time,
-    for (var i = 0 ; i < aChildren.length; i++) {
+    for (var i = 0; i < aChildren.length; i++) {
         var aItem = aChildren[i]
         var itemIndex
 
@@ -150,7 +138,6 @@ function reorder(aChildren, bChildren) {
                 // Match up the old keys
                 itemIndex = bKeys[aItem.key]
                 newChildren.push(bChildren[itemIndex])
-
             } else {
                 // Remove old keyed items
                 itemIndex = i - deletedItems++
@@ -171,9 +158,9 @@ function reorder(aChildren, bChildren) {
         }
     }
 
-    var lastFreeIndex = freeIndex >= bFree.length ?
-        bChildren.length :
-        bFree[freeIndex]
+    var lastFreeIndex = freeIndex >= bFree.length
+        ? bChildren.length
+        : bFree[freeIndex]
 
     // Iterate through b and append any new keys
     // O(M) time
@@ -220,34 +207,27 @@ function reorder(aChildren, bChildren) {
                         // if the remove didn't put the wanted item in place, we need to insert it
                         if (!simulateItem || simulateItem.key !== wantedItem.key) {
                             inserts.push({key: wantedItem.key, to: k})
-                        }
-                        // items are matching, so skip ahead
-                        else {
+                        } else { // items are matching, so skip ahead
                             simulateIndex++
                         }
-                    }
-                    else {
+                    } else {
                         inserts.push({key: wantedItem.key, to: k})
                     }
-                }
-                else {
+                } else {
                     inserts.push({key: wantedItem.key, to: k})
                 }
                 k++
-            }
-            // a key in simulate has no matching wanted key, remove it
-            else if (simulateItem && simulateItem.key) {
+            } else if (simulateItem && simulateItem.key) { // a key in simulate has no matching wanted key, remove it
                 removes.push(remove(simulate, simulateIndex, simulateItem.key))
             }
-        }
-        else {
+        } else {
             simulateIndex++
             k++
         }
     }
 
     // remove all the remaining nodes from simulate
-    while(simulateIndex < simulate.length) {
+    while (simulateIndex < simulate.length) {
         simulateItem = simulate[simulateIndex]
         removes.push(remove(simulate, simulateIndex, simulateItem && simulateItem.key))
     }
@@ -295,12 +275,10 @@ function keyIndex(children) {
     }
 
     return {
-        keys: keys,     // A hash of key name to index
-        free: free      // An array of unkeyed item indices
+        keys: keys, // A hash of key name to index
+        free: free // An array of unkeyed item indices
     }
 }
-
-
 
 function diffProps(a, b) {
     var diff
@@ -320,7 +298,7 @@ function diffProps(a, b) {
             if (getPrototype(bValue) !== getPrototype(aValue)) {
                 diff = diff || {}
                 diff[aKey] = bValue
-            }  else {
+            } else {
                 var objectDiff = diffProps(aValue, bValue)
                 if (objectDiff) {
                     diff = diff || {}
@@ -341,16 +319,6 @@ function diffProps(a, b) {
     }
 
     return diff
-}
-
-function getPrototype(value) {
-    if (Object.getPrototypeOf) {
-        return Object.getPrototypeOf(value)
-    } else if (value.__proto__) {
-        return value.__proto__
-    } else if (value.constructor) {
-        return value.constructor.prototype
-    }
 }
 
 export default diff

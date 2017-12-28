@@ -1,3 +1,7 @@
+# omix v1.2.7
+
+* eslint fix
+
 # omix v1.2.6
 
 * fix 老的 IOS 9 和 10 下 style 为 readonly 的bug
