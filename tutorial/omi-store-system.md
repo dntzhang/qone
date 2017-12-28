@@ -1,5 +1,8 @@
 ## Omix 框架 Store 体系
 
+* 本文代码的例子[点击这里](https://github.com/AlloyTeam/omix/tree/master/example/store)
+* 真实项目的例子[点击这里](https://github.com/AlloyTeam/omi-cli/tree/master/template/x/src/page/index)
+
 先说说Store系统是干什么的！为什么要造这样一个东西？能够给系统架构带来什么？
 
 当我们组件之间，拥有共享的数据的时候，经常需要进行组件通讯。在Omi框架里，父组件传递数据给子组件非常方便：
@@ -13,13 +16,14 @@
 ```js
 class Hello extends Omi.Component {
     clickHandler(){
-        this.name="aa"
-        this.data.nameChange(this.name)
+        this.data.name = "aa"
+        this.data.nameChange(this.data.name)
     }
+    
     render() {
         return (
             <div onclick={this.clickHandler.bind(this)}> Hello
-                <h1 style="display:inline-block;">{this.data.name}</h1>!
+                <h1>{this.data.name}</h1>!
             </div>
             )
     }
@@ -149,5 +153,5 @@ Omi.render(app, 'body', {
 
 ## 源码地址
 
-* 更为详细的代码可以[点击这里](https://github.com/AlloyTeam/omi/tree/master/example/todo-store)
-
+* 本文代码的例子[点击这里](https://github.com/AlloyTeam/omix/tree/master/example/store)
+* 真实项目的例子[点击这里](https://github.com/AlloyTeam/omi-cli/tree/master/template/x/src/page/index)
