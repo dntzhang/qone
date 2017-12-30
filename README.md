@@ -72,6 +72,12 @@ $ npm start                      # develop
 $ npm run dist                   # release
 ```
 
+the latest cli support blow cmd to init omix project, not omi project:
+
+```
+omi init your_project_name
+```
+
 ## Install
 
 ``` bash
