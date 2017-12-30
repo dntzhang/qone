@@ -24,8 +24,7 @@
 
 还有一类情况，组件会被使用多次，也必须使用声明的方式，比如上一篇的例子:
 
-```
-
+```js
 class TodoList extends Omi.Component {
     render() {
         return (
