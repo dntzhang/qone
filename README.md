@@ -118,7 +118,7 @@ Omi.render(app, 'body',{
 })
 ```
 
-[→Try it online←](https://alloyteam.github.io/omix/repl/redirect.html?type=store)
+[→Try it online←](https://alloyteam.github.io/omix/repl/redirect.html)
 
 ## omi-cli
 
