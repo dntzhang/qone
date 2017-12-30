@@ -61,6 +61,7 @@ class Pagination extends Omi.Component {
     }
     `
     }
+
     render() {
         let arr = []
         var opt = this.data,
@@ -104,6 +105,7 @@ class Pagination extends Omi.Component {
             })
         } </div>
     }
+
     getInterval() {
         var ne_half = Math.ceil(this.data.numDisplay / 2)
         var upper_limit = this.pageNum - this.data.numDisplay
@@ -111,25 +113,29 @@ class Pagination extends Omi.Component {
         var end = this.data.currentPage > ne_half ? Math.min(this.data.currentPage + ne_half, this.pageNum) : Math.min(this.data.numDisplay, this.pageNum)
         return [start, end]
     }
+
     getPrev() {
         if (this.data.currentPage === 0) {
             return <span class="current prev">{this.data.prevText}</span>
         }
-        return <a onclick="" href={this.data.linkTo} class="prev">{this.data.prevText}</a>
+
+        return <a onclick={e => { this.goto(this.data.currentPage-1, e) }} href={this.data.linkTo} class="prev">{this.data.prevText}</a>
     }
+
     getNext() {
         if (this.data.currentPage === this.pageNum - 1) {
             return <span class="current next">{this.data.nextText}</span>
         }
-        return <a onclick="" href={this.data.linkTo} class="next">{this.data.nextText}</a>
+
+        return <a onclick={e => { this.goto(this.data.currentPage+1, e) }} href={this.data.linkTo} class="next">{this.data.nextText}</a>
     }
+
     getItem(pageIndex, text) {
         if (this.data.currentPage === pageIndex) {
             return <span class="current"> {text} </span>
         }
-        return <a class="link" onclick={e => { this.goto(pageIndex, e) }} data-pageIndex="' + pageIndex + '" href="{{linkTo}}">{text}</a>
+        return <a class="link" onclick={e => { this.goto(pageIndex, e) }} data-pageIndex="' + pageIndex + '" href={this.data.linkTo}>{text}</a>
     }
 }
 
-Omi.tag('pagination', Pagination)
 export default Pagination

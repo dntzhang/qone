@@ -1,6 +1,6 @@
 import Omi from '../../src/index.js'
-import './pagination.js'
-import './content.js'
+import Pagination from './pagination.js'
+import Content from './content.js'
 
 class Main extends Omi.Component {
     constructor(data) {
@@ -15,17 +15,18 @@ class Main extends Omi.Component {
     }
 
     render() {
-        return <div>
-            <h1>Pagination Example</h1>
-            <content omi-name="content" omi-id="content"></content>
-            <pagination
-                name="pagination"
-                total={100}
-                pageSize={10}
-                numEdge={1}
-                numDisplay={4}
-                onPageChange={this.handlePageChange.bind(this)} ></pagination>
-        </div>
+        return (
+            <div>
+                <h1>Pagination Example</h1>
+                <Content omi-name="content" omi-id="content"></Content>
+                <Pagination
+                    name="pagination"
+                    total={100}
+                    pageSize={10}
+                    numEdge={1}
+                    numDisplay={4}
+                    onPageChange={this.handlePageChange.bind(this)} ></Pagination>
+            </div>)
     }
 }
 

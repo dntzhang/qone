@@ -1,5 +1,5 @@
 /*!
- *  omix v1.2.7 By dntzhang 
+ *  omix v1.2.8 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -1110,8 +1110,8 @@ function walk(a, b, patch, index) {
     var apply = patch[index];
     if (b == null) {
         apply = appendPatch(apply, { p: ['REMOVE', a, b] });
-    } else if ((0, _util.isObject)(a)) {
-        if ((0, _util.isObject)(b)) {
+    } else if ((0, _util.isObject)(b)) {
+        if ((0, _util.isObject)(a)) {
             if (a.tagName === b.tagName) {
                 var propsPatch = diffProps(a.props, b.props);
                 if (propsPatch) {
@@ -1125,8 +1125,8 @@ function walk(a, b, patch, index) {
         } else {
             apply = appendPatch(apply, { p: ['VNODE', a, b] });
         }
-    } else if (typeof a === 'string') {
-        if (typeof b !== 'string') {
+    } else if (typeof b === 'string') {
+        if (typeof a !== 'string') {
             apply = appendPatch(apply, { p: ['VTEXT', a, b] });
         } else if (a !== b) {
             apply = appendPatch(apply, { p: ['VTEXT', a, b] });
@@ -1590,7 +1590,7 @@ function stringPatch(domNode, leftVNode, vText, renderOptions) {
     } else {
         var parentNode = domNode.parentNode;
 
-        newNode = renderOptions.render({ text: vText }, renderOptions);
+        newNode = renderOptions.render(vText, renderOptions);
 
         if (parentNode && newNode !== domNode) {
             parentNode.replaceChild(newNode, domNode);

@@ -10,8 +10,8 @@ function walk(a, b, patch, index) {
     var apply = patch[index]
     if (b == null) {
         apply = appendPatch(apply, {p: ['REMOVE', a, b]})
-    } else if (isObject(a)) {
-        if (isObject(b)) {
+    } else if (isObject(b)) {
+        if (isObject(a)) {
             if (a.tagName === b.tagName) {
                 var propsPatch = diffProps(a.props, b.props)
                 if (propsPatch) {
@@ -26,8 +26,8 @@ function walk(a, b, patch, index) {
         } else {
             apply = appendPatch(apply, {p: ['VNODE', a, b]})
         }
-    } else if (typeof a === 'string') {
-        if (typeof b !== 'string') {
+    } else if (typeof b === 'string') {
+        if (typeof a !== 'string') {
             apply = appendPatch(apply, {p: ['VTEXT', a, b]})
         } else if (a !== b) {
             apply = appendPatch(apply, {p: ['VTEXT', a, b]})

@@ -25,5 +25,4 @@ class Content extends Omi.Component {
     }
 }
 
-Omi.tag('content', Content)
 export default Content
