@@ -43,8 +43,6 @@ class Hello extends Omi.Component {
  
 ### 定义 Store
 
-Omi.Store是基类，我们可以继承Omi.Store来定义自己的Store，比如下面的TodoStore。
-
 ```js
 class Store  {
     constructor(data,callbacks) {

@@ -15,7 +15,6 @@ Build UI with JSX - 使用 JSX 创建用户界面
 * [中文文档](./docs/README.md)
 * [Omi REPL](https://alloyteam.github.io/omix/repl/)
 * [Change Log](https://github.com/AlloyTeam/omix/blob/master/change-log.md)
-* [Use Omi if you like template](https://github.com/AlloyTeam/omi)
 
 ## Features
 
