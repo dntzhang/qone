@@ -62,6 +62,64 @@ class App extends Omi.Component {
 Omi.render(new App(), '#container')
 ```
 
+## Using Store System
+
+```js
+class Store  {
+    constructor(data, callbacks) {
+        this.name = data.name || ''
+        this.onRename = callbacks.onRename || function(){}
+    }
+
+    rename(name){
+        this.name = name
+        this.onRename()
+    }
+}
+
+
+class Hello extends Omi.Component {
+    render() {
+        return (
+            //you can also use this.$store.name here. but using data if this is a pure component.
+            <div> Hello <span>{this.data.name}</span>!</div>
+        )
+    }
+}
+
+class App extends Omi.Component {
+
+    install(){
+        this.rename = this.rename.bind(this)
+    }
+
+    rename(){
+        this.$store.rename('Omix')
+    }
+
+    render() {
+        return (
+            <div onclick={this.rename}>
+                <Hello name={this.$store.name}></Hello>
+            </div>
+        )
+    }
+}
+
+let app = new App()
+let store = new Store({ name : 'Omi' } ,{
+    onRename :()=>{
+        app.update()
+    }
+})
+
+Omi.render(app, 'body',{
+    store
+})
+```
+
+[→Try it online←](https://alloyteam.github.io/omix/repl/redirect.html?type=store)
+
 ## omi-cli
 
 ```bash
