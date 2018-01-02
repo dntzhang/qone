@@ -96,7 +96,7 @@ class App extends Omi.Component {
 
     render() {
         return <div>
-            <hello name={this.name}></hello>
+            <Hello name={this.name}></Hello>
             <h3 onclick={this.handleClick.bind(this)}>Scoped css and event test! click me!</h3>
         </div>
     }
@@ -111,7 +111,7 @@ Omi.render(new App(), '#container')
 * 通过`name={this.name}`把传递给子组件hello，子组件直接在render里可以使用{this.data.name}来使用传递来的数据
 * 通过`onclick={this.handleClick.bind(this)}"`给HTML元素绑定事件，在handleClick回调中可以拿到event对象
 
-特别强调，Omi.tag是全局注册，只要一个地方注册了，其他地方可以省去注册的代码。
+
 
 ## 介绍 JSX
 
@@ -285,7 +285,7 @@ class TodoList extends Omi.Component {
         )
     }
 }
-Omi.tag('todo-list', TodoList)
+
 ```
 
 * 使用`this.data.items.map`来遍历传入的items，在render方法中就能直接使用该标签。如下所示：
@@ -311,7 +311,7 @@ class TodoApp extends Omi.Component {
     render() {
         return <div>
             <h3>TODO</h3>
-            <todo-list items={this.data.items}></todo-list>
+            <TodoList items={this.data.items}></TodoList>
             <form onSubmit={this.handleSubmit.bind(this)}>
                 <input onChange={this.handleChange.bind(this)} value={this.data.text} />
                 <button>{'Add #' + (this.data.items.length + 1)}</button>
@@ -326,8 +326,8 @@ Omi.render(new TodoApp(), 'body')
 ### 父子通讯
 
 ```js
-import './pagination.js'
-import './content.js'
+import Pagination from './pagination.js'
+import Content from './content.js'
 
 ...
     handlePageChange(index) {
@@ -340,14 +340,14 @@ import './content.js'
     render() {
         return <div>
             <h1>Pagination Example</h1>
-            <content omi-name="content" omi-id="content"></content>
-            <pagination
+            <Content omi-name="content" omi-id="content"></Content>
+            <Pagination
                 name="pagination"
                 total={100}
                 pageSize={10}
                 numEdge={1}
                 numDisplay={4}
-                onPageChange={this.handlePageChange.bind(this)} ></pagination>
+                onPageChange={this.handlePageChange.bind(this)} ></Pagination>
         </div>
     }
 ...
@@ -472,14 +472,16 @@ class NotesList extends Omi.Component {
     }
 }
 
-Omi.tag('notes-list', NotesList)
+
 
 class App extends Omi.Component {
     render() {
-        return <notes-list a="a" class="sfds">
+        return (
+        <NotesList a="a" class="sfds">
             <span>hello</span>
             <span>world</span>
-        </notes-list>
+        </NotesList>
+        )
     }
 }
 
