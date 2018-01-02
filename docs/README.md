@@ -240,7 +240,7 @@ const element = Omi.x(
 ```
 // JSX
 <ul id="bestest-menu">
-  {items.map( item =>
+  {this.data.items.map( item =>
     <li class="item" {...attrs(item.id)}>{item.title}</li>
   )}
 </ul>
@@ -250,7 +250,7 @@ const element = Omi.x(
 
 ```
 // JSX
-<MyList>{items.map(item => 
+<MyList>{this.data.items.map(item => 
     <MyItem id={item.id} title={item.title} />
 )}</MyList>
 ```
