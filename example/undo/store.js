@@ -6,7 +6,6 @@ class Store {
         }
         this.onAdd = callbacks.add || noop
         this.onRemove = callbacks.remove || noop
-        this.onClear = callbacks.clear || noop
         this.onAddItems = callbacks.addItems || noop
         this.onChangeText = callbacks.changeText || noop
         this.onUndo = callbacks.undo || noop
@@ -17,102 +16,81 @@ class Store {
         this.actionIndex = 0
     }
 
-    addAction(text) {
+    add(text, cmd, redo) {
 
         let item = {id: this.items.length + 1, text: text}
         this.items.push(item)
         this.onAdd(text)
 
-        this.actionLog.push({
-            action: 'add',
-            args: [text]
-        })
-        this.actionUndoLog.push({
-            action: 'remove',
-            args: [item.id]
-        })
-        this.actionIndex++
+        if (!cmd) {
+            this.actionLog.push({
+                action: 'add',
+                args: [text]
+            })
+            this.actionUndoLog.push({
+                action: 'remove',
+                args: [item.id]
+            })
+            this.actionIndex++
+            if (!redo) {
+                this.actionRedoLog.length = 0
+            }
+        }
     }
 
 
-    add(text){
-        this.addAction(text)
-        this.actionRedoLog.length = 0
-    }
-
-    remove(id) {
-        this.removeAction(id)
-        this.actionRedoLog.length = 0
-    }
-
-    removeAction(id) {
+    remove(id, cmd, redo) {
+        let item, index
         for (let i = 0, len = this.items.length; i < len; i++) {
             if (this.items[i].id === id) {
-
+                item = this.items[i]
+                index = i
                 this.items.splice(i, 1)
                 break
             }
         }
+
+
         this.onRemove(id)
-        this.actionIndex++
+
+
+        if (!cmd) {
+
+            this.actionLog.push({
+                action: 'remove',
+                args: [id]
+            })
+
+            this.actionUndoLog.push({
+                action: 'add',
+                args: [item.text, index]
+            })
+
+            this.actionIndex++
+            if (!redo) {
+                this.actionRedoLog.length = 0
+            }
+        }
     }
 
-    addItemsAction(items) {
-        items.forEach(item=> {
-            this.items.push(item)
-        })
-
-        this.onAddItems()
-        this.actionIndex++
-    }
-
-    addItems(items) {
-        this.addItemsAction(items)
-        this.actionRedoLog.length = 0
-    }
-
-    clearAction() {
-
-        this.actionIndex++
-        this.actionLog.push({
-            action: 'clear',
-            args: [this.items.slice(0)]
-        })
-
-        this.actionUndoLog.push({
-            action: 'addItems',
-            args: [this.items.slice(0)]
-        })
-
-        this.items.length = 0
-
-
-        this.onClear()
-    }
-
-    clear(){
-        this.clearAction()
-        this.actionRedoLog.length = 0
-    }
 
     undo() {
 
         if (this.actionIndex > 0) {
             this.actionIndex--
-            let log = this.actionUndoLog[this.actionIndex]
-            this[log.action+'Action'].apply(this, log.args)
-            this.actionIndex--
-            this.actionUndoLog.pop()
-            this.actionRedoLog.push(this.actionLog.pop())
+            let log = this.actionUndoLog.pop()
+            if (log) {
+                this[log.action].apply(this, [...log.args, true])
+                this.actionRedoLog.push(this.actionLog.pop())
+            }
         }
-
     }
 
     redo() {
-        let log = this.actionRedoLog[this.actionRedoLog.length-1]
-        if(log) {
-            this[log.action+'Action'].apply(this, log.args)
-            this.actionRedoLog.pop()
+        let log = this.actionRedoLog.pop()
+        if (log) {
+            this[log.action].apply(this, [...log.args, false, true])
+            this.actionIndex++
         }
     }
 }

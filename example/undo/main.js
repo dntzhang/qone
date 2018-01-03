@@ -21,9 +21,6 @@ let store = new Store({
     remove:(id)=>{
         app.update()
     },
-    clear(){
-        app.update()
-    },
     addItems(){
         app.update()
     },

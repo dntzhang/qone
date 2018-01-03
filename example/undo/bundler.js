@@ -473,9 +473,6 @@ var store = new _store2['default']({
     remove: function remove(id) {
         app.update();
     },
-    clear: function clear() {
-        app.update();
-    },
     addItems: function addItems() {
         app.update();
     },
@@ -1788,7 +1785,7 @@ var TodoApp = function (_Omi$Component) {
         _this.redo = _this.redo.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
-        _this.clear = _this.clear.bind(_this);
+
         return _this;
     }
 
@@ -1814,11 +1811,6 @@ var TodoApp = function (_Omi$Component) {
         key: 'redo',
         value: function redo() {
             this.$store.redo();
-        }
-    }, {
-        key: 'clear',
-        value: function clear() {
-            this.$store.clear();
         }
     }, {
         key: 'render',
@@ -1851,11 +1843,6 @@ var TodoApp = function (_Omi$Component) {
                         null,
                         'Add #' + this.$store.items.length
                     )
-                ),
-                Omi.x(
-                    'button',
-                    { onClick: this.clear },
-                    'Clear'
                 )
             );
         }
@@ -1895,8 +1882,15 @@ var TodoList = function (_Omi$Component) {
     }
 
     _createClass(TodoList, [{
+        key: "removeItem",
+        value: function removeItem(id) {
+            this.$store.remove(id);
+        }
+    }, {
         key: "render",
         value: function render() {
+            var _this2 = this;
+
             return Omi.x(
                 "ul",
                 null,
@@ -1904,7 +1898,15 @@ var TodoList = function (_Omi$Component) {
                     return Omi.x(
                         "li",
                         { "data-id": item.id },
-                        item.text
+                        item.text,
+                        " ",
+                        Omi.x(
+                            "button",
+                            { onClick: function onClick(id) {
+                                    _this2.removeItem(item.id);
+                                } },
+                            "Delete"
+                        )
                     );
                 })
             );
@@ -1929,6 +1931,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Store = function () {
@@ -1940,7 +1944,6 @@ var Store = function () {
         var noop = function noop() {};
         this.onAdd = callbacks.add || noop;
         this.onRemove = callbacks.remove || noop;
-        this.onClear = callbacks.clear || noop;
         this.onAddItems = callbacks.addItems || noop;
         this.onChangeText = callbacks.changeText || noop;
         this.onUndo = callbacks.undo || noop;
@@ -1952,90 +1955,61 @@ var Store = function () {
     }
 
     _createClass(Store, [{
-        key: 'addAction',
-        value: function addAction(text) {
+        key: 'add',
+        value: function add(text, cmd, redo) {
 
             var item = { id: this.items.length + 1, text: text };
             this.items.push(item);
             this.onAdd(text);
 
-            this.actionLog.push({
-                action: 'add',
-                args: [text]
-            });
-            this.actionUndoLog.push({
-                action: 'remove',
-                args: [item.id]
-            });
-            this.actionIndex++;
-        }
-    }, {
-        key: 'add',
-        value: function add(text) {
-            this.addAction(text);
-            this.actionRedoLog.length = 0;
+            if (!cmd) {
+                this.actionLog.push({
+                    action: 'add',
+                    args: [text]
+                });
+                this.actionUndoLog.push({
+                    action: 'remove',
+                    args: [item.id]
+                });
+                this.actionIndex++;
+                if (!redo) {
+                    this.actionRedoLog.length = 0;
+                }
+            }
         }
     }, {
         key: 'remove',
-        value: function remove(id) {
-            this.removeAction(id);
-            this.actionRedoLog.length = 0;
-        }
-    }, {
-        key: 'removeAction',
-        value: function removeAction(id) {
+        value: function remove(id, cmd, redo) {
+            var item = void 0,
+                index = void 0;
             for (var i = 0, len = this.items.length; i < len; i++) {
                 if (this.items[i].id === id) {
-
+                    item = this.items[i];
+                    index = i;
                     this.items.splice(i, 1);
                     break;
                 }
             }
+
             this.onRemove(id);
-            this.actionIndex++;
-        }
-    }, {
-        key: 'addItemsAction',
-        value: function addItemsAction(items) {
-            var _this = this;
 
-            items.forEach(function (item) {
-                _this.items.push(item);
-            });
+            if (!cmd) {
 
-            this.onAddItems();
-            this.actionIndex++;
-        }
-    }, {
-        key: 'addItems',
-        value: function addItems(items) {
-            this.addItemsAction(items);
-            this.actionRedoLog.length = 0;
-        }
-    }, {
-        key: 'clearAction',
-        value: function clearAction() {
+                this.actionLog.push({
+                    action: 'remove',
+                    args: [id]
+                });
 
-            this.actionIndex++;
-            this.actionLog.push({
-                action: 'clear',
-                args: [this.items.slice(0)]
-            });
+                this.actionUndoLog.push({
+                    action: 'add',
+                    args: [item.text, index]
+                });
 
-            this.actionUndoLog.push({
-                action: 'addItems',
-                args: [this.items.slice(0)]
-            });
-
-            this.items.length = 0;
-
-            this.onClear();
-        }
-    }, {
-        key: 'clear',
-        value: function clear() {
-            this.clearAction();
-            this.actionRedoLog.length = 0;
+                this.actionIndex++;
+                if (!redo) {
+                    this.actionRedoLog.length = 0;
+                }
+            }
         }
     }, {
         key: 'undo',
@@ -2043,20 +2017,20 @@ var Store = function () {
 
             if (this.actionIndex > 0) {
                 this.actionIndex--;
-                var log = this.actionUndoLog[this.actionIndex];
-                this[log.action + 'Action'].apply(this, log.args);
-                this.actionIndex--;
-                this.actionUndoLog.pop();
-                this.actionRedoLog.push(this.actionLog.pop());
+                var log = this.actionUndoLog.pop();
+                if (log) {
+                    this[log.action].apply(this, [].concat(_toConsumableArray(log.args), [true]));
+                    this.actionRedoLog.push(this.actionLog.pop());
+                }
             }
         }
     }, {
         key: 'redo',
         value: function redo() {
-            var log = this.actionRedoLog[this.actionRedoLog.length - 1];
+            var log = this.actionRedoLog.pop();
             if (log) {
-                this[log.action + 'Action'].apply(this, log.args);
-                this.actionRedoLog.pop();
+                this[log.action].apply(this, [].concat(_toConsumableArray(log.args), [false, true]));
+                this.actionIndex++;
             }
         }
     }]);

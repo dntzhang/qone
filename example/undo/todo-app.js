@@ -7,7 +7,7 @@ class TodoApp extends Omi.Component {
         this.redo = this.redo.bind(this)
         this.handleSubmit= this.handleSubmit.bind(this)
         this.handleChange= this.handleChange.bind(this)
-        this.clear = this.clear.bind(this)
+
     }
 
     handleSubmit(e) {
@@ -29,9 +29,7 @@ class TodoApp extends Omi.Component {
         this.$store.redo()
     }
 
-    clear(){
-        this.$store.clear()
-    }
+
 
     render() {
         return <div>
@@ -43,7 +41,6 @@ class TodoApp extends Omi.Component {
                 <button>{'Add #' + (this.$store.items.length )}</button>
 
             </form>
-            <button onClick={this.clear}>Clear</button>
         </div>
     }
 }
