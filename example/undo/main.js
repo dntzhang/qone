@@ -32,6 +32,9 @@ let store = new Store({
     },
     undo(){
         app.update()
+    },
+    redo(){
+        app.update()
     }
 })
 

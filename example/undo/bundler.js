@@ -484,6 +484,9 @@ var store = new _store2['default']({
     },
     undo: function undo() {
         app.update();
+    },
+    redo: function redo() {
+        app.update();
     }
 });
 
@@ -1223,8 +1226,6 @@ function diffChildren(a, b, patch, apply, index) {
 
     if (orderedSet.moves) {
         // Reorder nodes last
-        console.log(a);
-        console.log(orderedSet);
         apply = appendPatch(apply, { p: ['ORDER', a, orderedSet.moves] });
     }
 
@@ -1674,9 +1675,6 @@ function reorderChildren(domNode, moves) {
         insert = moves.inserts[j];
         node = keyMap[insert.key];
         // this is the weirdest bug i've ever seen in webkit
-        console.log(moves);
-        console.log(keyMap);
-        console.log(node);
         domNode.insertBefore(node, insert.to >= length++ ? null : childNodes[insert.to]);
     }
 }
@@ -1787,6 +1785,7 @@ var TodoApp = function (_Omi$Component) {
         var _this = _possibleConstructorReturn(this, (TodoApp.__proto__ || Object.getPrototypeOf(TodoApp)).call(this, data));
 
         _this.undo = _this.undo.bind(_this);
+        _this.redo = _this.redo.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
         _this.clear = _this.clear.bind(_this);
@@ -1812,6 +1811,11 @@ var TodoApp = function (_Omi$Component) {
             this.$store.undo();
         }
     }, {
+        key: 'redo',
+        value: function redo() {
+            this.$store.redo();
+        }
+    }, {
         key: 'clear',
         value: function clear() {
             this.$store.clear();
@@ -1830,6 +1834,11 @@ var TodoApp = function (_Omi$Component) {
                         'button',
                         { onClick: this.undo },
                         'Undo'
+                    ),
+                    Omi.x(
+                        'button',
+                        { onClick: this.redo },
+                        'Redo'
                     )
                 ),
                 Omi.x(_todoList2['default'], null),
@@ -1935,15 +1944,16 @@ var Store = function () {
         this.onAddItems = callbacks.addItems || noop;
         this.onChangeText = callbacks.changeText || noop;
         this.onUndo = callbacks.undo || noop;
+        this.onRedo = callbacks.redo || noop;
         this.actionLog = [];
         this.actionUndoLog = [];
-        // this.actionLength = 0
+        this.actionRedoLog = [];
         this.actionIndex = 0;
     }
 
     _createClass(Store, [{
-        key: 'add',
-        value: function add(text) {
+        key: 'addAction',
+        value: function addAction(text) {
 
             var item = { id: this.items.length + 1, text: text };
             this.items.push(item);
@@ -1960,8 +1970,20 @@ var Store = function () {
             this.actionIndex++;
         }
     }, {
+        key: 'add',
+        value: function add(text) {
+            this.addAction(text);
+            this.actionRedoLog.length = 0;
+        }
+    }, {
         key: 'remove',
         value: function remove(id) {
+            this.removeAction(id);
+            this.actionRedoLog.length = 0;
+        }
+    }, {
+        key: 'removeAction',
+        value: function removeAction(id) {
             for (var i = 0, len = this.items.length; i < len; i++) {
                 if (this.items[i].id === id) {
 
@@ -1973,8 +1995,8 @@ var Store = function () {
             this.actionIndex++;
         }
     }, {
-        key: 'addItems',
-        value: function addItems(items) {
+        key: 'addItemsAction',
+        value: function addItemsAction(items) {
             var _this = this;
 
             items.forEach(function (item) {
@@ -1985,8 +2007,14 @@ var Store = function () {
             this.actionIndex++;
         }
     }, {
-        key: 'clear',
-        value: function clear() {
+        key: 'addItems',
+        value: function addItems(items) {
+            this.addItemsAction(items);
+            this.actionRedoLog.length = 0;
+        }
+    }, {
+        key: 'clearAction',
+        value: function clearAction() {
 
             this.actionIndex++;
             this.actionLog.push({
@@ -2004,15 +2032,31 @@ var Store = function () {
             this.onClear();
         }
     }, {
+        key: 'clear',
+        value: function clear() {
+            this.clearAction();
+            this.actionRedoLog.length = 0;
+        }
+    }, {
         key: 'undo',
         value: function undo() {
 
             if (this.actionIndex > 0) {
                 this.actionIndex--;
                 var log = this.actionUndoLog[this.actionIndex];
-                this[log.action].apply(this, log.args);
+                this[log.action + 'Action'].apply(this, log.args);
                 this.actionIndex--;
                 this.actionUndoLog.pop();
+                this.actionRedoLog.push(this.actionLog.pop());
+            }
+        }
+    }, {
+        key: 'redo',
+        value: function redo() {
+            var log = this.actionRedoLog[this.actionRedoLog.length - 1];
+            if (log) {
+                this[log.action + 'Action'].apply(this, log.args);
+                this.actionRedoLog.pop();
             }
         }
     }]);
