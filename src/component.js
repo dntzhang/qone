@@ -28,7 +28,7 @@ class Component {
     }
 
     update() {
-        this._resetUsing(this)
+
         this.beforeUpdate()
         // this._childrenBeforeUpdate(this)
         this.beforeRender()
@@ -86,13 +86,6 @@ class Component {
             })
         }
     }
-
-    // _childrenBeforeUpdate(root) {
-    //    root.children.forEach((child) => {
-    //        child.beforeUpdate()
-    //        this._childrenBeforeUpdate(child)
-    //    })
-    // }
 
     _childrenAfterUpdate(root) {
         root.children.forEach((child) => {
@@ -175,10 +168,9 @@ class Component {
         }
     }
 
-    _normalize(root, first, parent, index, parentInstance) {
-        if (Omi.NativeComponent && root.tagName.isNativeBaseComponent) {
-            return
-        }
+    _normalize(root, first, parent, index, parentInstance, cmiIndex) {
+
+
         let ps = root.props
         // for scoped css
         if (ps) {
@@ -189,9 +181,15 @@ class Component {
         }
 
         if (root.tagName) {
-            let Ctor = typeof root.tagName === 'string' ? Omi.getConstructor(root.tagName) : root.tagName
-            if (Ctor) {
-                let cmi = this._getNextChild(root.tagName, parentInstance)
+            if (typeof root.tagName === 'function') {
+                let cmi = null
+                 if(cmiIndex !== undefined && !first) {
+                     let childIns = parentInstance.children[cmiIndex]
+                     if (childIns && childIns.constructor === root.tagName) {
+                         cmi = childIns
+                     }//else destroy the instance?!
+                 }
+
                 // not using pre instance the first time
                 if (cmi && !first) {
                     if (cmi.data.selfDataFirst) {
@@ -204,7 +202,7 @@ class Component {
                     cmi._render()
                     parent[index] = cmi._virtualDom
                 } else {
-                    let instance = new Ctor(root.props)
+                    let instance = new root.tagName(root.props)
                     if (parentInstance) {
                         instance.$store = parentInstance.$store
                     }
@@ -241,37 +239,15 @@ class Component {
             }
         }
 
+        let __cmiIndex = 0
         root.children && root.children.forEach((child, index) => {
-            this._normalize(child, first, root.children, index, this)
-        })
-    }
-
-    _resetUsing(root) {
-        root.children.forEach((child) => {
-            this._resetUsing(child)
-            child._using = false
-        })
-    }
-
-    _getNextChild(cn, parentInstance) {
-        if (!parentInstance) return
-        if (typeof cn !== 'string') {
-            for (let i = 0, len = parentInstance.children.length; i < len; i++) {
-                let child = parentInstance.children[i]
-                if (cn === child.constructor && !child._using) {
-                    child._using = true
-                    return child
+            if(typeof root !== 'string') {
+                this._normalize(child, first, root.children, index, this, __cmiIndex)
+                if(typeof root.tagName === 'function'){
+                    __cmiIndex++
                 }
             }
-        } else if (parentInstance) {
-            for (let i = 0, len = parentInstance.children.length; i < len; i++) {
-                let child = parentInstance.children[i]
-                if (cn.replace(/-/g, '').toLowerCase() === child.constructor.is.replace(/-/g, '').toLowerCase() && !child._using) {
-                    child._using = true
-                    return child
-                }
-            }
-        }
+        })
     }
 
     _fixForm() {

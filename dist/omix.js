@@ -1,5 +1,5 @@
 /*!
- *  omix v1.2.8 By dntzhang 
+ *  omix v1.2.9 By dntzhang 
  *  Github: https://github.com/AlloyTeam/omix
  *  MIT Licensed.
  */
@@ -148,31 +148,6 @@ Omi.$$ = function (selector, context) {
         return Array.prototype.slice.call(context.querySelectorAll(selector));
     } else {
         return Array.prototype.slice.call(document.querySelectorAll(selector));
-    }
-};
-
-Omi._capitalize = function (str) {
-    str = str.toLowerCase();
-    str = str.replace(/\b\w+\b/g, function (word) {
-        return word.substring(0, 1).toUpperCase() + word.substring(1);
-    }).replace(/-/g, '');
-    return str;
-};
-
-Omi.tag = function (name, ctor) {
-    var cname = name.replace(/-/g, '').toLowerCase();
-    Omi.componentConstructor[cname] = ctor;
-    ctor.is = name;
-
-    var uname = Omi._capitalize(name);
-    Omi.tags[uname] = Omi.tags.createTag(uname);
-};
-
-Omi.getConstructor = function (name) {
-    for (var key in Omi.componentConstructor) {
-        if (key === name.toLowerCase() || key === name.replace(/-/g, '').toLowerCase()) {
-            return Omi.componentConstructor[key];
-        }
     }
 };
 
@@ -647,7 +622,7 @@ var Component = function () {
     }, {
         key: 'update',
         value: function update() {
-            this._resetUsing(this);
+
             this.beforeUpdate();
             // this._childrenBeforeUpdate(this)
             this.beforeRender();
@@ -709,14 +684,6 @@ var Component = function () {
                 });
             }
         }
-
-        // _childrenBeforeUpdate(root) {
-        //    root.children.forEach((child) => {
-        //        child.beforeUpdate()
-        //        this._childrenBeforeUpdate(child)
-        //    })
-        // }
-
     }, {
         key: '_childrenAfterUpdate',
         value: function _childrenAfterUpdate(root) {
@@ -803,12 +770,9 @@ var Component = function () {
         }
     }, {
         key: '_normalize',
-        value: function _normalize(root, first, parent, index, parentInstance) {
+        value: function _normalize(root, first, parent, index, parentInstance, cmiIndex) {
             var _this3 = this;
 
-            if (_omi2['default'].NativeComponent && root.tagName.isNativeBaseComponent) {
-                return;
-            }
             var ps = root.props;
             // for scoped css
             if (ps) {
@@ -819,9 +783,15 @@ var Component = function () {
             }
 
             if (root.tagName) {
-                var Ctor = typeof root.tagName === 'string' ? _omi2['default'].getConstructor(root.tagName) : root.tagName;
-                if (Ctor) {
-                    var cmi = this._getNextChild(root.tagName, parentInstance);
+                if (typeof root.tagName === 'function') {
+                    var cmi = null;
+                    if (cmiIndex !== undefined && !first) {
+                        var childIns = parentInstance.children[cmiIndex];
+                        if (childIns && childIns.constructor === root.tagName) {
+                            cmi = childIns;
+                        }
+                    }
+
                     // not using pre instance the first time
                     if (cmi && !first) {
                         if (cmi.data.selfDataFirst) {
@@ -834,7 +804,7 @@ var Component = function () {
                         cmi._render();
                         parent[index] = cmi._virtualDom;
                     } else {
-                        var instance = new Ctor(root.props);
+                        var instance = new root.tagName(root.props);
                         if (parentInstance) {
                             instance.$store = parentInstance.$store;
                         }
@@ -871,41 +841,15 @@ var Component = function () {
                 }
             }
 
+            var __cmiIndex = 0;
             root.children && root.children.forEach(function (child, index) {
-                _this3._normalize(child, first, root.children, index, _this3);
-            });
-        }
-    }, {
-        key: '_resetUsing',
-        value: function _resetUsing(root) {
-            var _this4 = this;
-
-            root.children.forEach(function (child) {
-                _this4._resetUsing(child);
-                child._using = false;
-            });
-        }
-    }, {
-        key: '_getNextChild',
-        value: function _getNextChild(cn, parentInstance) {
-            if (!parentInstance) return;
-            if (typeof cn !== 'string') {
-                for (var i = 0, len = parentInstance.children.length; i < len; i++) {
-                    var child = parentInstance.children[i];
-                    if (cn === child.constructor && !child._using) {
-                        child._using = true;
-                        return child;
+                if (typeof root !== 'string') {
+                    _this3._normalize(child, first, root.children, index, _this3, __cmiIndex);
+                    if (typeof root.tagName === 'function') {
+                        __cmiIndex++;
                     }
                 }
-            } else if (parentInstance) {
-                for (var _i = 0, _len = parentInstance.children.length; _i < _len; _i++) {
-                    var _child = parentInstance.children[_i];
-                    if (cn.replace(/-/g, '').toLowerCase() === _child.constructor.is.replace(/-/g, '').toLowerCase() && !_child._using) {
-                        _child._using = true;
-                        return _child;
-                    }
-                }
-            }
+            });
         }
     }, {
         key: '_fixForm',
@@ -945,10 +889,10 @@ var Component = function () {
     }, {
         key: '_childrenInstalled',
         value: function _childrenInstalled(root) {
-            var _this5 = this;
+            var _this4 = this;
 
             root.children.forEach(function (child) {
-                _this5._childrenInstalled(child);
+                _this4._childrenInstalled(child);
                 child._omi_needInstalled && child.installed();
                 child._omi_needInstalled = false;
                 child._execInstalledHandlers();
@@ -957,30 +901,30 @@ var Component = function () {
     }, {
         key: '_mixPlugins',
         value: function _mixPlugins() {
-            var _this6 = this;
+            var _this5 = this;
 
             Object.keys(_omi2['default'].plugins).forEach(function (item) {
-                var nodes = _omi2['default'].$$('*[' + item + ']', _this6.node);
+                var nodes = _omi2['default'].$$('*[' + item + ']', _this5.node);
                 nodes.forEach(function (node) {
-                    if (node.hasAttribute(_this6._omi_scopedAttr)) {
-                        _omi2['default'].plugins[item](node, _this6);
+                    if (node.hasAttribute(_this5._omi_scopedAttr)) {
+                        _omi2['default'].plugins[item](node, _this5);
                     }
                 });
-                if (_this6.node.hasAttribute(item)) {
-                    _omi2['default'].plugins[item](_this6.node, _this6);
+                if (_this5.node.hasAttribute(item)) {
+                    _omi2['default'].plugins[item](_this5.node, _this5);
                 }
             });
         }
     }, {
         key: '_mixRefs',
         value: function _mixRefs() {
-            var _this7 = this;
+            var _this6 = this;
 
             this.refs = {};
             var nodes = _omi2['default'].$$('*[ref]', this.node);
             nodes.forEach(function (node) {
-                if (node.hasAttribute(_this7._omi_scopedAttr)) {
-                    _this7.refs[node.getAttribute('ref')] = node;
+                if (node.hasAttribute(_this6._omi_scopedAttr)) {
+                    _this6.refs[node.getAttribute('ref')] = node;
                 }
             });
             var attr = this.node.getAttribute('ref');

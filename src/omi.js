@@ -54,31 +54,6 @@ Omi.$$ = function(selector, context) {
     }
 }
 
-Omi._capitalize = function(str) {
-    str = str.toLowerCase()
-    str = str.replace(/\b\w+\b/g, function(word) {
-        return word.substring(0, 1).toUpperCase() + word.substring(1)
-    }).replace(/-/g, '')
-    return str
-}
-
-Omi.tag = function(name, ctor) {
-    let cname = name.replace(/-/g, '').toLowerCase()
-    Omi.componentConstructor[cname] = ctor
-    ctor.is = name
-
-    let uname = Omi._capitalize(name)
-    Omi.tags[uname] = Omi.tags.createTag(uname)
-}
-
-Omi.getConstructor = function(name) {
-    for (var key in Omi.componentConstructor) {
-        if (key === name.toLowerCase() || key === name.replace(/-/g, '').toLowerCase()) {
-            return Omi.componentConstructor[key]
-        }
-    }
-}
-
 function isServer() {
     return !(typeof window !== 'undefined' && window.document)
 }

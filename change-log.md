@@ -1,5 +1,9 @@
 # omix v1.2.8
 
+*  优化了组件的复用
+
+# omix v1.2.8
+
 *  fix Text 的 bug
 
 # omix v1.2.7
