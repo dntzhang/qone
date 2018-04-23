@@ -8,20 +8,29 @@
 
 ## 缘由
 
-最近的刚好改了腾讯文档 Excel 表格公式的一些 bug，主要是修改公式的 parser 。公式或一些脚本语言的实现包含几个主要步骤:
+最近的刚好改了腾讯文档 Excel 表格公式的一些 bug，主要是修改公式的 parser 。比如下面的脚本怎么转成 javascript 运行？
+
+``` js
+= IF(SUM(J6:J7) + SUM(J6:J7) > 10, "A2 是 foo", "A2 不是 foo")
+```
+
+公式或一些脚本语言的实现包含几个主要步骤:
 
     scanner > lexer > parser > ast > code string
 
-得到 code string 之后可以动态运行(JIT)，比如 js 里使用 eval ，eval 能保留上下文信息，缺点是执行代码包含编译器代码，eval 的安全性等。
-得到 code string 之后也可直接使用生成的 code string 运行( AOT )，缺点是依赖构建工具或者编辑器插件去动态替换源代码。
+得到 code string 之后可以动态运行，比如 js 里使用 eval ，eval 能保留上下文信息，缺点是执行代码包含编译器代码，eval 的安全性等。
+得到 code string 之后也可直接使用生成的 code string 运行，缺点是依赖构建工具或者编辑器插件去动态替换源代码。
 
 比如 wind 同时支持 JIT 和 AOT, qone 的思路和上面类似，但不完全相同， qone 的如下:
 
     scanner > lexer > parser > ast > method(ast)
 
-这个后面写原理时候再细说。总的来说缘由就是腾讯文档公式、早年的 kmdjs 开发 (uglify2) 和 .NET 开发，所以有了 qone 。    
+这个后面写原理时候再细说。
+
+总的来说，因为腾讯文档公式相关工作、早年的 kmdjs 开发 (uglify2) 和 .NET 开发，所以有了 qone 。    
 
 - [LINQ](#LINQ)
+- [qone 安装](#qone-安装)
 - [qone 关键字与运算符](#qone-关键字与运算符)
 - [qone 方法注入](#qone-方法注入)      
 - [qone select 输出](#qone-select-输出)   
@@ -64,6 +73,12 @@ assert.deepEqual(result, [{ "name": "dntzhang", "age": 28 }])
 * 无需修改或只需做很小的修改即可将它们移植到其他数据源
 
 通常，您要对数据执行的操作越复杂，就越能体会到 qone 相较于传统迭代技术的优势。
+
+## qone 安装
+
+``` bash
+npm install qone
+```
 
 ## qone 关键字与运算符
 
