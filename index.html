@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1,user-scalable=no">
+    <title>CodeMirror: SQL Mode for CodeMirror</title>
+    <link rel="icon" type="images/png" href="../asset/qone.ico">
+    <meta charset="utf-8" />
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f8f8f8;
+            font-family: Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+        }
+
+        pre,
+        code {
+            line-height: 20px;
+        }
+
+        pre {
+            padding-left: 15px;
+            border-left: 2px solid #ddd;
+        }
+
+        code {
+            padding: 0 2px;
+        }
+
+
+
+
+        .head {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .describe {
+            font-size: 12px;
+        }
+
+
+        article {
+            min-height: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+
+        button {
+            border: 0;
+            border-radius: 2px;
+            color: #fff;
+            cursor: pointer;
+            font-size: .875em;
+            background-color: rgb(66, 133, 244);
+            margin: 0;
+            padding: 10px 24px;
+            transition: box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        button:hover {
+            box-shadow: 1px 1px 1px #cccccc;
+            background-color: rgb(49, 131, 220);
+
+        }
+
+        button:active {
+            background-color: rgb(31, 91, 220);
+
+        }
+    </style>
+    <link rel="stylesheet" href="./asset/codemirror.css" />
+    <style>
+        .CodeMirror {
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            height: 100px;
+        }
+
+        @media screen and (max-width:640px) {
+            .describe {
+                width: 255px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <article>
+        <div class="head">
+            Qone
+
+        </div>
+
+        <div class="describe">Next-generation web query language, extend .NET LINQ for javascript.</div>
+
+
+        <pre style="height:160px;"><code>var list = [
+    { name: 'qone', age: 1 },
+    { name: 'linq', age: 18 },
+    { name: 'tencent', age: 20 },
+    { name: 'dntzhang', age: 28 }
+]
+
+var result = qone({ list }).query(`
+</code>
+    </pre>
+        <form>
+            <textarea id="code" name="code">    from n in list   
+    where n.age > 10 && n.name != 'linq'
+    orderby n.age desc
+    select n
+</textarea>
+        </form>
+        <pre style="height: 60px;"><code>`)
+
+console.log(result)
+    </code>
+        </pre>
+        </p>
+
+        <button id='runBtn'>
+            Modify the code and click me to rerun →
+        </button>
+
+        <pre class="result" id="result"><code>  </code></pre>
+    </article>
+    <a href="https://github.com/dntzhang/qone" target="_blank" style="position: absolute; right: 0; top: 0;">
+        <img src="//alloyteam.github.io/github.png" alt="" />
+    </a>
+
+
+
+    <script src="./asset/codemirror.js"></script>
+    <script src="./asset/sql-qone.js"></script>
+    <script src="./qone.min.js"></script>
+    <script src="./asset/show-hint.js"></script>
+    <script src="./asset/sql-hint.js"></script>
+    <script>
+
+
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: 'text/qone',
+            indentWithTabs: true,
+            smartIndent: true,
+            lineNumbers: true,
+            matchBrackets: true,
+            autofocus: true,
+            extraKeys: { "Ctrl-Space": "autocomplete" },
+            hintOptions: {
+                tables: {
+                    users: ["name", "score", "birthDate"],
+                    countries: ["name", "population", "size"]
+                }
+            }
+        }),
+            list = [
+                { name: 'qone', age: 1 },
+                { name: 'linq', age: 18 },
+                { name: 'tencent', age: 20 },
+                { name: 'dntzhang', age: 28 }
+            ],
+            resultEle = document.getElementById('result'),
+            runBtn = document.getElementById('runBtn')
+
+        runBtn.addEventListener('click', function () {
+            var result = qone({ list }).query(editor.getValue())
+            resultEle.innerHTML = JSON.stringify(result, null, 2)
+        })
+
+        runBtn.click()
+
+    </script>
+</body>
+
+</html>

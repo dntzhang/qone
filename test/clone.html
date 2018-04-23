@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+  <div id="aa">aa</div>
+  <script>
+
+    var S = function (num) {
+      this.num = num
+    }
+
+    S.prototype = {
+      a: function () {
+
+      }
+    }
+
+    function extend(from, to) {
+      if (from == null || typeof from != "object") return from;
+      if (from.constructor != Object && from.constructor != Array) return from;
+      if (from.constructor == Date || from.constructor == RegExp || from.constructor == Function ||
+        from.constructor == String || from.constructor == Number || from.constructor == Boolean)
+        return new from.constructor(from);
+
+      to = to || new from.constructor();
+
+      for (var name in from) {
+        to[name] = typeof to[name] == "undefined" ? extend(from[name], null) : to[name];
+      }
+
+      return to;
+    }
+
+    var obj =
+      {
+        aaa: Symbol(11),
+        s: new S(1),
+        S: S,
+        a: true,
+        b: false,
+        c: null,
+        d: undefined,
+        dom: document.getElementById('aa'),
+        date: new Date(),
+        func: function (q) { return 1 + q; },
+        num: 123,
+        text: "asdasd",
+        array: [1, "asd"],
+        array2: [{ a: 11 }, "asd"],
+        regex: new RegExp(/aaa/i),
+        subobj:
+          {
+            num: 234,
+            text: "asdsaD"
+          }
+      }
+
+    var clone = extend(obj);
+
+    console.log(clone.aaa === obj.aaa)
+    console.log(clone.date === obj.date)
+    console.log(clone.dom === obj.dom)
+    console.log('---------')
+    console.log(clone.array === obj.array)
+    console.log(obj === clone)
+
+
+  </script>
+</body>
+
+</html>
