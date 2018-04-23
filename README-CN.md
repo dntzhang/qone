@@ -8,7 +8,7 @@
 
 ## 缘由
 
-最近的刚好改了腾讯文档 Excel 表格公式的一些 bug，主要是修改公式的 parser 。比如下面的脚本怎么转成 javascript 运行？
+最近刚好修改了腾讯文档 Excel 表格公式的一些 bug，主要是修改公式的 parser 。比如下面的脚本怎么转成 javascript 运行？
 
 ``` js
 = IF(SUM(J6:J7) + SUM(J6:J7) > 10, "A2 是 foo", "A2 不是 foo")
