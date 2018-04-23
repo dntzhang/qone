@@ -6,6 +6,8 @@
 Next-generation web query language, extend .NET LINQ for javascript
 </p>
 
+English | [简体中文](./README-CN.md) 
+
 ## The reason
 
 Recently, it has just changed some bug of the Excel formula of the Tencent document, mainly modifying the parser of the formula.

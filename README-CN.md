@@ -6,6 +6,8 @@
 下一代 Web 查询语言，使 javascript 支持 LINQ 
 </p>
 
+[English](./README.md) | 简体中文
+
 ## 缘由
 
 最近的刚好改了腾讯文档 Excel 表格公式的一些 bug，主要是修改公式的 parser 。比如下面的脚本怎么转成 javascript 运行？
