@@ -1,12 +1,10 @@
-
-<p align="center">
-  <a href="##qone"><img src="./asset/qone.png" alt="qone"></a>
-</p>
-<p align="center">
-下一代 Web 查询语言，使 javascript 支持 LINQ 
-</p>
-
 [English](./README.md) | 简体中文
+
+<a href="##qone"><img src="./asset/qone.png" alt="qone"></a>
+==============================
+[![npm version](https://badge.fury.io/js/qone.svg)](https://www.npmjs.com/package/qone) 
+
+下一代 Web 查询语言，使 javascript 支持 LINQ 
 
 ## 缘由
 

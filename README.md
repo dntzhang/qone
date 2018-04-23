@@ -1,12 +1,13 @@
 
-<p align="center">
-  <a href="##qone"><img src="./asset/qone.png" alt="qone"></a>
-</p>
-<p align="center">
-Next-generation web query language, extend .NET LINQ for javascript
-</p>
-
 English | [简体中文](./README-CN.md) 
+
+
+<a href="##qone"><img src="./asset/qone.png" alt="qone"></a>
+==============================
+[![npm version](https://badge.fury.io/js/qone.svg)](https://www.npmjs.com/package/qone) 
+
+Next-generation web query language, extend .NET LINQ for javascript
+
 
 ## The reason
 
