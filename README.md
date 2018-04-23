@@ -28,9 +28,9 @@ After getting code string, you can also use the generated code string to run (AO
 
 For example, wind supports JIT and AOT at the same time. Qone's thinking is similar to that above, but not exactly the same. Qone is as follows:
 
-Scanner > lexer > parser > ast > method (AST)
+Scanner > lexer > parser > ast > method(ast)
 
-The detailed principles will be written later. In general, the reasons are The work of the Tencent document formula, early kmdjs development (uglify2) and.NET development, so there is Qone.
+The detailed principles will be written later. In general, the reasons are the work of the Tencent document formula, early kmdjs development (uglify2) and.NET development, so there is Qone.
 
 - [LINQ](#linq)
 - [qone install](#qone-install)
