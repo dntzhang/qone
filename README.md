@@ -16,7 +16,7 @@ Recently, it has just changed some bug of the Excel formula of the Tencent docum
 For example, how can the following script be transformed to JavaScript?
 
 ``` js
-= IF(SUM(J6:J7) + SUM(J6:J7) > 10, "A2 是 foo", "A2 不是 foo")
+= IF(SUM(J6:J7) + SUM(J6:J7) > 10, "A2 is foo", "A2 is not foo")
 ```
 
 The implementation of formulas or scripting languages includes several main steps:
@@ -32,7 +32,7 @@ Scanner > lexer > parser > ast > method (AST)
 
 The detailed principles will be written later. In general, the reasons are The work of the Tencent document formula, early kmdjs development (uglify2) and.NET development, so there is Qone.
 
-- [LINQ](#LINQ)
+- [LINQ](#linq)
 - [qone install](#qone-install)
 - [qone keyword and operator](#qone-keyword-and-operator)
 - [qone method](#qone-method)      
@@ -42,6 +42,7 @@ The detailed principles will be written later. In general, the reasons are The w
 - [qone multiple data source](#qone-multiple-data-source)
 - [qone subdata source](#qone-subdata-source)
 - [qone limit and pagination](#qone-limit-and-pagination)
+- [links](#star--fork--pr--repl--follow-me)
 ---
 
 ## LINQ
@@ -243,7 +244,7 @@ QUnit.test("Simple groupby test 1", function (assert) {
 
 groupby can be used as an ending statement, without following or following select statements. groupby can also support method injection.
 
-## qone qone multiple data source
+## qone multiple data source
 
 ``` js
 QUnit.test("Multi datasource with props condition", function (assert) {
@@ -373,7 +374,7 @@ QUnit.test("Limit one page test", function (assert) {
 })
 ``` 
 
-## star & fork & pr & repl & floow me
+## star & fork & pr & repl & follow me
 
 * [https://github.com/dntzhang/qone](https://github.com/dntzhang/qone)
 * [https://dntzhang.github.io/qone](https://dntzhang.github.io/qone)

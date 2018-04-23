@@ -29,7 +29,7 @@
 
 总的来说，因为腾讯文档公式相关工作、早年的 kmdjs 开发 (uglify2) 和 .NET 开发，所以有了 qone 。    
 
-- [LINQ](#LINQ)
+- [LINQ](#linq)
 - [qone 安装](#qone-安装)
 - [qone 关键字与运算符](#qone-关键字与运算符)
 - [qone 方法注入](#qone-方法注入)      
@@ -39,6 +39,7 @@
 - [qone 多数据源](#qone-多数据源)
 - [qone 嵌套子数据源](#qone-嵌套子数据源)
 - [qone limit 与分页查询](#qone-limit-与分页查询)
+- [links](#star--fork--pr--repl--follow-me)
 ---
 
 ## LINQ
@@ -377,7 +378,7 @@ QUnit.test("Limit one page test", function (assert) {
 })
 ``` 
 
-## star & fork & pr & repl & floow me
+## star & fork & pr & repl & follow me
 
 * [https://github.com/dntzhang/qone](https://github.com/dntzhang/qone)
 * [https://dntzhang.github.io/qone](https://dntzhang.github.io/qone)
