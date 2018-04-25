@@ -76,6 +76,11 @@ Qone's `from` keyword is also in front like LINQ, with intelligent prompts for t
 npm install qone
 ```
 
+or get it by CDN:
+
+https://unpkg.com/qone@1.0.0/qone.js
+https://unpkg.com/qone@1.0.0/qone.min.js
+
 ## qone keyword and operator
 
 * from
