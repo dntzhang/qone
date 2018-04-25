@@ -78,8 +78,8 @@ npm install qone
 
 or get it by CDN:
 
-https://unpkg.com/qone@1.0.0/qone.js
-https://unpkg.com/qone@1.0.0/qone.min.js
+*[https://unpkg.com/qone@1.0.0/qone.js](https://unpkg.com/qone@1.0.0/qone.js)
+*[https://unpkg.com/qone@1.0.0/qone.min.js](https://unpkg.com/qone@1.0.0/qone.min.js)
 
 ## qone keyword and operator
 
