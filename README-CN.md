@@ -81,6 +81,11 @@ assert.deepEqual(result, [{ "name": "dntzhang", "age": 28 }])
 npm install qone
 ```
 
+CDN:
+
+* [https://unpkg.com/qone@1.0.0/qone.js](https://unpkg.com/qone@1.0.0/qone.js)
+* [https://unpkg.com/qone@1.0.0/qone.min.js](https://unpkg.com/qone@1.0.0/qone.min.js)
+
 ## qone 关键字与运算符
 
 * from
