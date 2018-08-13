@@ -5,10 +5,8 @@
  */
 
 ; (function(root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(['qone'], factory)
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory(require('qone'))
+    if (typeof module === 'object' && module.exports) {
+        module.exports = factory()
     } else {
         root.qone = factory()
     }
