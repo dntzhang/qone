@@ -1,4 +1,4 @@
-/* qone v1.0.0 - Next-generation web query language, extend .NET LINQ for javascript.
+/* qone v1.0.1 - Next-generation web query language, extend .NET LINQ for javascript.
  * By dntzhang https://github.com/dntzhang
  * Github: https://github.com/dntzhang/qone
  * MIT Licensed.
