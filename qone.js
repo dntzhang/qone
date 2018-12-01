@@ -1,4 +1,4 @@
-/* qone v1.0.1 - Next-generation web query language, extend .NET LINQ for javascript.
+/* qone v2.0.0 - Next-generation web query language, extend .NET LINQ for javascript.
  * By dntzhang https://github.com/dntzhang
  * Github: https://github.com/dntzhang/qone
  * MIT Licensed.
@@ -84,7 +84,7 @@
     }
 
     function isLetter(ch) {
-        return UNICODE.letter.test(ch)
+        return UNICODE.letter.test(ch) || ch==='_'
     }
 
     // deep-equal from npm
@@ -590,11 +590,11 @@
         _prop: function() {
             var result = []
             var item = this.tokens[this.index]
-            if (item.type === 'name' && this._is(this.tokens[this.index + 1], 'punc', '(')) {
+            if (item.type === 'name' &&this.tokens[this.index + 1] && this._is(this.tokens[this.index + 1], 'punc', '(')) {
                 this.index += 2
                 result = { name: item.value, args: this._args() }
             } else {
-                while ((item.type === 'string' || item.type === 'number' || item.type === 'name' || item.type === 'atom' ||
+                while (item&&(item.type === 'string' || item.type === 'number' || item.type === 'name' || item.type === 'atom' ||
                     (item.type === 'punc' &&
                         (item.value === '.' || item.value === '[' || item.value === ']')))) {
                     if (!(item.type === 'punc' &&

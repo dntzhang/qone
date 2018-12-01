@@ -1,6 +1,6 @@
 {
   "name": "qone",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "qone.js",
   "description": "Next-generation web query language, extend .NET LINQ for javascript.",
   "scripts": {
