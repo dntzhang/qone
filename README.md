@@ -6,7 +6,7 @@ English | [简体中文](./README-CN.md)
 ==============================
 [![npm version](https://badge.fury.io/js/qone.svg)](https://www.npmjs.com/package/qone) 
 
-Next-generation web query language, extend .NET LINQ for javascript
+.NET LINQ in javascript
 
 
 ## The reason
