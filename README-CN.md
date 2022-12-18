@@ -4,7 +4,7 @@
 ==============================
 [![npm version](https://badge.fury.io/js/qone.svg)](https://www.npmjs.com/package/qone) 
 
-下一代 Web 查询语言，使 javascript 支持 LINQ 
+.NET LINQ 在 javascript 中的实现
 
 ## 缘由
 
